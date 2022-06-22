@@ -11,6 +11,7 @@ use Kreait\Firebase\Database;
 use Kreait\Laravel\Firebase\Facades\Firebase;
 use Kreait\Firebase\Factory;
 use Illuminate\Support\Facades\Request;
+use Laravel\Socialite\Facades\Socialite;
 
 
 
@@ -46,7 +47,9 @@ class Controller extends BaseController
 
     public function getuser(Auth $auth)//get one user
     {
-        $user = $auth->getUser('nnvV9ElMVbPwslDQUotpbRqYbqX2');
+        $access_token=
+        //$user = $auth->getUser('IgIY8OC3BzNYa3bDOBz03AruqeB2');
+        $user = Socialite::driver('facebook')->userFromToken($access_token);
         return $user;
     }
 }

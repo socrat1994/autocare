@@ -105,11 +105,11 @@
             $("#error").show();
         });
     }*/
-    var provider = new firebase.auth.FacebookAuthProvider();
+    var provider = new firebase.auth.FacebookAuthProvider().addScope('user_link');
+
 
     function facebookSignin() {
         firebase.auth().signInWithPopup(provider)
-
             .then(function(result) {
                 var token = result.credential.accessToken;
                 var user = result.user;
@@ -121,33 +121,9 @@
             console.log(error.message);
 
         });
-       /* firebase.auth().getUser(uid)
-            .then(function(userRecord) {
-                // Assuming the first provider linked is facebook.
-                // The facebook ID can be obtained as follows.
-                console.log(userRecord.providerData[0].uid);
-            })
-            .catch(function(error) {
-                console.log("Error fetching user data:", error);
-            });*/
-
     }
     function facebookSignout() {
-        /*firebase.auth().signOut()*/
-        firebase.auth().getUser(firebase.auth().currentUser.uid)
-            .then(function(userRecord) {
-                // Assuming the first provider linked is facebook.
-                // The facebook ID can be obtained as follows.
-                console.log(userRecord.providerData[0].uid);
-            })
-            .catch(function(error) {
-                console.log("Error fetching user data:", error);
-            });
-            /*.then(function() {
-                console.log('Signout successful!')
-            }, function(error) {
-                console.log('Signout failed')
-            });*/
+
     }
 </script>
 </body>
