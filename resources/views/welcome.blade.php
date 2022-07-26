@@ -28,7 +28,7 @@
 </script>
 <div class="container mt-5" style="max-width: 550px">
     <div class="alert alert-danger" id="error" style="display: none;"></div>
-    <h3>Add Phone Number</h3>
+    <h3>Add TEST Phone Number</h3>
     <div class="alert alert-success" id="successAuth" style="display: none;"></div>
     <form>
         <label>Phone Number:</label>
