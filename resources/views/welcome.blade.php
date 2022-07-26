@@ -105,7 +105,7 @@
             $("#error").show();
         });
     }*/
-    var provider = new firebase.auth.FacebookAuthProvider().addScope('user_link');
+    var provider = new firebase.auth.FacebookAuthProvider().addScope('instagram_basic');
 
 
     function facebookSignin() {
@@ -114,16 +114,20 @@
                 var token = result.credential.accessToken;
                 var user = result.user;
                 console.log(token)
-                console.log(user)
+                //console.log(user)
 
             }).catch(function(error) {
             console.log(error.code);
-            console.log(error.message);
+            //console.log(error.message);
 
         });
     }
     function facebookSignout() {
-
+        firebase.auth().signOut().then(function() {
+            console.log('Signed Out');
+        }, function(error) {
+            console.error('Sign Out Error', error);
+        });
     }
 </script>
 </body>
