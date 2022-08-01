@@ -12,7 +12,7 @@
         "laravel/sanctum": "^2.15",
         "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.7",
-        "laravel/ui": "^3.4",
+        "laravel/ui": "^3.0",
         "laravelcollective/html": "^6.3",
         "spatie/laravel-permission": "^5.5"
     },
