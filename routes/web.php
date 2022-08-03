@@ -14,8 +14,8 @@ use Kreait\Laravel\Firebase\Facades\Firebase;
 |
 */
 
-Route::get('/mul',function(){
-    return view('auth.login');
+Route::get('/',function(){
+    return view('welcome');
 });
 
 
