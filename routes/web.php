@@ -19,6 +19,12 @@ Route::get('/mul',function(){
 });
 
 
+Route::get('setlang/{locale}',function($locale){
+  app()->setLocale($locale);
+  session()->put('locale', $locale);
+  return redirect()->back();;
+})->name('setlang');
+
 Route::get('/',function(){
     return view('home');
 });

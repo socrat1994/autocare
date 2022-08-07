@@ -40,6 +40,20 @@
                         </div>
 
                         <div class="row mb-3">
+                            <label for="company" class="col-md-4 col-form-label text-md-end">{{ __('company') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="company" type="text" class="form-control @error('company') is-invalid @enderror" name="company" value="{{ old('company') }}" required autocomplete="company">
+
+                                @error('company')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
 
                             <div class="col-md-6">

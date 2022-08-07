@@ -44,6 +44,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{route('setlang',"en")}}">{{ __('english') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{route('setlang',"ar")}}">{{ __('عربي') }}</a>
+                                </li>
                             @endif
 
                             @if (Route::has('register'))
