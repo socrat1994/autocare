@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cookie;
 
 class Localization
 {
@@ -18,8 +19,8 @@ class Localization
     */
     public function handle(Request $request, Closure $next)
     {
-        if (Session::has('locale')) {
-            App::setLocale(Session::get('locale'));
+        if (Cookie::has('locale')) {
+            App::setLocale(Cookie::get('locale'));
         }
         return $next($request);
     }
