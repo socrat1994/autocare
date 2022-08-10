@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'laravel'),
 
     /*
     |--------------------------------------------------------------------------
@@ -182,6 +182,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+
         /*
          * Package Service Providers...
          */
@@ -196,6 +197,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Kreait\Laravel\Firebase\ServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
     ],
 

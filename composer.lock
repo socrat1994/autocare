@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "64789ea7a6b44df37d59050e88ece47b",
+    "content-hash": "a6ed74cef740da1b568ab8cea43e0fac",
     "packages": [
         {
             "name": "beste/clock",
@@ -1616,6 +1616,7 @@
         },
         {
             "name": "laravel/framework",
+<<<<<<< HEAD
             "version": "v9.23.0",
             "source": {
                 "type": "git",
@@ -1626,6 +1627,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/framework/zipball/c4eea9060d847b5c93957b203caa8f57544a76ab",
                 "reference": "c4eea9060d847b5c93957b203caa8f57544a76ab",
+=======
+            "version": "v9.22.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/framework.git",
+                "reference": "b3b3dd43b9899f23df6d1d3e5390bd4662947a46"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/b3b3dd43b9899f23df6d1d3e5390bd4662947a46",
+                "reference": "b3b3dd43b9899f23df6d1d3e5390bd4662947a46",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -1792,7 +1805,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
+<<<<<<< HEAD
             "time": "2022-08-02T14:24:44+00:00"
+=======
+            "time": "2022-07-26T16:16:33+00:00"
+>>>>>>> socrat
         },
         {
             "name": "laravel/sanctum",
@@ -2057,32 +2074,32 @@
         },
         {
             "name": "laravel/ui",
-            "version": "v3.4.6",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/ui.git",
-                "reference": "65ec5c03f7fee2c8ecae785795b829a15be48c2c"
+                "reference": "e6291e8083cb5255511eacd6da0ec078210beabd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/ui/zipball/65ec5c03f7fee2c8ecae785795b829a15be48c2c",
-                "reference": "65ec5c03f7fee2c8ecae785795b829a15be48c2c",
+                "url": "https://api.github.com/repos/laravel/ui/zipball/e6291e8083cb5255511eacd6da0ec078210beabd",
+                "reference": "e6291e8083cb5255511eacd6da0ec078210beabd",
                 "shasum": ""
             },
             "require": {
-                "illuminate/console": "^8.42|^9.0",
-                "illuminate/filesystem": "^8.42|^9.0",
-                "illuminate/support": "^8.82|^9.0",
-                "illuminate/validation": "^8.42|^9.0",
-                "php": "^7.3|^8.0"
+                "illuminate/console": "^9.21",
+                "illuminate/filesystem": "^9.21",
+                "illuminate/support": "^9.21",
+                "illuminate/validation": "^9.21",
+                "php": "^8.0"
             },
             "require-dev": {
-                "orchestra/testbench": "^6.23|^7.0"
+                "orchestra/testbench": "^7.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.x-dev"
+                    "dev-master": "4.x-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -2112,9 +2129,81 @@
                 "ui"
             ],
             "support": {
-                "source": "https://github.com/laravel/ui/tree/v3.4.6"
+                "source": "https://github.com/laravel/ui/tree/v4.0.0"
             },
-            "time": "2022-05-20T13:38:08+00:00"
+            "time": "2022-07-25T10:21:27+00:00"
+        },
+        {
+            "name": "laravelcollective/html",
+            "version": "v6.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LaravelCollective/html.git",
+                "reference": "78c3cb516ac9e6d3d76cad9191f81d217302dea6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/78c3cb516ac9e6d3d76cad9191f81d217302dea6",
+                "reference": "78c3cb516ac9e6d3d76cad9191f81d217302dea6",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "^6.0|^7.0|^8.0|^9.0",
+                "illuminate/routing": "^6.0|^7.0|^8.0|^9.0",
+                "illuminate/session": "^6.0|^7.0|^8.0|^9.0",
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0",
+                "illuminate/view": "^6.0|^7.0|^8.0|^9.0",
+                "php": ">=7.2.5"
+            },
+            "require-dev": {
+                "illuminate/database": "^6.0|^7.0|^8.0|^9.0",
+                "mockery/mockery": "~1.0",
+                "phpunit/phpunit": "~8.5|^9.5.10"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Collective\\Html\\HtmlServiceProvider"
+                    ],
+                    "aliases": {
+                        "Form": "Collective\\Html\\FormFacade",
+                        "Html": "Collective\\Html\\HtmlFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Collective\\Html\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Adam Engebretson",
+                    "email": "adam@laravelcollective.com"
+                },
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                }
+            ],
+            "description": "HTML and Form Builders for the Laravel Framework",
+            "homepage": "https://laravelcollective.com",
+            "support": {
+                "issues": "https://github.com/LaravelCollective/html/issues",
+                "source": "https://github.com/LaravelCollective/html"
+            },
+            "time": "2022-02-08T21:02:54+00:00"
         },
         {
             "name": "lcobucci/clock",
@@ -3131,6 +3220,7 @@
         },
         {
             "name": "nunomaduro/termwind",
+<<<<<<< HEAD
             "version": "v1.14.0",
             "source": {
                 "type": "git",
@@ -3141,6 +3231,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/nunomaduro/termwind/zipball/10065367baccf13b6e30f5e9246fa4f63a79eb1d",
                 "reference": "10065367baccf13b6e30f5e9246fa4f63a79eb1d",
+=======
+            "version": "v1.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nunomaduro/termwind.git",
+                "reference": "132a24bd3e8c559e7f14fa14ba1b83772a0f97f8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nunomaduro/termwind/zipball/132a24bd3e8c559e7f14fa14ba1b83772a0f97f8",
+                "reference": "132a24bd3e8c559e7f14fa14ba1b83772a0f97f8",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -3152,7 +3254,11 @@
                 "ergebnis/phpstan-rules": "^1.0.",
                 "illuminate/console": "^8.0|^9.0",
                 "illuminate/support": "^8.0|^9.0",
+<<<<<<< HEAD
                 "laravel/pint": "^1.0.0",
+=======
+                "laravel/pint": "^0.2.0",
+>>>>>>> socrat
                 "pestphp/pest": "^1.21.0",
                 "pestphp/pest-plugin-mock": "^1.0",
                 "phpstan/phpstan": "^1.4.6",
@@ -3197,7 +3303,11 @@
             ],
             "support": {
                 "issues": "https://github.com/nunomaduro/termwind/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/nunomaduro/termwind/tree/v1.14.0"
+=======
+                "source": "https://github.com/nunomaduro/termwind/tree/v1.13.0"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -3213,7 +3323,11 @@
                     "type": "github"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-08-01T11:03:24+00:00"
+=======
+            "time": "2022-07-01T15:06:55+00:00"
+>>>>>>> socrat
         },
         {
             "name": "phpoption/phpoption",
@@ -4111,6 +4225,88 @@
             "time": "2021-10-09T06:30:16+00:00"
         },
         {
+            "name": "spatie/laravel-permission",
+            "version": "5.5.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-permission.git",
+                "reference": "f2303a70be60919811ca8afc313e8244fda00974"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/f2303a70be60919811ca8afc313e8244fda00974",
+                "reference": "f2303a70be60919811ca8afc313e8244fda00974",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/auth": "^7.0|^8.0|^9.0",
+                "illuminate/container": "^7.0|^8.0|^9.0",
+                "illuminate/contracts": "^7.0|^8.0|^9.0",
+                "illuminate/database": "^7.0|^8.0|^9.0",
+                "php": "^7.3|^8.0|^8.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^5.0|^6.0|^7.0",
+                "phpunit/phpunit": "^9.4",
+                "predis/predis": "^1.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\Permission\\PermissionServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-main": "5.x-dev",
+                    "dev-master": "5.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Spatie\\Permission\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Permission handling for Laravel 6.0 and up",
+            "homepage": "https://github.com/spatie/laravel-permission",
+            "keywords": [
+                "acl",
+                "laravel",
+                "permission",
+                "permissions",
+                "rbac",
+                "roles",
+                "security",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-permission/issues",
+                "source": "https://github.com/spatie/laravel-permission/tree/5.5.5"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-06-29T23:11:42+00:00"
+        },
+        {
             "name": "stella-maris/clock",
             "version": "0.1.4",
             "source": {
@@ -4159,6 +4355,7 @@
         },
         {
             "name": "symfony/cache",
+<<<<<<< HEAD
             "version": "v5.4.11",
             "source": {
                 "type": "git",
@@ -4169,6 +4366,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/cache/zipball/5a0fff46df349f0db3fe242263451fddf5277362",
                 "reference": "5a0fff46df349f0db3fe242263451fddf5277362",
+=======
+            "version": "v6.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/cache.git",
+                "reference": "5cf8e75f02932818889e0609380b8d5427a6c86c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/5cf8e75f02932818889e0609380b8d5427a6c86c",
+                "reference": "5cf8e75f02932818889e0609380b8d5427a6c86c",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -4236,7 +4445,11 @@
                 "psr6"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/cache/tree/v5.4.11"
+=======
+                "source": "https://github.com/symfony/cache/tree/v6.1.3"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -4252,11 +4465,19 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-07-28T15:25:17+00:00"
         },
         {
             "name": "symfony/cache-contracts",
             "version": "v2.5.2",
+=======
+            "time": "2022-07-29T07:42:06+00:00"
+        },
+        {
+            "name": "symfony/cache-contracts",
+            "version": "v3.1.1",
+>>>>>>> socrat
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache-contracts.git",
@@ -4315,7 +4536,11 @@
                 "standards"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/cache-contracts/tree/v2.5.2"
+=======
+                "source": "https://github.com/symfony/cache-contracts/tree/v3.1.1"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -4335,6 +4560,7 @@
         },
         {
             "name": "symfony/console",
+<<<<<<< HEAD
             "version": "v6.0.11",
             "source": {
                 "type": "git",
@@ -4345,6 +4571,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/console/zipball/09b8e50f09bf0e5bbde9b61b19d7f53751114725",
                 "reference": "09b8e50f09bf0e5bbde9b61b19d7f53751114725",
+=======
+            "version": "v6.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/console.git",
+                "reference": "43fcb5c5966b43c56bcfa481368d90d748936ab8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/console/zipball/43fcb5c5966b43c56bcfa481368d90d748936ab8",
+                "reference": "43fcb5c5966b43c56bcfa481368d90d748936ab8",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -4410,7 +4648,11 @@
                 "terminal"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/console/tree/v6.0.11"
+=======
+                "source": "https://github.com/symfony/console/tree/v6.1.3"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -4426,6 +4668,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-07-22T14:17:38+00:00"
         },
         {
@@ -4440,6 +4683,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/css-selector/zipball/ab2746acddc4f03a7234c8441822ac5d5c63efe9",
                 "reference": "ab2746acddc4f03a7234c8441822ac5d5c63efe9",
+=======
+            "time": "2022-07-22T14:17:57+00:00"
+        },
+        {
+            "name": "symfony/css-selector",
+            "version": "v6.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/css-selector.git",
+                "reference": "0dd5e36b80e1de97f8f74ed7023ac2b837a36443"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/0dd5e36b80e1de97f8f74ed7023ac2b837a36443",
+                "reference": "0dd5e36b80e1de97f8f74ed7023ac2b837a36443",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -4475,7 +4734,11 @@
             "description": "Converts CSS selectors to XPath expressions",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/css-selector/tree/v6.0.11"
+=======
+                "source": "https://github.com/symfony/css-selector/tree/v6.1.3"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -4491,11 +4754,19 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-06-27T17:10:44+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
             "version": "v3.0.2",
+=======
+            "time": "2022-06-27T17:24:16+00:00"
+        },
+        {
+            "name": "symfony/deprecation-contracts",
+            "version": "v3.1.1",
+>>>>>>> socrat
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/deprecation-contracts.git",
@@ -4542,7 +4813,11 @@
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/deprecation-contracts/tree/v3.0.2"
+=======
+                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.1.1"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -4562,6 +4837,7 @@
         },
         {
             "name": "symfony/error-handler",
+<<<<<<< HEAD
             "version": "v6.0.11",
             "source": {
                 "type": "git",
@@ -4572,6 +4848,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/error-handler/zipball/cb302377e1b862540436f22be9ff07079a5836ae",
                 "reference": "cb302377e1b862540436f22be9ff07079a5836ae",
+=======
+            "version": "v6.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/error-handler.git",
+                "reference": "736e42db3fd586d91820355988698e434e1d8419"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/error-handler/zipball/736e42db3fd586d91820355988698e434e1d8419",
+                "reference": "736e42db3fd586d91820355988698e434e1d8419",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -4613,7 +4901,11 @@
             "description": "Provides tools to manage errors and ease debugging PHP code",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/error-handler/tree/v6.0.11"
+=======
+                "source": "https://github.com/symfony/error-handler/tree/v6.1.3"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -4629,7 +4921,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-07-29T07:39:48+00:00"
+=======
+            "time": "2022-07-29T07:42:06+00:00"
+>>>>>>> socrat
         },
         {
             "name": "symfony/event-dispatcher",
@@ -4716,7 +5012,11 @@
         },
         {
             "name": "symfony/event-dispatcher-contracts",
+<<<<<<< HEAD
             "version": "v3.0.2",
+=======
+            "version": "v3.1.1",
+>>>>>>> socrat
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher-contracts.git",
@@ -4775,7 +5075,11 @@
                 "standards"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v3.0.2"
+=======
+                "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v3.1.1"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -4795,6 +5099,7 @@
         },
         {
             "name": "symfony/finder",
+<<<<<<< HEAD
             "version": "v6.0.11",
             "source": {
                 "type": "git",
@@ -4805,6 +5110,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/finder/zipball/09cb683ba5720385ea6966e5e06be2a34f2568b1",
                 "reference": "09cb683ba5720385ea6966e5e06be2a34f2568b1",
+=======
+            "version": "v6.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/finder.git",
+                "reference": "39696bff2c2970b3779a5cac7bf9f0b88fc2b709"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/39696bff2c2970b3779a5cac7bf9f0b88fc2b709",
+                "reference": "39696bff2c2970b3779a5cac7bf9f0b88fc2b709",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -4836,7 +5153,11 @@
             "description": "Finds files and directories via an intuitive fluent interface",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/finder/tree/v6.0.11"
+=======
+                "source": "https://github.com/symfony/finder/tree/v6.1.3"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -4852,6 +5173,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-07-29T07:39:48+00:00"
         },
         {
@@ -4866,6 +5188,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/http-foundation/zipball/69302fb4a7d65f6373c60b6d9ca89b91d2c9e0e6",
                 "reference": "69302fb4a7d65f6373c60b6d9ca89b91d2c9e0e6",
+=======
+            "time": "2022-07-29T07:42:06+00:00"
+        },
+        {
+            "name": "symfony/http-foundation",
+            "version": "v6.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/http-foundation.git",
+                "reference": "b03712c93759a81fc243ecc18ec4637958afebdb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/b03712c93759a81fc243ecc18ec4637958afebdb",
+                "reference": "b03712c93759a81fc243ecc18ec4637958afebdb",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -4908,7 +5246,11 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/http-foundation/tree/v6.0.11"
+=======
+                "source": "https://github.com/symfony/http-foundation/tree/v6.1.3"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -4924,6 +5266,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-07-22T16:13:32+00:00"
         },
         {
@@ -4938,6 +5281,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/http-kernel/zipball/961268a36f3fa4bda9fde1400d2ae7004318b717",
                 "reference": "961268a36f3fa4bda9fde1400d2ae7004318b717",
+=======
+            "time": "2022-07-27T15:50:51+00:00"
+        },
+        {
+            "name": "symfony/http-kernel",
+            "version": "v6.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/http-kernel.git",
+                "reference": "0692bc185a1dbb54864686a1fc6785667279da70"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/0692bc185a1dbb54864686a1fc6785667279da70",
+                "reference": "0692bc185a1dbb54864686a1fc6785667279da70",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -5017,7 +5376,11 @@
             "description": "Provides a structured process for converting a Request into a Response",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/http-kernel/tree/v6.0.11"
+=======
+                "source": "https://github.com/symfony/http-kernel/tree/v6.1.3"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -5033,6 +5396,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-07-29T12:37:40+00:00"
         },
         {
@@ -5047,6 +5411,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/mailer/zipball/4a787a257addd412eac53157d459f87f8e335037",
                 "reference": "4a787a257addd412eac53157d459f87f8e335037",
+=======
+            "time": "2022-07-29T12:59:10+00:00"
+        },
+        {
+            "name": "symfony/mailer",
+            "version": "v6.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/mailer.git",
+                "reference": "b2db228a93278863d1567f90d7caf26922dbfede"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/mailer/zipball/b2db228a93278863d1567f90d7caf26922dbfede",
+                "reference": "b2db228a93278863d1567f90d7caf26922dbfede",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -5091,7 +5471,11 @@
             "description": "Helps sending emails",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/mailer/tree/v6.0.11"
+=======
+                "source": "https://github.com/symfony/mailer/tree/v6.1.3"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -5107,6 +5491,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-07-27T15:50:26+00:00"
         },
         {
@@ -5121,6 +5506,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/mime/zipball/c6f16f6789587348f6518b193d3499c0e1f5e5c5",
                 "reference": "c6f16f6789587348f6518b193d3499c0e1f5e5c5",
+=======
+            "time": "2022-07-27T15:50:51+00:00"
+        },
+        {
+            "name": "symfony/mime",
+            "version": "v6.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/mime.git",
+                "reference": "9c0247994fc6584da8591ba64b2bffaace9df87d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/mime/zipball/9c0247994fc6584da8591ba64b2bffaace9df87d",
+                "reference": "9c0247994fc6584da8591ba64b2bffaace9df87d",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -5172,7 +5573,11 @@
                 "mime-type"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/mime/tree/v6.0.11"
+=======
+                "source": "https://github.com/symfony/mime/tree/v6.1.3"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -5188,7 +5593,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-07-20T13:45:53+00:00"
+=======
+            "time": "2022-07-20T13:46:29+00:00"
+>>>>>>> socrat
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -5926,6 +6335,7 @@
         },
         {
             "name": "symfony/process",
+<<<<<<< HEAD
             "version": "v6.0.11",
             "source": {
                 "type": "git",
@@ -5936,6 +6346,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/process/zipball/44270a08ccb664143dede554ff1c00aaa2247a43",
                 "reference": "44270a08ccb664143dede554ff1c00aaa2247a43",
+=======
+            "version": "v6.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/process.git",
+                "reference": "a6506e99cfad7059b1ab5cab395854a0a0c21292"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/process/zipball/a6506e99cfad7059b1ab5cab395854a0a0c21292",
+                "reference": "a6506e99cfad7059b1ab5cab395854a0a0c21292",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -5967,7 +6389,11 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/process/tree/v6.0.11"
+=======
+                "source": "https://github.com/symfony/process/tree/v6.1.3"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -5983,6 +6409,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-06-27T17:10:44+00:00"
         },
         {
@@ -5997,6 +6424,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/routing/zipball/434b64f7d3a582ec33fcf69baaf085473e67d639",
                 "reference": "434b64f7d3a582ec33fcf69baaf085473e67d639",
+=======
+            "time": "2022-06-27T17:24:16+00:00"
+        },
+        {
+            "name": "symfony/routing",
+            "version": "v6.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/routing.git",
+                "reference": "ef9108b3a88045b7546e808fb404ddb073dd35ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/ef9108b3a88045b7546e808fb404ddb073dd35ea",
+                "reference": "ef9108b3a88045b7546e808fb404ddb073dd35ea",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -6055,7 +6498,11 @@
                 "url"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/routing/tree/v6.0.11"
+=======
+                "source": "https://github.com/symfony/routing/tree/v6.1.3"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -6071,6 +6518,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-07-20T13:45:53+00:00"
         },
         {
@@ -6085,6 +6533,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/service-contracts/zipball/d78d39c1599bd1188b8e26bb341da52c3c6d8a66",
                 "reference": "d78d39c1599bd1188b8e26bb341da52c3c6d8a66",
+=======
+            "time": "2022-07-20T15:00:40+00:00"
+        },
+        {
+            "name": "symfony/service-contracts",
+            "version": "v3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/service-contracts.git",
+                "reference": "925e713fe8fcacf6bc05e936edd8dd5441a21239"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/925e713fe8fcacf6bc05e936edd8dd5441a21239",
+                "reference": "925e713fe8fcacf6bc05e936edd8dd5441a21239",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -6137,7 +6601,11 @@
                 "standards"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/service-contracts/tree/v3.0.2"
+=======
+                "source": "https://github.com/symfony/service-contracts/tree/v3.1.1"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -6153,6 +6621,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-05-30T19:17:58+00:00"
         },
         {
@@ -6167,6 +6636,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/string/zipball/042b6bf0f6ccca6d456a0572eb788cfb8b1ff809",
                 "reference": "042b6bf0f6ccca6d456a0572eb788cfb8b1ff809",
+=======
+            "time": "2022-05-30T19:18:58+00:00"
+        },
+        {
+            "name": "symfony/string",
+            "version": "v6.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/string.git",
+                "reference": "f35241f45c30bcd9046af2bb200a7086f70e1d6b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/string/zipball/f35241f45c30bcd9046af2bb200a7086f70e1d6b",
+                "reference": "f35241f45c30bcd9046af2bb200a7086f70e1d6b",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -6222,7 +6707,11 @@
                 "utf8"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/string/tree/v6.0.11"
+=======
+                "source": "https://github.com/symfony/string/tree/v6.1.3"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -6238,6 +6727,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-07-27T15:50:26+00:00"
         },
         {
@@ -6252,6 +6742,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/translation/zipball/55ffbe4b690156100af1ae42e1f94c5873085bca",
                 "reference": "55ffbe4b690156100af1ae42e1f94c5873085bca",
+=======
+            "time": "2022-07-27T15:50:51+00:00"
+        },
+        {
+            "name": "symfony/translation",
+            "version": "v6.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/translation.git",
+                "reference": "b042e16087d298d08c1f013ff505d16c12a3b1be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/b042e16087d298d08c1f013ff505d16c12a3b1be",
+                "reference": "b042e16087d298d08c1f013ff505d16c12a3b1be",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -6317,7 +6823,11 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/translation/tree/v6.0.11"
+=======
+                "source": "https://github.com/symfony/translation/tree/v6.1.3"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -6333,6 +6843,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-07-20T13:45:53+00:00"
         },
         {
@@ -6347,6 +6858,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/acbfbb274e730e5a0236f619b6168d9dedb3e282",
                 "reference": "acbfbb274e730e5a0236f619b6168d9dedb3e282",
+=======
+            "time": "2022-07-20T13:46:29+00:00"
+        },
+        {
+            "name": "symfony/translation-contracts",
+            "version": "v3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/translation-contracts.git",
+                "reference": "606be0f48e05116baef052f7f3abdb345c8e02cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/606be0f48e05116baef052f7f3abdb345c8e02cc",
+                "reference": "606be0f48e05116baef052f7f3abdb345c8e02cc",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -6395,7 +6922,11 @@
                 "standards"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/translation-contracts/tree/v3.0.2"
+=======
+                "source": "https://github.com/symfony/translation-contracts/tree/v3.1.1"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -6411,6 +6942,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-06-27T17:10:44+00:00"
         },
         {
@@ -6425,6 +6957,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/var-dumper/zipball/2672bdc01c1971e3d8879ce153ec4c3621be5f07",
                 "reference": "2672bdc01c1971e3d8879ce153ec4c3621be5f07",
+=======
+            "time": "2022-06-27T17:24:16+00:00"
+        },
+        {
+            "name": "symfony/var-dumper",
+            "version": "v6.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/var-dumper.git",
+                "reference": "d5a5e44a2260c5eb5e746bf4f1fbd12ee6ceb427"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/d5a5e44a2260c5eb5e746bf4f1fbd12ee6ceb427",
+                "reference": "d5a5e44a2260c5eb5e746bf4f1fbd12ee6ceb427",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -6483,7 +7031,11 @@
                 "dump"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/var-dumper/tree/v6.0.11"
+=======
+                "source": "https://github.com/symfony/var-dumper/tree/v6.1.3"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -6499,6 +7051,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-07-20T13:45:53+00:00"
         },
         {
@@ -6513,6 +7066,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/var-exporter/zipball/e3df004a8d0fb572c420a6915cd23db9254c8366",
                 "reference": "e3df004a8d0fb572c420a6915cd23db9254c8366",
+=======
+            "time": "2022-07-20T13:46:29+00:00"
+        },
+        {
+            "name": "symfony/var-exporter",
+            "version": "v6.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/var-exporter.git",
+                "reference": "b49350f45cebbba6e5286485264b912f2bcfc9ef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/b49350f45cebbba6e5286485264b912f2bcfc9ef",
+                "reference": "b49350f45cebbba6e5286485264b912f2bcfc9ef",
+>>>>>>> socrat
                 "shasum": ""
             },
             "require": {
@@ -6555,7 +7124,11 @@
                 "serialize"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/var-exporter/tree/v6.0.10"
+=======
+                "source": "https://github.com/symfony/var-exporter/tree/v6.1.3"
+>>>>>>> socrat
             },
             "funding": [
                 {
@@ -6571,7 +7144,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-05-27T12:57:11+00:00"
+=======
+            "time": "2022-07-04T16:01:56+00:00"
+>>>>>>> socrat
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

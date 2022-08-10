@@ -19,7 +19,17 @@ Route::get('/mul',function(){
 });
 
 
+Route::get('setlang/{locale}',function($locale){
+  app()->setLocale($locale);
+  Cookie::queue('locale', $locale, 1000000);
+  return redirect()->back();
+})->name('setlang');
+
+Route::get('/',function(){
+    return view('home');
+});
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/moreinfo', [App\Http\Controllers\MoreInfoController::class, 'index'])->name('moreinfo');
