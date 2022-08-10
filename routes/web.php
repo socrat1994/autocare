@@ -18,7 +18,7 @@ Route::get('/mul',function(){
     return view('auth.login');
 });
 
-
+//mulahm updates in mulham repo.
 Route::get('setlang/{locale}',function($locale){
   app()->setLocale($locale);
   Cookie::queue('locale', $locale, 1000000);
