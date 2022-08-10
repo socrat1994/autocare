@@ -18,7 +18,11 @@ Route::get('/mul',function(){
     return view('auth.login');
 });
 
+<<<<<<< HEAD
 //mulahm updates in mulham repo.
+=======
+//changing socrat repo 
+>>>>>>> socrat
 Route::get('setlang/{locale}',function($locale){
   app()->setLocale($locale);
   Cookie::queue('locale', $locale, 1000000);
