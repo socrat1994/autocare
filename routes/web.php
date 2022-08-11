@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Kreait\Laravel\Firebase\Facades\Firebase;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\MoreInfoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,3 +36,6 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/addbranches', [App\Http\Controllers\MoreInfoController::class, 'index'])->name('addbranches');
 Route::post('/addbranches', [App\Http\Controllers\MoreInfoController::class, 'store'])->name('addbranches');
+Route::Apiresources([
+  'employee' => EmployeeController::class,
+]);

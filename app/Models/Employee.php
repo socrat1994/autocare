@@ -16,19 +16,18 @@ class Branch extends Authenticatable
     public $timestamps = false;
 
     protected $fillable = [
-        'name',
-        'location',
-        'geolocation',
-        'company_id',
+        'user_id',
+        'branch_id',
+        'moved_at',
     ];
 
-    public function company()
+    public function user()
     {
-        return $this->belongsTo(Company::class, 'company_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function employee()
-        {
-           return $this->hasMany(Employee::class, 'branch_id', 'id');
-        }
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id', 'id');
+    }
 }
