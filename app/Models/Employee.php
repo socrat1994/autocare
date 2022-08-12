@@ -9,23 +9,25 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class Company extends Authenticatable
+class Branch extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     public $timestamps = false;
 
     protected $fillable = [
-        'name',
+        'user_id',
+        'branch_id',
+        'moved_at',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'owner', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function branch()
-       {
-           return $this->hasMany(Branch::class, 'company_id', 'id');
-       }
+    {
+        return $this->belongsTo(Branch::class, 'branch_id', 'id');
+    }
 }
