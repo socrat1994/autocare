@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Add Employee') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('employee') }}">
+                    <form method="POST" action="{{ url('/employee') }}">
                         @csrf
 
                         <div class="row mb-3">
@@ -40,12 +40,15 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="company" class="col-md-4 col-form-label text-md-end">{{ __('company') }}</label>
+                            <label for="role" class="col-md-4 col-form-label text-md-end">{{ __('Role') }}</label>
 
                             <div class="col-md-6">
-                                <input id="company" type="text" class="form-control @error('company') is-invalid @enderror" name="company" value="{{ old('company') }}" required autocomplete="company">
-
-                                @error('company')
+                                <select id="role"  class="form-control @error('role') is-invalid @enderror" name="role" value="{{ old('role') }}" required autocomplete="role">
+                                  @foreach (DB::table('roles')->get() as $role)
+                                      <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                   @endforeach
+                                </select>
+                                @error('role')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
