@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class Company extends Authenticatable
+class Branch extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
@@ -17,15 +17,18 @@ class Company extends Authenticatable
 
     protected $fillable = [
         'name',
+        'location',
+        'geolocation',
+        'company_id',
     ];
 
-    public function user()
+    public function company()
     {
-        return $this->belongsTo(User::class, 'owner', 'id');
+        return $this->belongsTo(Company::class, 'company_id', 'id');
     }
 
-    public function branch()
-       {
-           return $this->hasMany(Branch::class, 'company_id', 'id');
-       }
+    public function employee()
+        {
+           return $this->hasMany(Employee::class, 'branch_id', 'id');
+        }
 }

@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Kreait\Laravel\Firebase\Facades\Firebase;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\MoreInfoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +16,8 @@ use Kreait\Laravel\Firebase\Facades\Firebase;
 |
 */
 
-Route::get('/mul',function(){
-    return view('auth.login');
+Route::get('/',function(){
+    return view('welcome');
 });
 
 //changing socrat repo 
@@ -32,4 +34,8 @@ Route::get('/',function(){
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/moreinfo', [App\Http\Controllers\MoreInfoController::class, 'index'])->name('moreinfo');
+Route::get('/addbranches', [App\Http\Controllers\MoreInfoController::class, 'index'])->name('addbranches');
+Route::post('/addbranches', [App\Http\Controllers\MoreInfoController::class, 'store'])->name('addbranches');
+Route::Apiresources([
+  'employee' => EmployeeController::class,
+]);
