@@ -59,12 +59,34 @@
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('submit') }}
+                                <button type="reset" class="btn btn-primary">
+                                    {{ __('Reset') }}
+                                </button>
+                                <button type="button" id="add" class="btn btn-primary" onclick="AddData()">
+                                    {{ __('add')}}
                                 </button>
                             </div>
                         </div>
                     </form>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Gio Location</th>
+                            <th scope="col" colspan="2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tablbody">
+                            
+                        </tbody>
+                    </table>
+                    <div  style="text-align: center;">
+                        <button type="submit" class="btn btn-primary">
+                                {{ __('submit')}}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
