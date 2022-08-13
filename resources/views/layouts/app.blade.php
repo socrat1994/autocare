@@ -70,7 +70,7 @@
                                         {{ __('Logout') }}
                                     </a>
                                     <a class="nav-link" href="{{route('addbranches')}}">{{ __('Add Branch') }}</a>
-                                    <a class="nav-link" href="{{url('employee')}}">{{ __('Add Branch') }}</a>
+                                    <a class="nav-link" href="{{url('/employee')}}">{{ __('Add Employee') }}</a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>

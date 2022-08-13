@@ -4,6 +4,9 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+          @if(session()->has('message'))
+          <h1>{{session('message')}}</h1>
+          @endif
             <div class="card">
                 <div class="card-header">{{ __('Add Branch') }}</div>
 

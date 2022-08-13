@@ -6,9 +6,15 @@ use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
+  private $rules = array(
+    'name' => ['required', 'string', 'max:255'],
+    'phone' => ['required', 'string', 'max:255', 'unique:users'],
+    'password' => ['required', 'string', 'min:8', 'confirmed'],
+  );
+
   public function __construct()
   {
-      $this->middleware('guest');
+      $this->middleware('auth');
   }
 
     public function index()
@@ -16,14 +22,20 @@ class EmployeeController extends Controller
       return view('addemployees');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(Request $request)
     {
-        //
+      $validated = Validator::make($request->all(), $this->rules);
+    if ($validated->fails()) {
+        return response()->json(new Message($validated->errors(), '200', false, 'error', 'validation error', 'تحقق من المعلومات المدخلة'));
+    }
+    try {
+        $region_data = array('name' => $request->name);
+        $region = Region::create($region_data);
+        $region->country()->create(array_diff($request->all(), $region_data));
+        return response()->json(new Message($region->country->load('region'), '200', true, 'info', "the country above inserted successfully", 'تم إدخال البيانات بنجاح'));
+    } catch (\Exception $e) {
+        return response()->json(new Message($e->getMessage(), '100', false, 'error', 'error', 'خطأ'));
+    }
     }
 
     /**

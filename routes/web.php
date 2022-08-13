@@ -4,17 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Kreait\Laravel\Firebase\Facades\Firebase;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\EmployeeController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
 
 Route::get('/',function(){
     return view('welcome');
@@ -28,7 +19,11 @@ Route::get('setlang/{locale}',function($locale){
 })->name('setlang');
 
 Route::get('/',function(){
-    return view('home');
+//$user = Auth::user();
+//$permission = Permission::create(['name' => 'edit articles']);
+//$user->givePermissionTo($permission);
+//  $user->assignRole('admin');
+ return view('home');
 });
 
 Auth::routes();
