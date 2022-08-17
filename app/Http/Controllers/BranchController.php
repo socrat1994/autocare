@@ -13,9 +13,20 @@ use Illuminate\Validation\Rule;
 use App\HelperClasses\Message;
 use App\Http\Controllers\MyFunction;
 
-class MoreInfoController extends Controller
+class BranchController extends Controller
 {
-  private $arr = ['e'];//DB::table('branches')->get()->name;
+  private  $jsona = '[
+   {
+      "name":"syria",
+      "location":"syria",
+      "geolocation":"syria"
+   },
+   {
+      "name":"syria1",
+      "location":"syria1",
+      "geolocation":"syria1"
+   }
+]';
   private $rules = array(
       'name' => ['required', 'string', 'max:50',],
       'location' => ['required', 'string', 'max:50'],
@@ -29,32 +40,41 @@ class MoreInfoController extends Controller
 
     public function index()
     {
+
         return view('addbranches');
     }
 
     public function store(Request $request)
   {
-      $user = Auth::user();
-      $company = $user->company()->get('id');
-      $branches = Branch::query()->select('name')->where('company_id', $company[0]->id)->get();
-      $validated = Validator::make($request->all(),
+    $i = 0;
+    $a = json_decode($request->string, true);
+    $user = Auth::user();//we should get the owner of the company
+    $company = $user->company()->get('id');
+    $branches = Branch::query()->select('name')->where('company_id', $company[0]->id)->get();
+    foreach($a as $a){
+      $validated = Validator::make($a,
       ['name' => ['required', 'string', 'max:50', Rule::notIn(to_array($branches, "name")),],
       'location' => ['required', 'string', 'max:50'],
       'geolocation' => ['required', 'string', 'max:50'],]);
-      if ($validated->fails()) {
-        return back()->withErrors($validated->errors());
+       if ($validated->fails()) {
+         $status[$i] = $validated->errors();
+         $i++;
+         $error = true;
+         continue;
       }
       try {
-
       $branch = Branch::create([
-      'name' => $request->name,
-      'location' => $request->location,
-      'geolocation' => $request->geolocation,
+      'name' => $a['name'],
+      'location' => $a['location'],
+      'geolocation' => $a['geolocation'],
       'company_id' => $company[0]->id,
-    ]);
-      return to_array($branches, "name");//back()->with('message', 'success');
-    }catch (\Exception $e) {
+      ]);
+      $status[$i] = 'done';
+      $i++;
+      }catch (\Exception $e) {
         return response()->json(new Message($e->getMessage(), '100', false, 'error', 'error', 'خطأ'));
     }
   }
+  return response()->json(new Message($status, '200', isset($error)?false:true, 'info', "here status of every insertion", 'Arabictext'));
+}
 }

@@ -1,6 +1,4 @@
 <?php
-
-function hello(){return "dd";}
      function to_array($objects, $attribute)// convert colomn retrived from database as objects to array
     {
       $i = 0;
@@ -9,5 +7,7 @@ function hello(){return "dd";}
         $branch_arr[$i] =  $object->$attribute;
         $i++;
       }
-        return $branch_arr;
+      if(isset($branch_arr))
+        {return $branch_arr;}
+        
     }
