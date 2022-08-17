@@ -41,6 +41,38 @@ function AddData() {
     $(".table").show();
   }
 }
+//for submit table data:
+function subTable(){
+  var TableData;
+  TableData = $.toJSON(storeTblValues());
+  
+  function storeTblValues()
+  {
+      var TableData = new Array();
+  
+      $('.table tbody tr').each(function(row, tr){
+          TableData[row]={
+              "Number" : $(tr).find('td:eq(0)').text()
+              , "Name" :$(tr).find('td:eq(1)').text()
+              , "Location" : $(tr).find('td:eq(2)').text()
+              , "GeoLocation" : $(tr).find('td:eq(3)').text()
+          }    
+      }); 
+      //console.log(TableData);
+      return TableData;
+  }
+  console.log(TableData);
+ $.ajax({
+  type: "POST",
+  url: route("addbranches"),
+  data: "pTableData=" + TableData,
+  success: function(msg){
+      // return value stored in msg variable
+  }
+});
+}
+
+
 $(document).ready(function() {
   $(".table").hide();
   $(document).on('click', '.delete', function() {
@@ -51,4 +83,5 @@ $(document).ready(function() {
       $(".table").hide();
     }
   });
+  $(document).on('click','#subTable',subTable)
 });

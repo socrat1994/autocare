@@ -81,7 +81,7 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="5" style="text-align: center;">
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="button" id="subTable"class="btn btn-primary">
                                                 {{ __('submit')}}
                                         </button>
                                     </td>
