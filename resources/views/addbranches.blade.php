@@ -8,20 +8,14 @@
                     <div class="card-header">{{ __('Add Branch') }}</div>
     
                     <div class="card-body">
-                        <form method="POST" action="{{ route('addbranches') }}">
+                        <form id="addpranch" method="POST" action="{{ route('addbranches') }}">
                             @csrf
     
                             <div class="row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
     
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-    
-                                    @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                    <input id="name" type="text" class="form-control  is-invalid " name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                                 </div>
                             </div>
     
@@ -29,13 +23,7 @@
                                 <label for="location" class="col-md-4 col-form-label text-md-end">{{ __('location') }}</label>
     
                                 <div class="col-md-6">
-                                    <input id="location" type="tel" class="form-control @error('location') is-invalid @enderror" name="location" value="{{ old('location') }}" required autocomplete="location">
-    
-                                    @error('location')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                    <input id="location" type="tel" class="form-control  is-invalid" name="location" value="{{ old('location') }}" required autocomplete="location">
                                 </div>
                             </div>
     
@@ -43,13 +31,7 @@
                                 <label for="geolocation" class="col-md-4 col-form-label text-md-end">{{ __('gio location') }}</label>
     
                                 <div class="col-md-6">
-                                    <input id="geolocation" type="text" class="form-control @error('geolocation') is-invalid @enderror" name="geolocation" value="{{ old('geolocation') }}" required autocomplete="geolocation">
-    
-                                    @error('geolocation')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                    <input id="geolocation" type="text" class="form-control  is-invalid " name="geolocation" value="{{ old('geolocation') }}" required autocomplete="geolocation">
                                 </div>
                             </div>
     
