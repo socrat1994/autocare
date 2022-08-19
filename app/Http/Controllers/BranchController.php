@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+Namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -12,25 +12,30 @@ use App\Models\Branch;
 use Illuminate\Validation\Rule;
 use App\HelperClasses\Message;
 use App\Http\Controllers\MyFunction;
+use Illuminate\Support\Facades\Cookie;
 
 class BranchController extends Controller
 {
   private  $jsona = '[
    {
       "name":"syria",
-      "location":"syria",
-      "geolocation":"syria"
+      "phone":"1235",
+      "password":"12345678",
+      "branch_id":"53",
+      "moved_at":"2022-08-11",
    },
    {
       "name":"syria1",
-      "location":"syria1",
-      "geolocation":"syria1"
+      "phone":"125",
+      "password":"12345678",
+      "branch_id":"53",
+      "moved_at":"2022-08-11",
    }
 ]';
   private $rules = array(
-      'name' => ['required', 'string', 'max:50',],
-      'location' => ['required', 'string', 'max:50'],
-      'geolocation' => ['required', 'string', 'max:50'],
+      'Name' => ['required', 'string', 'max:50',],
+      'Location' => ['required', 'string', 'max:50'],
+      'GeoLocation' => ['required', 'string', 'max:50'],
   );
 
     public function __construct()
@@ -40,22 +45,20 @@ class BranchController extends Controller
 
     public function index()
     {
-
         return view('addbranches');
     }
 
     public function store(Request $request)
   {
     $i = 0;
-    $a = json_decode($request->string, true);
-    $user = Auth::user();//we should get the owner of the company
-    $company = $user->company()->get('id');
-    $branches = Branch::query()->select('name')->where('company_id', $company[0]->id)->get();
-    foreach($a as $a){
-      $validated = Validator::make($a,
-      ['name' => ['required', 'string', 'max:50', Rule::notIn(to_array($branches, "name")),],
-      'location' => ['required', 'string', 'max:50'],
-      'geolocation' => ['required', 'string', 'max:50'],]);
+    $data = json_decode($request->pTableData, true);
+    $company = Cookie::get('company');
+    $branches = Branch::query()->select('name')->where('company_id', $company)->get();
+    foreach($data as $data){
+      $validated = Validator::make($data,
+      ['Name' => ['required', 'string', 'max:50', Rule::notIn(to_array($branches, "name")),],
+      'Location' => ['required', 'string', 'max:50'],
+      'GeoLocation' => ['required', 'string', 'max:50'],]);
        if ($validated->fails()) {
          $status[$i] = $validated->errors();
          $i++;
@@ -64,10 +67,10 @@ class BranchController extends Controller
       }
       try {
       $branch = Branch::create([
-      'name' => $a['name'],
-      'location' => $a['location'],
-      'geolocation' => $a['geolocation'],
-      'company_id' => $company[0]->id,
+      'name' => $data['Name'],
+      'location' => $data['Location'],
+      'geolocation' => $data['GeoLocation'],
+      'company_id' => $company,
       ]);
       $status[$i] = 'done';
       $i++;
