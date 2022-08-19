@@ -59,16 +59,13 @@ function subTable(){
           }    
       }); 
       //console.log(TableData);
-      var tokenstring = $("input[name=_token]").attr("value");
-      var tokenobject = {token: tokenstring};
-      TableData.push(tokenobject);
       return TableData;
   }
   console.log(TableData);
  $.ajax({
   type: "POST",
   url: $("#addpranch").attr("action"),
-  data: "pTableData=" + TableData,
+  data: "pTableData="+TableData+"token="+$("input[name=_token]").attr("value"),
   success: function(msg){
       // return value stored in msg variable
   }
