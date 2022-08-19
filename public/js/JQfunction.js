@@ -64,7 +64,7 @@ function subTable(){
   console.log(TableData);
  $.ajax({
   type: "POST",
-  url: 'http://localhost:8000/branch',
+  url: $("#addpranch").attr("action"),
   data: "pTableData=" + TableData,
   success: function(msg){
       // return value stored in msg variable
