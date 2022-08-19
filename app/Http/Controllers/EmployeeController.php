@@ -5,40 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use App\Models\User;
-use App\Models\Company;
 use App\Models\Branch;
+use App\Models\Employee;
 use Illuminate\Validation\Rule;
 use App\HelperClasses\Message;
 use App\Http\Controllers\MyFunction;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
 {
-  private $rules = array(
-    'name' => ['required', 'string', 'max:255'],
-    'phone' => ['required', 'string', 'max:255', 'unique:users'],
-    'password' => ['required', 'string', 'min:8', 'confirmed'],
-  );
-
-  private  $jsona = '[
-   {
-      "name":"syria",
-      "phone":"1235",
-      "password":"12345678",
-      "branch_id":"53",
-      "moved_at":"2022-08-11",
-   },
-   {
-      "name":"syria1",
-      "phone":"125",
-      "password":"12345678",
-      "branch_id":"53",
-      "moved_at":"2022-08-11",
-   }
-]';
-
   public function __construct()
   {
       $this->middleware('auth');
@@ -53,10 +30,10 @@ class EmployeeController extends Controller
     {
       $i = 0;
       $w =stripcslashes($request->pTableData);
-      $data = json_decode($this->jsona, true);
+      $data = json_decode($request->pTableData, true);
       $company = Cookie::get('company');
       $branches = Branch::query()->select('id')->where('company_id', $company)->get();
-      /*foreach($data as $data){
+      foreach($data as $data){
         $validated = Validator::make($data,
         ['name' => ['required', 'string', 'max:255'],
         'phone' => ['required', 'string', 'max:255', 'unique:users'],
@@ -71,7 +48,7 @@ class EmployeeController extends Controller
         }
         try {
         $user = User::create([
-        'name' => $data['Name'],
+        'name' => $data['name'],
         'phone' => $data['phone'],
         'password' => Hash::make($data['password']),
         ]);
@@ -85,8 +62,8 @@ class EmployeeController extends Controller
         }catch (\Exception $e) {
           return response()->json(new Message($e->getMessage(), '100', false, 'error', 'error', 'خطأ'));
       }
-    }*/
-    return response()->json(new Message($data, '200', isset($error)?false:true, 'info', "here status of every insertion", 'Arabictext'));
+    }
+    return response()->json(new Message($status, '200', isset($error)?false:true, 'info', "here status of every insertion", 'Arabictext'));
 }
 
 
