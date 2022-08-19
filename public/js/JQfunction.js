@@ -65,7 +65,7 @@ function subTable(){
  $.ajax({
   type: "POST",
   url: $("#addpranch").attr("action"),
-  data: "pTableData="+TableData+"token="+$("input[name=_token]").attr("value"),
+  data: "pTableData="+TableData+"&token="+$("input[name=_token]").attr("value"),
   success: function(msg){
       // return value stored in msg variable
   }
