@@ -13,6 +13,7 @@ use App\HelperClasses\Message;
 use App\Http\Controllers\MyFunction;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
 {
@@ -33,12 +34,14 @@ class EmployeeController extends Controller
       $data = json_decode($request->pTableData, true);
       $company = Cookie::get('company');
       $branches = Branch::query()->select('id')->where('company_id', $company)->get();
+      $role = Role::query()->select('name')->get();
       foreach($data as $data){
         $validated = Validator::make($data,
         ['name' => ['required', 'string', 'max:255'],
         'phone' => ['required', 'string', 'max:255', 'unique:users'],
         'password' => ['required', 'string', 'min:8', 'confirmed'],
         'branch_id' => ['required', 'integer', Rule::in(to_array($branches, "id"))],
+        'role' => ['required', 'string', Rule::in(to_array($role, "name"))],
         'moved_at' => ['date'],]);
          if ($validated->fails()) {
            $status[$i] = $validated->errors();
@@ -57,6 +60,7 @@ class EmployeeController extends Controller
         'branch_id' => $data['branch_id'],
         'moved_at' => $data['moved_at']
         ]);
+        $user->assignRole($data['role']);
         $status[$i] = 'done';
         $i++;
         }catch (\Exception $e) {

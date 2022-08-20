@@ -48,7 +48,7 @@
                             <div class="col-md-6">
                                 <select id="role"  class="form-control @error('role') is-invalid @enderror" name="role" value="{{ old('role') }}" required autocomplete="role">
                                   @foreach (DB::table('roles')->get() as $role)
-                                      <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                      <option value="{{ $role->name }}">{{ $role->name }}</option>
                                    @endforeach
                                 </select>
 
