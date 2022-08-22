@@ -3,15 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\Branch;
+use App\Models\Employee;
+use Illuminate\Validation\Rule;
+use App\HelperClasses\Message;
+use App\Http\Controllers\MyFunction;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
 {
-  private $rules = array(
-    'name' => ['required', 'string', 'max:255'],
-    'phone' => ['required', 'string', 'max:255', 'unique:users'],
-    'password' => ['required', 'string', 'min:8', 'confirmed'],
-  );
-
   public function __construct()
   {
       $this->middleware('auth');
@@ -22,21 +27,49 @@ class EmployeeController extends Controller
       return view('addemployees');
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
-      $validated = Validator::make($request->all(), $this->rules);
-    if ($validated->fails()) {
-        return response()->json(new Message($validated->errors(), '200', false, 'error', 'validation error', 'تحقق من المعلومات المدخلة'));
+      $i = 0;
+      $w =stripcslashes($request->pTableData);
+      $data = json_decode($request->pTableData, true);
+      $company = Cookie::get('company');
+      $branches = Branch::query()->select('id')->where('company_id', $company)->get();
+      $role = Role::query()->select('name')->get();
+      foreach($data as $data){
+        $validated = Validator::make($data,
+        ['name' => ['required', 'string', 'max:255'],
+        'phone' => ['required', 'string', 'max:255', 'unique:users'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+        'branch_id' => ['required', 'integer', Rule::in(to_array($branches, "id"))],
+        'role' => ['required', 'string', Rule::in(to_array($role, "name"))],
+        'moved_at' => ['date'],]);
+         if ($validated->fails()) {
+           $status[$i] = $validated->errors();
+           $i++;
+           $error = true;
+           continue;
+        }
+        try {
+        $user = User::create([
+        'name' => $data['name'],
+        'phone' => $data['phone'],
+        'password' => Hash::make($data['password']),
+        ]);
+        $employee = Employee::create([
+        'user_id' => $user->id,
+        'branch_id' => $data['branch_id'],
+        'moved_at' => $data['moved_at']
+        ]);
+        $user->assignRole($data['role']);
+        $status[$i] = 'done';
+        $i++;
+        }catch (\Exception $e) {
+          return response()->json(new Message($e->getMessage(), '100', false, 'error', 'error', 'خطأ'));
+      }
     }
-    try {
-        $region_data = array('name' => $request->name);
-        $region = Region::create($region_data);
-        $region->country()->create(array_diff($request->all(), $region_data));
-        return response()->json(new Message($region->country->load('region'), '200', true, 'info', "the country above inserted successfully", 'تم إدخال البيانات بنجاح'));
-    } catch (\Exception $e) {
-        return response()->json(new Message($e->getMessage(), '100', false, 'error', 'error', 'خطأ'));
-    }
-    }
+    return response()->json(new Message($status, '200', isset($error)?false:true, 'info', "here status of every insertion", 'Arabictext'));
+}
+
 
     /**
      * Store a newly created resource in storage.
@@ -44,7 +77,7 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function create(Request $request)
     {
         //
     }
