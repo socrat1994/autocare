@@ -19,23 +19,4 @@ class IntiController extends Controller
       Cookie::queue('locale', $locale, 1000000);
       return redirect()->back();
     }
-
-    public function inti()
-    {
-      if (!Cookie::has('company') or Cookie::get('company') === "") {
-         $user = Auth::user();
-         $company = $user->company()->get('id');
-         Cookie::queue('company', $company[0]->id, 1000000);
-        $cookie = Cookie::get('company');
-      }
-        return view('home');
-    }
-
-    public function del_cookie()
-    {
-      Cookie::queue('company', "", 1000000);
-      $cookie = Cookie::get('company');
-        return view('home');
-    }
-
 }

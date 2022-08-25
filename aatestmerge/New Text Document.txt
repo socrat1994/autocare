@@ -1,0 +1,9 @@
+$branch = Branch::find(58);
+$response = Gate::inspect('anychang', $branch);
+
+if ($response->allowed()) {
+  return "ok" ;// The action is authorized...
+} else {
+  return $response->message();
+}
+//return $response;// 
