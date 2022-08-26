@@ -23,23 +23,45 @@ function EditData(count) {
   $("#geolocation").val("");
 }
 
+
 function AddData() {
   var pranch_name = $("#name").val();
   var pranch_location = $("#location").val();
   var pranch_geolocation = $("#geolocation").val();
-
-  $(".tablbody").append('<tr><td id="id_' + count + '">' + count + '</td><td id="name_' + count + '">' + pranch_name + '</td><td id="location_' +
-   count + '">' + pranch_location +
-    '</td><td id="geolocation_' + count + '">' + pranch_geolocation +'</td><td><button type="button" class="delete btn btn-primary">Delete</button></td><td><button type="button" id="edit" onclick="BindData('+ count +');" class="btn btn-primary">Edit</button></td>');
-  cnt++;
-  count++;
-  $("#name").val("");
-  //$("#product_names").val("");
-  $("#location").val("");
-  $("#geolocation").val("");
- if (cnt > 0) {
-    $(".table").show();
-  }
+  //validarion
+  if(pranch_name == ""){
+    $("#nameReq").removeClass("dis-none");
+    $("#name").focus();
+  }else{
+          $("#nameReq").addClass("dis-none");
+          if(pranch_location == ""){
+            $("#locationReq").removeClass("dis-none");
+            $("#location").focus();
+          }else{
+                  $("#locationReq").addClass("dis-none");
+                  if(pranch_geolocation == ""){
+                    $("#geolocationReq").removeClass("dis-none");
+                    $("#giolocation").focus();
+                  }
+                  //end validation
+                  else
+                  {
+                    $("#geolocationReq").addClass("dis-none");
+                    $(".tablbody").append('<tr><td id="id_' + count + '">' + count + '</td><td id="name_' + count + '">' + pranch_name + '</td><td id="location_' +
+                    count + '">' + pranch_location +
+                    '</td><td id="geolocation_' + count + '">' + pranch_geolocation +'</td><td><button type="button" class="delete btn btn-primary">Delete</button></td><td><button type="button" id="edit" onclick="BindData('+ count +');" class="btn btn-primary">Edit</button></td>');
+                    cnt++;
+                    count++;
+                    $("#name").val("");
+                    //$("#product_names").val("");
+                    $("#location").val("");
+                    $("#geolocation").val("");
+                    if (cnt > 0) {
+                      $(".table").show();
+                    }
+                  } 
+                }
+        }
 }
 //for submit table data:
 function subTable(){
@@ -54,8 +76,8 @@ function subTable(){
           TableData[row]={
               "Number" : $(tr).find('td:eq(0)').text()
               , "Name" :$(tr).find('td:eq(1)').text()
-              , "Location" : $(tr).find('td:eq(2)').text()
-              , "GeoLocation" : $(tr).find('td:eq(3)').text()
+              , "location" : $(tr).find('td:eq(2)').text()
+              , "geoLocation" : $(tr).find('td:eq(3)').text()
           }
       });
       //console.log(TableData);

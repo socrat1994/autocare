@@ -15,32 +15,33 @@
                                 <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-
+                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}"  autocomplete="name" autofocus>
                                 </div>
                             </div>
-
+                            <div id="nameReq" class="row mb-3 text-center color-red dis-none">
+                                <p>This field is required</p>
+                            </div>
                             <div class="row mb-3">
                                 <label for="location" class="col-md-4 col-form-label text-md-end">{{ __('location') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="location" type="tel" class="form-control @error('location') is-invalid @enderror" name="location" value="{{ old('location') }}" required autocomplete="location">
-
-
+                                    <input id="location" type="tel" class="form-control @error('location') is-invalid @enderror" name="location" value="{{ old('location') }}"  autocomplete="location">
                                 </div>
+                            </div>
+                            <div id="locationReq" class="row mb-3 text-center color-red dis-none">
+                                <p>This field is required</p>
                             </div>
 
                             <div class="row mb-3">
                                 <label for="geolocation" class="col-md-4 col-form-label text-md-end">{{ __('gio location') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="geolocation" type="text" class="form-control @error('geolocation') is-invalid @enderror" name="geolocation" value="{{ old('geolocation') }}" required autocomplete="geolocation">
-
-
+                                    <input id="geolocation" type="text" class="form-control @error('geolocation') is-invalid @enderror" name="geolocation" value="{{ old('geolocation') }}"  autocomplete="geolocation">
                                 </div>
                             </div>
-
+                            <div id="geolocationReq" class="row mb-3 text-center color-red dis-none">
+                                <p>This field is required</p>
+                            </div>
 
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
