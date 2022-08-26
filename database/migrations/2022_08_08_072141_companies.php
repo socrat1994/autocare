@@ -12,6 +12,7 @@ return new class extends Migration
           $table->id();
           $table->string('name')->unique();
           $table->unsignedBigInteger('owner');
+          $table->boolen('active');
           $table->foreign('owner')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
       });
     }

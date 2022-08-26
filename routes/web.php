@@ -4,22 +4,28 @@ use Illuminate\Support\Facades\Route;
 use Kreait\Laravel\Firebase\Facades\Firebase;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\IntiController;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
+use App\Models\Branch;
 
-Route::get('/',function(){
-    return view('welcome');
+Route::get('/',function(Request $request){
+  return view('home');
 });
 
 
 Route::get('setlang/{locale}', [IntiController::Class, 'setlang'])->name('setlang');
-Route::get('deletecookie', [IntiController::Class, 'del_cookie'])->name('deletecookie');
-Route::get('/', [IntiController::Class, 'inti']);
-
 Auth::routes();
 
+Route::group(['middleware' => ['auth']], function() {
+  Route::resource('roles' , RoleController::class);
+  Route::resource('users','UserController');
+  Route::resource('products','ProductController');});
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::post('/branchdeledi', [BranchController::class, 'del_edi'])->name('branchdeledi');
+Route::get('/branchshow', [BranchController::class, 'show'])->name('branchshow');
 Route::resources(['employee' => EmployeeController::class,
 'branch' => BranchController::class,]);
