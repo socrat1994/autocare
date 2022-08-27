@@ -58,7 +58,7 @@ function AddData() {
                     if (cnt > 0) {
                       $(".table").show();
                     }
-                  } 
+                  }
                 }
         }
 }
@@ -74,9 +74,9 @@ function subTable(){
       $('.table tbody tr').each(function(row, tr){
           TableData[row]={
               "Number" : $(tr).find('td:eq(0)').text()
-              , "Name" :$(tr).find('td:eq(1)').text()
+              , "name" :$(tr).find('td:eq(1)').text()
               , "location" : $(tr).find('td:eq(2)').text()
-              , "geoLocation" : $(tr).find('td:eq(3)').text()
+              , "geolocation" : $(tr).find('td:eq(3)').text()
           }
       });
       //console.log(TableData);

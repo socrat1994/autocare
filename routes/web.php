@@ -9,10 +9,12 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\IntiController;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\MyFunction;
 use App\Models\Branch;
 
 Route::get('/',function(Request $request){
-  return view('home');
+ return view('home');
 });
 
 
