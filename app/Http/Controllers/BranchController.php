@@ -46,9 +46,9 @@ class BranchController extends Controller
     $branches = Branch::query()->select('name')->where('company_id', $company)->get();
     foreach($data as $data){
       $validated = Validator::make($data,
-      ['Name' => ['required', 'string', 'max:50', Rule::notIn(to_array($branches, "name")),],
-      'Location' => ['required', 'string', 'max:50'],
-      'GeoLocation' => ['required', 'string', 'max:50'],]);
+      ['name' => ['required', 'string', 'max:50', Rule::notIn(to_array($branches, "name")),],
+      'location' => ['required', 'string', 'max:50'],
+      'geolocation' => ['required', 'string', 'max:50'],]);
       if ($validated->fails()) {
         $status[$i] = $validated->errors();
         $i++;
@@ -57,9 +57,9 @@ class BranchController extends Controller
       }
       try {
         $branch = Branch::create([
-          'name' => $data['Name'],
-          'location' => $data['Location'],
-          'geolocation' => $data['GeoLocation'],
+          'name' => $data['name'],
+          'location' => $data['location'],
+          'geolocation' => $data['geolocation'],
           'company_id' => $company,
         ]);
         $status[$i] = 'done';
