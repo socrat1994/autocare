@@ -23,7 +23,6 @@ function EditData(count) {
   $("#geolocation").val("");
 }
 
-
 function AddData() {
   var pranch_name = $("#name").val();
   var pranch_location = $("#location").val();
@@ -92,6 +91,7 @@ function subTable(){
       // return value stored in msg variable
   }
 });
+
 }
 
 
