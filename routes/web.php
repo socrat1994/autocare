@@ -14,9 +14,7 @@ use App\Http\Controllers\MyFunction;
 use App\Models\Branch;
 
 Route::get('/',function(Request $request){
-  $roles_arr = Role::query()->select('name')->get();
-  $roles_arr = to_array($roles_arr, 'name');
-  return array_search('dmin', $roles_arr, true) !== false?'yes':'no';// view('home');
+ view('home');
 });
 
 
