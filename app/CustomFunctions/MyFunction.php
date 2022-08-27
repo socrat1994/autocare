@@ -4,10 +4,9 @@
       $i = 0;
       foreach($objects as $object)
       {
-        $branch_arr[$i] =  $object->$attribute;
+        $object_arr[$i] =  $object->$attribute;
         $i++;
       }
-      if(isset($branch_arr))
-        {return $branch_arr;}
-        
+      if(isset($object_arr))
+        {return $object_arr;}  
     }

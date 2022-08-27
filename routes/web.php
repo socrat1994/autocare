@@ -9,10 +9,14 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\IntiController;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\MyFunction;
 use App\Models\Branch;
 
 Route::get('/',function(Request $request){
-  return view('home');
+  $roles_arr = Role::query()->select('name')->get();
+  $roles_arr = to_array($roles_arr, 'name');
+  return array_search('dmin', $roles_arr, true) !== false?'yes':'no';// view('home');
 });
 
 

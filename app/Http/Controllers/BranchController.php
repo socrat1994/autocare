@@ -19,16 +19,12 @@ use Illuminate\Support\Facades\Session;
 
 class BranchController extends Controller
 {
-  private $rules = array(
-    'Name' => ['required', 'string', 'max:50',],
-    'Location' => ['required', 'string', 'max:50'],
-    'GeoLocation' => ['required', 'string', 'max:50'],
-  );
-
   public function __construct()
   {
     $this->middleware('auth');
     $this->middleware(['role:SuperAdmin|Owner|Admin|dataentry']);
+    $this->middleware(['permission:add-branch'])->only(['store', 'index']);
+    $this->middleware(['permission:edit-branch'])->only(['show', 'del_edi']);
   }
 
   public function index()
