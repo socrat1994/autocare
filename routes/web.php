@@ -14,7 +14,7 @@ use App\Http\Controllers\MyFunction;
 use App\Models\Branch;
 
 Route::get('/',function(Request $request){
- view('home');
+ return view('home');
 });
 
 
