@@ -22,9 +22,8 @@ class BranchController extends Controller
   public function __construct()
   {
     $this->middleware('auth');
-    $this->middleware(['role:SuperAdmin|Owner|Admin|dataentry']);
-    $this->middleware(['permission:add-branch'])->only(['store', 'index']);
-    $this->middleware(['permission:edit-branch'])->only(['show', 'del_edi']);
+    $this->middleware(['role_or_permission:SuperAdmin|Owner|Admin|dataentry|add-branch'])->only(['store', 'index']);
+    $this->middleware(['role_or_permission:SuperAdmin|Owner|Admin|dataentry|edit-branch'])->only(['show', 'del_edi']);
   }
 
   public function index()
