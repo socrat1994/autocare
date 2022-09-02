@@ -10,11 +10,17 @@ use App\Http\Controllers\IntiController;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use App\Http\Controllers\MyFunction;
+use App\HelperClasses\ToArray;
+use App\Http\Controllers\Auth\AdminLogController;
 use App\Models\Branch;
+use App\Models\Employee;
+use App\Models\User;
 
-Route::get('/',function(Request $request){
- return view('home');
+
+
+
+Route::get('/',function(){
+return view('home');
 });
 
 
@@ -26,6 +32,9 @@ Route::group(['middleware' => ['auth']], function() {
   Route::resource('users','UserController');
   Route::resource('products','ProductController');});
 
+Route::get('/admin/panel', [AdminLogController::class, 'showadmin'])->name('adminpanel');
+Route::get('/admin/login', [AdminLogController::class, 'showAdminLoginForm']);
+Route::post('/admin/login', [AdminLogController::class, 'login'])->name('adminlogin');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('/branchdeledi', [BranchController::class, 'del_edi'])->name('branchdeledi');
 Route::get('/branchshow', [BranchController::class, 'show'])->name('branchshow');

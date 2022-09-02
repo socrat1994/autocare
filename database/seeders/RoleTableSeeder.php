@@ -5,11 +5,13 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use App\Http\Controllers\MyFunction;
+use App\HelperClasses\ToArray;
 class RoleTableSeeder extends Seeder{
   /*** Run the database seeds.** @return void*/
 
   public function run(){
+    $i=0;
+
     $roles = [
       'SuperAdmin',
       'Owner',
@@ -21,27 +23,50 @@ class RoleTableSeeder extends Seeder{
       ];
 
       $permissions = [
-        'add-branch',
-        'edit-branch',
+        'add-branch',//0
+        'edit-branch',//1
+        'add-employee',//2
+        'edit-employee',//3
         ];
+
+      $roles_perms = [
+        [0,1,2,3],//superadmin
+        [1,1],//owner
+        [1,1],//admin
+        [1,1],//dataentry
+        [1,1],//inspector
+        [1,1],//acountent
+        [1,1]//driver
+      ];
       $roles_arr = Role::query()->select('name')->get();
       $roles_arr = to_array($roles_arr, 'name');
       $permissions_arr = Permission::query()->select('name')->get();
       $permissions_arr = to_array($permissions_arr, 'name');
-      foreach ($roles as $role) {
-        if(array_search($role, $roles_arr, true) !== false)
+      foreach ($permissions as $permission) {
+        if(array_search($permission, $permissions_arr?$permissions_arr:['<>'], true) !== false)
         {
           continue;
         }
-        Role::create(['name' => $role]);
+        $permission = Permission::create(['name' => $permission]);
       }
 
-      foreach ($permissions as $permission) {
-        if(array_search($permission, $permissions_arr, true) !== false)
+      foreach ($roles as $role) {
+        if(array_search($role, $roles_arr?$roles_arr:['<>'], true) !== false)
         {
+          $role = Role::findByName($role);
+          foreach($roles_perms[$i] as $roles_perm)
+          {
+            $role->givePermissionTo($permissions[$roles_perm]);
+          }
+          $i++;
           continue;
         }
-        Permission::create(['name' => $permission]);
+        $role = Role::create(['name' => $role]);
+        foreach($roles_perms[$i] as $roles_perm)
+        {
+          $role->givePermissionTo($permissions[$roles_perm]);
+          $i++;
+        }
       }
     }
   }

@@ -11,7 +11,7 @@ use App\Models\Company;
 use App\Models\Branch;
 use Illuminate\Validation\Rule;
 use App\HelperClasses\Message;
-use App\Http\Controllers\MyFunction;
+use App\HelperClasses\ToArray;
 use app\Policies\AnyChangingPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
@@ -22,8 +22,8 @@ class BranchController extends Controller
   public function __construct()
   {
     $this->middleware('auth');
-    $this->middleware(['role_or_permission:SuperAdmin|Owner|Admin|dataentry|add-branch'])->only(['store', 'index']);
-    $this->middleware(['role_or_permission:SuperAdmin|Owner|Admin|dataentry|edit-branch'])->only(['show', 'del_edi']);
+    $this->middleware(['role_or_permission:SuperAdmin|Owner|Admin|DataEntry|add-branch'])->only(['store', 'index']);
+    $this->middleware(['role_or_permission:SuperAdmin|Owner|Admin|DataEntry|edit-branch'])->only(['show', 'del_edi']);
   }
 
   public function index()
@@ -41,10 +41,10 @@ class BranchController extends Controller
   public function store(Request $request)
   {
     $i = 0;
-    $data = json_decode($request->pTableData, true);
+    $datas = json_decode($request->pTableData, true);
     $company = $request->session()->pull('company');
     $branches = Branch::query()->select('name')->where('company_id', $company)->get();
-    foreach($data as $data){
+    foreach($datas as $data){
       $validated = Validator::make($data,
       ['name' => ['required', 'string', 'max:50', Rule::notIn(to_array($branches, "name")),],
       'location' => ['required', 'string', 'max:50'],
@@ -56,12 +56,8 @@ class BranchController extends Controller
         continue;
       }
       try {
-        $branch = Branch::create([
-          'name' => $data['name'],
-          'location' => $data['location'],
-          'geolocation' => $data['geolocation'],
-          'company_id' => $company,
-        ]);
+        $data_arr =array_merge($data,['company_id' => $company]);
+        $branch = Branch::create($data_arr);
         $status[$i] = 'done';
         $i++;
       }catch (\Exception $e) {
