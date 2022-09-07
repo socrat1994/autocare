@@ -22,22 +22,26 @@ class Intilization
     {
       $user = Auth::user();
       if ($user) {
-        $user=User::find($user->id);
+        $user = User::find($user->id);
         $employee = $user->transfers->last();
         if($employee)
         {
           $branch = $employee->branch_id;
           $request->session()->put('branch', $branch);
           $company = Branch::query()->select('company_id')->where('id', $branch)->get();
-          $request->session()->put('company', $company);
+          $active = Company::query()->select('active')->where('id', $company[0]->company_id)->get();
+          $request->session()->put('company', $company[0]->company_id);
+          $request->session()->put('active', $active[0]->active);
           $request->session()->put('role', to_array($user->roles, 'name'));
           $request->session()->put('permission', to_array($user->permissions, 'name'));
           $request->session()->save();
         }
         else
         {
-          $company = $user->company()->get('id');
-          $request->session()->put('company', $company[0]->id);
+          $user = User::find($user->id);
+          $company = $user->company()->first();
+          $request->session()->put('active', $company->active);
+          $request->session()->put('company', $company->id);
           $request->session()->put('role', to_array($user->roles, 'name'));
           $request->session()->put('permission', to_array($user->permissions, 'name'));
           $request->session()->save();

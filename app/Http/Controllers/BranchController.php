@@ -21,7 +21,6 @@ class BranchController extends Controller
 {
   public function __construct()
   {
-    $this->middleware('auth');
     $this->middleware(['role_or_permission:SuperAdmin|Owner|Admin|DataEntry|add-branch'])->only(['store', 'index']);
     $this->middleware(['role_or_permission:SuperAdmin|Owner|Admin|DataEntry|edit-branch'])->only(['show', 'del_edi']);
   }
@@ -45,10 +44,15 @@ class BranchController extends Controller
     $company = $request->session()->pull('company');
     $branches = Branch::query()->select('name')->where('company_id', $company)->get();
     foreach($datas as $data){
+      $data['geolocation'] = explode(",", $data['geolocation']);
+      $data['latitude'] = $data['geolocation'][0];
+      $data['longitude'] = $data['geolocation'][1];
       $validated = Validator::make($data,
       ['name' => ['required', 'string', 'max:50', Rule::notIn(to_array($branches, "name")),],
       'location' => ['required', 'string', 'max:50'],
-      'geolocation' => ['required', 'string', 'max:50'],]);
+      'latitude' => [ 'numeric', 'between:-90,90'],
+      'longitude' => [ 'numeric', 'between:-180,180'],
+    ]);
       if ($validated->fails()) {
         $status[$i] = $validated->errors();
         $i++;
@@ -74,12 +78,16 @@ class BranchController extends Controller
     $company = $request->session()->pull('company');
     $branches = Branch::query()->select('name')->where('company_id', $company)->get();
     foreach($data as $data){
+      $data['geolocation'] = explode(",", $data['geolocation']);
+      $data['latitude'] = $data['geolocation'][0];
+      $data['longitude'] = $data['geolocation'][1];
       if(count($data) > 1)
       {
         $validated = Validator::make($data,
         ['name' => ['string', 'max:50',Rule::notIn(to_array($branches, "name")) ],
         'location' => ['string', 'max:50'],
-        'geolocation' => ['string', 'max:50'],]);
+        'latitude' => [ 'numeric', 'between:-90,90'],
+        'longitude' => [ 'numeric', 'between:-180,180']]);
         if ($validated->fails()) {
           $status[$i] = $validated->errors();
           $i++;

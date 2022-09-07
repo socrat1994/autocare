@@ -15,17 +15,17 @@ use App\Http\Controllers\Auth\AdminLogController;
 use App\Models\Branch;
 use App\Models\Employee;
 use App\Models\User;
-
-
-
+use App\Models\Company;
 
 Route::get('/',function(){
-return view('home');
+
+return  Branch::factory()->count(1)->create();//view('home');
 });
 
-
-Route::get('setlang/{locale}', [IntiController::Class, 'setlang'])->name('setlang');
 Auth::routes();
+Route::group(['middleware' => ['isactive' , 'auth']], function() {
+Route::get('setlang/{locale}', [IntiController::Class, 'setlang'])->name('setlang');
+
 
 Route::group(['middleware' => ['auth']], function() {
   Route::resource('roles' , RoleController::class);
@@ -40,3 +40,4 @@ Route::post('/branchdeledi', [BranchController::class, 'del_edi'])->name('branch
 Route::get('/branchshow', [BranchController::class, 'show'])->name('branchshow');
 Route::resources(['employee' => EmployeeController::class,
 'branch' => BranchController::class,]);
+});

@@ -18,7 +18,8 @@ class Branch extends Authenticatable
     protected $fillable = [
         'name',
         'location',
-        'geolocation',
+        'latitude',
+        'longitude',
         'company_id',
     ];
 

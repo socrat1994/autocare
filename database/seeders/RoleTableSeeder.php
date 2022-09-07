@@ -65,8 +65,8 @@ class RoleTableSeeder extends Seeder{
         foreach($roles_perms[$i] as $roles_perm)
         {
           $role->givePermissionTo($permissions[$roles_perm]);
-          $i++;
         }
+        $i++;
       }
     }
   }

@@ -20,7 +20,6 @@ class EmployeeController extends Controller
 {
   public function __construct()
   {
-    $this->middleware('auth');
     $this->middleware(['role_or_permission:SuperAdmin|Owner|Admin|DataEntry|add-employee'])->only(['store', 'index']);
     $this->middleware(['role_or_permission:SuperAdmin|Owner|Admin|DataEntry|edit-employee'])->only(['show', 'del_edi']);
   }
@@ -38,7 +37,7 @@ class EmployeeController extends Controller
     $userrole = $request->session()->pull('role');
     $branches = Branch::query()->select('id')->where('company_id', $company)->get();
     $role = Role::query()->select('name')->get();
-    
+
     foreach($data as $data){
       $data['role'] = explode(",", $data['role']);
       $validated = Validator::make($data,
@@ -98,13 +97,6 @@ class EmployeeController extends Controller
     //
   }
 
-  /**
-  * Update the specified resource in storage.
-  *
-  * @param  \Illuminate\Http\Request  $request
-  * @param  int  $id
-  * @return \Illuminate\Http\Response
-  */
   public function update(Request $request, $id)
   {
     //

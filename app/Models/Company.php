@@ -17,6 +17,7 @@ class Company extends Authenticatable
 
     protected $fillable = [
         'name',
+        'active'
     ];
 
     public function user()

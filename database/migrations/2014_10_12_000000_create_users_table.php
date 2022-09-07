@@ -13,11 +13,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone')->unique();
             $table->string('password');
+            $table->date('phone_verified_at')->nullable(true);
             $table->rememberToken();
             $table->timestamps();
         });
     }
-    
+
     public function down()
     {
         Schema::dropIfExists('users');
