@@ -12,7 +12,8 @@ return new class extends Migration
         $table->id();
         $table->string('name');
         $table->string('location');
-        $table->string('geolocation');
+        $table->decimal('latitude',$precision = 11, $scale = 8);
+        $table->decimal('longitude',$precision = 11, $scale = 8);
         $table->unsignedBigInteger('company_id');
         $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade')->onUpdate('cascade');
     });

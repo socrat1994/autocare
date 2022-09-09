@@ -10,26 +10,44 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Company;
 use App\Models\User;
+use App\Models\Branch;
+use App\HelperClasses\ToArray;
 
 class Intilization
 {
-    /**
-    * Handle an incoming request.
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @param  \Closure  $next
-    * @return mixed
-    */
-    public function handle(Request $request, Closure $next)
+
+  public function handle(Request $request, Closure $next)
+  {
+    if(!Session::has('company'))
     {
-      if(!Session::has('company'))
-      {
-        $user = Auth::user();
-        if ($user) {
-          $company = $user->company()->get('id');
-          $request->session()->put('company', $company[0]->id);
+      $user = Auth::user();
+      if ($user) {
+        $user = User::find($user->id);
+        $employee = $user->transfers->last();
+        if($employee)
+        {
+          $branch = $employee->branch_id;
+          $request->session()->put('branch', $branch);
+          $company = Branch::query()->select('company_id')->where('id', $branch)->get();
+          $active = Company::query()->select('active')->where('id', $company[0]->company_id)->get();
+          $request->session()->put('company', $company[0]->company_id);
+          $request->session()->put('active', $active[0]->active);
+          $request->session()->put('role', to_array($user->roles, 'name'));
+          $request->session()->put('permission', to_array($user->permissions, 'name'));
+          $request->session()->save();
+        }
+        else
+        {
+          $user = User::find($user->id);
+          $company = $user->company()->first();
+          $request->session()->put('active', $company->active);
+          $request->session()->put('company', $company->id);
+          $request->session()->put('role', to_array($user->roles, 'name'));
+          $request->session()->put('permission', to_array($user->permissions, 'name'));
+          $request->session()->save();
         }
       }
-        return $next($request);
     }
+    return $next($request);
+  }
 }

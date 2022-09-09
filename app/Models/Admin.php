@@ -9,24 +9,18 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class Company extends Authenticatable
+class Admin extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
-    public $timestamps = false;
-
     protected $fillable = [
         'name',
-        'active'
+        'phone',
+        'password',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'owner', 'id');
-    }
-
-    public function branch()
-       {
-           return $this->hasMany(Branch::class, 'company_id', 'id');
-       }
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 }
