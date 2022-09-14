@@ -28,3 +28,8 @@ public function redirectTo(){
 }
 
  array_keys(config('auth.guards')) ;//
+
+ $user = User::factory()->has(Company::factory()->count(1)->has(Branch::factory()->count(1)->has(Employee::factory()->count(1))))
+             ->create();
+
+ return $user ;

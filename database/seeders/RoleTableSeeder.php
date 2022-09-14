@@ -11,7 +11,7 @@ class RoleTableSeeder extends Seeder{
 
   public function run(){
     $i=0;
-
+    $arr = new ToArray();
     $roles = [
       'SuperAdmin',
       'Owner',
@@ -39,9 +39,9 @@ class RoleTableSeeder extends Seeder{
         [1,1]//driver
       ];
       $roles_arr = Role::query()->select('name')->get();
-      $roles_arr = to_array($roles_arr, 'name');
+      $roles_arr = $arr->to_array($roles_arr, 'name');
       $permissions_arr = Permission::query()->select('name')->get();
-      $permissions_arr = to_array($permissions_arr, 'name');
+      $permissions_arr = $arr->to_array($permissions_arr, 'name');
       foreach ($permissions as $permission) {
         if(array_search($permission, $permissions_arr?$permissions_arr:['<>'], true) !== false)
         {

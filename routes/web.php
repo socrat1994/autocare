@@ -16,10 +16,10 @@ use App\Models\Branch;
 use App\Models\Employee;
 use App\Models\User;
 use App\Models\Company;
+use Illuminate\Support\Facades\DB;
 
 Route::get('/',function(){
-
-return  Branch::factory()->count(1)->create();//view('home');
+  return view('home');
 });
 
 Auth::routes();
@@ -37,6 +37,7 @@ Route::get('/admin/login', [AdminLogController::class, 'showAdminLoginForm']);
 Route::post('/admin/login', [AdminLogController::class, 'login'])->name('adminlogin');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('/branchdeledi', [BranchController::class, 'del_edi'])->name('branchdeledi');
+Route::post('/employeedeledi', [EmployeeController::class, 'del_edi'])->name('employeedeledi');
 Route::get('/branchshow', [BranchController::class, 'show'])->name('branchshow');
 Route::resources(['employee' => EmployeeController::class,
 'branch' => BranchController::class,]);
