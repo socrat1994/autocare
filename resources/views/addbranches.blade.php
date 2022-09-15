@@ -15,6 +15,10 @@
                     <div class="card-body">
                         <form id="addpranch" method="POST" action="{{url('/branch')}}">
                             @csrf
+                            <!--for urls from server -->
+                            <p id="delediurl" class="dis-none">{{url('/branchdeledi')}}</p>
+
+                            <p id="brshowurl" class="dis-none">{{url('/branchshow')}}</p>
 
                             <div class="row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>

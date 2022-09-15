@@ -32,7 +32,7 @@ class BranchController extends Controller
 
   public function show(){
     $company = session('company');
-    $branches = Branch::query()->select(['id', 'name', 'location', 'geolocation'])->where('company_id', $company)->get();
+    $branches = Branch::query()->select('*')->where('company_id', $company)->get();
     return response()->json(new Message($branches, '200', isset($error)?false:true, 'info', 'all branches of company', 'كل فروع الشركة'));
 
   }

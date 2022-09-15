@@ -93,7 +93,7 @@ function subTable(){
     updateDelet = $.toJSON(updateDelet);
     $.ajax({
       type: "POST",
-      url: $("#addpranch").attr("action"),
+      url: $("#delediurl").html(),
       data: "pTableData="+TableData+"&_token="+$("input[name=_token]").attr("value"),
       success: function(msg){
           // return value stored in msg variable
@@ -121,7 +121,7 @@ function subTable(){
               "Number" : $(tr).find('td:eq(0)').text()
               , "name" :$(tr).find('td:eq(1)').text()
               , "location" : $(tr).find('td:eq(2)').text()
-              , "geoLocation" : $(tr).find('td:eq(3)').text()
+              , "geolocation" : $(tr).find('td:eq(3)').text()
           }
       });
       console.log(TableData);
@@ -147,9 +147,11 @@ $(".table").hide();
 }
 //--------------getBranchData(show branches)------------------
 function getBranchData(){
+  
+  console.log( '' );
 if(cnt==0){
   $.ajax({
-    url: "../data.json",
+    url: $("#brshowurl").html(),
     type: "get",
     //type: "post"
     dataType: "json",
