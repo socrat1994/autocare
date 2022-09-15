@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="dis-none">
+        <p id="up">{{ __('Update') }}</p>
+        <p id="ad">{{ __('add') }}</p>
+        <p></p>
+    </div>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -15,7 +20,7 @@
                                 <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}"  autocomplete="name" autofocus>
+                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" onchange="Change('name')" autocomplete="name" autofocus>
                                 </div>
                             </div>
                             <div id="nameReq" class="row mb-3 text-center color-red dis-none">
@@ -25,7 +30,7 @@
                                 <label for="location" class="col-md-4 col-form-label text-md-end">{{ __('location') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="location" type="tel" class="form-control @error('location') is-invalid @enderror" name="location" value="{{ old('location') }}"  autocomplete="location">
+                                    <input id="location" type="tel" class="form-control @error('location') is-invalid @enderror" name="location" value="{{ old('location') }}" onchange="Change('location')" autocomplete="location">
                                 </div>
                             </div>
                             <div id="locationReq" class="row mb-3 text-center color-red dis-none">
@@ -36,7 +41,7 @@
                                 <label for="geolocation" class="col-md-4 col-form-label text-md-end">{{ __('gio location') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="geolocation" type="text" class="form-control @error('geolocation') is-invalid @enderror" name="geolocation" value="{{ old('geolocation') }}"  autocomplete="geolocation">
+                                    <input id="geolocation" type="text" class="invalid form-control @error('geolocation') is-invalid @enderror" name="geolocation" value="{{ old('geolocation') }}" onchange="Change('geolocation')" pattern="" autocomplete="geolocation">
                                 </div>
                             </div>
                             <div id="geolocationReq" class="row mb-3 text-center color-red dis-none">
@@ -50,6 +55,9 @@
                                     </button>
                                     <button type="button" id="add" class="btn btn-primary" onclick="AddData()">
                                         {{ __('add')}}
+                                    </button>
+                                     <button type="button" id="add" class="btn btn-primary color-white bg-green" onclick="getBranchData()">
+                                        {{ __('Show Branchs')}}
                                     </button>
                                 </div>
                             </div>
