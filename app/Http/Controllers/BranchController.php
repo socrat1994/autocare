@@ -32,7 +32,7 @@ class BranchController extends Controller
 
   public function show(){
     $company = session('company');
-    $branches = Branch::query()->select(['id', 'name', 'location', 'geolocation'])->where('company_id', $company)->get();
+    $branches = Branch::query()->select('*')->where('company_id', $company)->get();
     return response()->json(new Message($branches, '200', isset($error)?false:true, 'info', 'all branches of company', 'كل فروع الشركة'));
 
   }
@@ -49,7 +49,7 @@ class BranchController extends Controller
       $data['latitude'] = $data['geolocation'][0];
       $data['longitude'] = $data['geolocation'][1];
       $validated = Validator::make($data,
-      ['id' => ['required','integer'],
+      [
       'name' => ['required', 'string', 'max:50', Rule::notIn($branches),],
       'location' => ['required', 'string', 'max:50'],
       'latitude' => [ 'numeric', 'between:-90,90'],
@@ -87,7 +87,8 @@ class BranchController extends Controller
       if(count($data) > 1)
       {
         $validated = Validator::make($data,
-        ['name' => ['string', 'max:50',Rule::notIn($branches) ],
+        ['id' => ['required','integer'],
+          'name' => ['string', 'max:50',Rule::notIn($branches) ],
         'location' => ['string', 'max:50'],
         'latitude' => [ 'numeric', 'between:-90,90'],
         'longitude' => [ 'numeric', 'between:-180,180']]);
