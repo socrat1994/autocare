@@ -5,12 +5,11 @@ namespace App\Policies;
 use App\Models\User;
 use App\Models\Branch;
 use App\Models\Employee;
-use App\Models\Company;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Cookie;
 
-class AnyChangingPolicy
+class YourEmployeesPolicy
 {
     use HandlesAuthorization;
 
@@ -19,10 +18,10 @@ class AnyChangingPolicy
         //
     }
 
-    public function branches(User $user, Branch $branch)
+    public function your_employees(User $user, Employee $employee)
     {
        $company = session('company');
-        return $branch->company_id == $company?
+        return $employee->branch->company_id == $company?
          Response::allow()
         : Response::deny('these data do not belonge to you.');
     }

@@ -22,7 +22,7 @@ class BranchController extends Controller
   public function __construct()
   {
     $this->middleware(['role_or_permission:SuperAdmin|Owner|Admin|DataEntry|add-branch'])->only(['store', 'index']);
-    $this->middleware(['role_or_permission:SuperAdmin|Owner|Admin|DataEntry|edit-branch'])->only(['show', 'del_edi']);
+    $this->middleware(['role_or_permission:SuperAdmin|Owner|Admin|edit-branch'])->only(['show', 'del_edi']);
   }
 
   public function index()
@@ -31,7 +31,7 @@ class BranchController extends Controller
   }
 
   public function show(){
-    $company = $request->session()->pull('company');
+    $company = session('company');
     $branches = Branch::query()->select(['id', 'name', 'location', 'geolocation'])->where('company_id', $company)->get();
     return response()->json(new Message($branches, '200', isset($error)?false:true, 'info', 'all branches of company', 'كل فروع الشركة'));
 
@@ -40,15 +40,17 @@ class BranchController extends Controller
   public function store(Request $request)
   {
     $i = 0;
+    $arr = new ToArray();
     $datas = json_decode($request->pTableData, true);
-    $company = $request->session()->pull('company');
-    $branches = Branch::query()->select('name')->where('company_id', $company)->get();
+    $company = session('company');
+    $branches = $arr->to_array(Branch::query()->select('name')->where('company_id', $company)->get(), "name");
     foreach($datas as $data){
       $data['geolocation'] = explode(",", $data['geolocation']);
       $data['latitude'] = $data['geolocation'][0];
       $data['longitude'] = $data['geolocation'][1];
       $validated = Validator::make($data,
-      ['name' => ['required', 'string', 'max:50', Rule::notIn(to_array($branches, "name")),],
+      ['id' => ['required','integer'],
+      'name' => ['required', 'string', 'max:50', Rule::notIn($branches),],
       'location' => ['required', 'string', 'max:50'],
       'latitude' => [ 'numeric', 'between:-90,90'],
       'longitude' => [ 'numeric', 'between:-180,180'],
@@ -62,7 +64,7 @@ class BranchController extends Controller
       try {
         $data_arr =array_merge($data,['company_id' => $company]);
         $branch = Branch::create($data_arr);
-        $status[$i] = 'done';
+        $status[$i] = $branch;
         $i++;
       }catch (\Exception $e) {
         return response()->json(new Message($e->getMessage(), '100', false, 'error', 'error', 'خطأ'));
@@ -74,9 +76,10 @@ class BranchController extends Controller
   public function del_edi(Request $request)
   {
     $i = 0;
+    $arr = new ToArray();
     $data = json_decode($request->pTableData, true);
-    $company = $request->session()->pull('company');
-    $branches = Branch::query()->select('name')->where('company_id', $company)->get();
+    $company = session('company');
+    $branches = $arr->to_array(Branch::query()->select('name')->where('company_id', $company)->get(), "name");
     foreach($data as $data){
       $data['geolocation'] = explode(",", $data['geolocation']);
       $data['latitude'] = $data['geolocation'][0];
@@ -84,7 +87,7 @@ class BranchController extends Controller
       if(count($data) > 1)
       {
         $validated = Validator::make($data,
-        ['name' => ['string', 'max:50',Rule::notIn(to_array($branches, "name")) ],
+        ['name' => ['string', 'max:50',Rule::notIn($branches) ],
         'location' => ['string', 'max:50'],
         'latitude' => [ 'numeric', 'between:-90,90'],
         'longitude' => [ 'numeric', 'between:-180,180']]);
@@ -98,7 +101,7 @@ class BranchController extends Controller
       try {
         $branch = Branch::find($data['id']);
         if($branch){
-          $response = Gate::inspect('anychang', $branch);
+          $response = Gate::inspect('branches', $branch);
           if($response->allowed())
           {
             if(count($data) > 1)

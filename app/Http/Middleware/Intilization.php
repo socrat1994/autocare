@@ -20,6 +20,7 @@ class Intilization
   {
     if(!Session::has('company'))
     {
+      $arr = new ToArray();
       $user = Auth::user();
       if ($user) {
         $user = User::find($user->id);
@@ -32,8 +33,8 @@ class Intilization
           $active = Company::query()->select('active')->where('id', $company[0]->company_id)->get();
           $request->session()->put('company', $company[0]->company_id);
           $request->session()->put('active', $active[0]->active);
-          $request->session()->put('role', to_array($user->roles, 'name'));
-          $request->session()->put('permission', to_array($user->permissions, 'name'));
+          $request->session()->put('role', $user->roles);
+          $request->session()->put('permission', $arr->to_array($user->getAllPermissions(), 'name'));
           $request->session()->save();
         }
         else
@@ -42,8 +43,8 @@ class Intilization
           $company = $user->company()->first();
           $request->session()->put('active', $company->active);
           $request->session()->put('company', $company->id);
-          $request->session()->put('role', to_array($user->roles, 'name'));
-          $request->session()->put('permission', to_array($user->permissions, 'name'));
+          $request->session()->put('role', $user->roles);
+          $request->session()->put('permission', $arr->to_array($user->getAllPermissions(), 'name'));
           $request->session()->save();
         }
       }

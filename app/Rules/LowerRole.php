@@ -14,13 +14,20 @@ class LowerRole implements Rule
 
     public function __construct()
     {
-      $this->userrole = Auth::user()->roles->first()->id;
+      $this->userrole = session('role');
     }
 
     public function passes($attribute, $value)
     {
-        $role = Role::findByName($value);
-        return $this->userrole <= $role->id;
+      $role = Role::findByName($value);
+      foreach($this->userrole as $userrole)
+      {
+        if($userrole->id <= $role->id)
+        {
+          return true;
+        }
+      }
+        return false;
     }
 
     public function message()
