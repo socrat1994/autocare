@@ -93,7 +93,7 @@ function subTable(){
     updateDelet = $.toJSON(updateDelet);
     $.ajax({
       type: "POST",
-      url: $("#delediurl").html(),
+      url: $("#delEdiUrl").html(),
       data: "pTableData="+TableData+"&_token="+$("input[name=_token]").attr("value"),
       success: function(msg){
           // return value stored in msg variable
@@ -106,6 +106,8 @@ function subTable(){
       cnt=0;
     });
     $(".table").hide();
+    $("#add").prop('disabled',false);
+    isShowData = false;
     //clear flages
   }
   else{
@@ -147,11 +149,9 @@ $(".table").hide();
 }
 //--------------getBranchData(show branches)------------------
 function getBranchData(){
-  
-  console.log( '' );
 if(cnt==0){
   $.ajax({
-    url: $("#brshowurl").html(),
+    url: $("#brShowUrl").html(),
     type: "get",
     //type: "post"
     dataType: "json",
@@ -159,10 +159,14 @@ if(cnt==0){
     success: function(data){
         console.log(data);
         count = 0;
-        data.forEach(element => {
-          $(".tablbody").append('<tr><td id="id_' + count + '">' + element.Number + '</td><td id="name_' + count + '">' + element.Name + '</td><td id="location_' +
+        geolocation = 0;
+        console.log();
+        data.data.forEach(element => {
+          geolocation = element.latitude +","+ element.longitude;
+          console.log(geolocation);
+          $(".tablbody").append('<tr><td id="id_' + count + '">' + element.id + '</td><td id="name_' + count + '">' + element.name + '</td><td id="location_' +
           count + '">' + element.location +
-          '</td><td id="geolocation_' + count + '">' +element.geoLocation +'</td><td><button type="button" class="delete btn btn-primary">Delete</button></td><td><button type="button" id="edit" onclick="BindData('+ count +');" class="btn btn-primary">Edit</button></td>');
+          '</td><td id="geolocation_' + count + '">' + geolocation +'</td><td><button type="button" class="delete btn btn-primary">Delete</button></td><td><button type="button" id="edit" onclick="BindData('+ count +');" class="btn btn-primary">Edit</button></td>');
           cnt++;
           count++;
         });

@@ -16,9 +16,9 @@
                         <form id="addpranch" method="POST" action="{{url('/branch')}}">
                             @csrf
                             <!--for urls from server -->
-                            <p id="delediurl" class="dis-none">{{url('/branchdeledi')}}</p>
+                            <p id="delEdiUrl" class="dis-none">{{url('/branchdeledi')}}</p>
 
-                            <p id="brshowurl" class="dis-none">{{url('/branchshow')}}</p>
+                            <p id="brShowUrl" class="dis-none">{{url('/branchshow')}}</p>
 
                             <div class="row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
@@ -42,7 +42,7 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="geolocation" class="col-md-4 col-form-label text-md-end">{{ __('gio location') }}</label>
+                                <label for="geolocation" class="col-md-4 col-form-label text-md-end">{{ __('geo location') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="geolocation" type="text" class="invalid form-control @error('geolocation') is-invalid @enderror" name="geolocation" value="{{ old('geolocation') }}" onchange="Change('geolocation')" pattern="" autocomplete="geolocation">
