@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         'gas',
         'Electric',
       ];
-      $auto_models = array(
+      $models = array(
         'Abarth' => array(
             'Fiat 595'
         ),
@@ -308,7 +308,8 @@ class DatabaseSeeder extends Seeder
             'XG', 'H 200 пасс.', 'Grandeur', 'Prest', 'Avante', 'Azera', 'i10', 'i20', 'i30', 'County', 'Tiburon',
             'Genesis', 'Elantra', 'ix55 (Veracruz)', 'IX35', 'Starex', 'H1 груз.', 'H 100 груз.', 'H 200 груз.',
             'Marcia', 'Excel', 'GLS', 'GX', 'Solaris', 'Getz', 'Veloster', 'Equus', 'H 300 груз.', 'i40',
-            'Grand Starex', 'Grand Santa Fe', 'H 300 пасс.', 'H 150 пасс.', 'IX20', 'Creta', 'Ioniq', 'HLF', 'Kona'
+            'Grand Starex', 'Grand Santa Fe', 'H 300 пасс.', 'H 150 пасс.', 'IX20', 'Creta', 'Ioniq', 'HLF', 'Kona', 'h100',
+            'HD72', 'HD65'
         ),
         'Infiniti' => array(
             'FX', 'I', 'J', 'M30', 'M45', 'Q45', 'QX4', 'QX', 'G', 'M', 'EX', 'G25', 'Q', 'M25', 'M37', 'G35', 'G37',
@@ -797,7 +798,7 @@ class DatabaseSeeder extends Seeder
         )
     );
 
-      foreach($auto_models as $factory => $models)
+      foreach($models as $factory => $models)
       {
         $exist = DB::table('manufactuerers')->where('name','=', $factory)->get();
         if($exist->isEmpty())
@@ -807,20 +808,20 @@ class DatabaseSeeder extends Seeder
         $manufactuerer_id = DB::table('manufactuerers')->select('id')->where('name','=', $factory)->get()[0]->id;
         foreach($models as $model)
         {
-          $exist = DB::table('auto_models')->where('name','=', $model)->get();
+          $exist = DB::table('models')->where('name','=', $model)->get();
           if($exist->isEmpty())
           {
-            DB::table('auto_models')->insert(['name' => $model , 'url' => 'JH', 'manufactuerer_id' => $manufactuerer_id]);
+            DB::table('models')->insert(['name' => $model , 'url' => 'JH', 'manufactuerer_id' => $manufactuerer_id]);
           }
         }
       }
 
       foreach($types as $type)
       {
-        $exist = DB::table('fuel_type')->where('type','=', $type)->get();
+        $exist = DB::table('fuels')->where('type','=', $type)->get();
         if($exist->isEmpty())
         {
-          DB::table('fuel_type')->insert(['type' => $type]);
+          DB::table('fuels')->insert(['type' => $type]);
         }
       }
     }
