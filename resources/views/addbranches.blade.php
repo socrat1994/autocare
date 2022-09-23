@@ -16,15 +16,15 @@
                         <form id="addpranch" method="POST" action="{{url('/branch')}}">
                             @csrf
                             <!--for urls from server -->
-                            <p id="delediurl" class="dis-none">{{url('/branchdeledi')}}</p>
+                            <p id="delEdiUrl" class="dis-none">{{url('/branchdeledi')}}</p>
 
-                            <p id="brshowurl" class="dis-none">{{url('/branchshow')}}</p>
+                            <p id="brShowUrl" class="dis-none">{{url('/branchshow')}}</p>
 
                             <div class="row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" onchange="Change('name')" autocomplete="name" autofocus>
+                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}"  autocomplete="name" autofocus>
                                 </div>
                             </div>
                             <div id="nameReq" class="row mb-3 text-center color-red dis-none">
@@ -34,7 +34,7 @@
                                 <label for="location" class="col-md-4 col-form-label text-md-end">{{ __('location') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="location" type="tel" class="form-control @error('location') is-invalid @enderror" name="location" value="{{ old('location') }}" onchange="Change('location')" autocomplete="location">
+                                    <input id="location" type="tel" class="form-control @error('location') is-invalid @enderror" name="location" value="{{ old('location') }}"  autocomplete="location">
                                 </div>
                             </div>
                             <div id="locationReq" class="row mb-3 text-center color-red dis-none">
@@ -42,10 +42,10 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="geolocation" class="col-md-4 col-form-label text-md-end">{{ __('gio location') }}</label>
+                                <label for="geolocation" class="col-md-4 col-form-label text-md-end">{{ __('geo location') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="geolocation" type="text" class="invalid form-control @error('geolocation') is-invalid @enderror" name="geolocation" value="{{ old('geolocation') }}" onchange="Change('geolocation')" pattern="" autocomplete="geolocation">
+                                    <input id="geolocation" type="text" class="invalid form-control @error('geolocation') is-invalid @enderror" name="geolocation" value="{{ old('geolocation') }}"  placeholder="0.000000,0.000000" pattern="[0-9]{3}.[0-9]{6},[0-9]{3}.[0-9]{6}" autocomplete="geolocation">
                                 </div>
                             </div>
                             <div id="geolocationReq" class="row mb-3 text-center color-red dis-none">
