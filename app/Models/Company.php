@@ -11,7 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Company extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use  HasFactory;
 
     public $timestamps = false;
 

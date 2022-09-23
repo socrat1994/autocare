@@ -13,7 +13,7 @@ use App\Models\Employee;
 
 class Branch extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasFactory;
 
     public $timestamps = false;
 

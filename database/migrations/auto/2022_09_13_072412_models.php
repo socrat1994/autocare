@@ -8,12 +8,12 @@ return new class extends Migration
 {
   public function up()
   {
-    Schema::create('auto_models', function (Blueprint $table) {
+    Schema::create('models', function (Blueprint $table) {
         $table->id();
-        $table->string('name');
+        $table->string('name')->unique();
+        $table->string('url');
         $table->unsignedBigInteger('manufactuerer_id');
         $table->foreign('manufactuerer_id')->references('id')->on('manufactuerers')->onDelete('cascade')->onUpdate('cascade');
-
     });
   }
 

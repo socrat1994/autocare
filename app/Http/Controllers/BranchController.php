@@ -45,16 +45,16 @@ class BranchController extends Controller
     $company = session('company');
     $branches = $arr->to_array(Branch::query()->select('name')->where('company_id', $company)->get(), "name");
     foreach($datas as $data){
-      $data['geolocation'] = explode(",", $data['geolocation']);
+      isset($data['geolocation'])?$data['geolocation']) = explode(",", $data['geolocation']):[null];
       $data['latitude'] = $data['geolocation'][0];
       $data['longitude'] = $data['geolocation'][1];
       $validated = Validator::make($data,
-      ['id' => ['required','integer'],
-      'name' => ['required', 'string', 'max:50', Rule::notIn($branches),],
-      'location' => ['required', 'string', 'max:50'],
-      'latitude' => [ 'numeric', 'between:-90,90'],
-      'longitude' => [ 'numeric', 'between:-180,180'],
-    ]);
+      [
+        'name' => ['required', 'string', 'max:50', Rule::notIn($branches),],
+        'location' => ['required', 'string', 'max:50'],
+        'latitude' => [ 'numeric', 'between:-90,90'],
+        'longitude' => [ 'numeric', 'between:-180,180'],
+      ]);
       if ($validated->fails()) {
         $status[$i] = $validated->errors();
         $i++;
@@ -81,13 +81,16 @@ class BranchController extends Controller
     $company = session('company');
     $branches = $arr->to_array(Branch::query()->select('name')->where('company_id', $company)->get(), "name");
     foreach($data as $data){
-      $data['geolocation'] = explode(",", $data['geolocation']);
-      $data['latitude'] = $data['geolocation'][0];
-      $data['longitude'] = $data['geolocation'][1];
+      if($data['geolocation']){
+        $data['geolocation'] = explode(",", $data['geolocation']);
+        $data['latitude'] = $data['geolocation'][0];
+        $data['longitude'] = $data['geolocation'][1];
+      }
       if(count($data) > 1)
       {
         $validated = Validator::make($data,
-        ['name' => ['string', 'max:50',Rule::notIn($branches) ],
+        ['id' => ['required','integer'],
+        'name' => ['string', 'max:50',Rule::notIn($branches) ],
         'location' => ['string', 'max:50'],
         'latitude' => [ 'numeric', 'between:-90,90'],
         'longitude' => [ 'numeric', 'between:-180,180']]);

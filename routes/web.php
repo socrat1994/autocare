@@ -24,21 +24,23 @@ Route::get('/',function(){
 
 Auth::routes();
 Route::group(['middleware' => ['isactive' , 'auth']], function() {
-Route::get('setlang/{locale}', [IntiController::Class, 'setlang'])->name('setlang');
+  Route::get('setlang/{locale}', [IntiController::Class, 'setlang'])->name('setlang');
 
 
-Route::group(['middleware' => ['auth']], function() {
-  Route::resource('roles' , RoleController::class);
-  Route::resource('users','UserController');
-  Route::resource('products','ProductController');});
+  Route::group(['middleware' => ['auth']], function() {
+    Route::resource('roles' , RoleController::class);
+    Route::resource('users','UserController');
+    Route::resource('products','ProductController');});
 
-Route::get('/admin/panel', [AdminLogController::class, 'showadmin'])->name('adminpanel');
-Route::get('/admin/login', [AdminLogController::class, 'showAdminLoginForm']);
-Route::post('/admin/login', [AdminLogController::class, 'login'])->name('adminlogin');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::post('/branchdeledi', [BranchController::class, 'del_edi'])->name('branchdeledi');
-Route::post('/employeedeledi', [EmployeeController::class, 'del_edi'])->name('employeedeledi');
-Route::get('/branchshow', [BranchController::class, 'show'])->name('branchshow');
-Route::resources(['employee' => EmployeeController::class,
-'branch' => BranchController::class,]);
-});
+    Route::get('/admin/panel', [AdminLogController::class, 'showadmin'])->name('adminpanel');
+    Route::get('/admin/login', [AdminLogController::class, 'showAdminLoginForm']);
+    Route::post('/admin/login', [AdminLogController::class, 'login'])->name('adminlogin');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::post('/branchdeledi', [BranchController::class, 'del_edi'])->name('branchdeledi');
+    Route::post('/employeedeledi', [EmployeeController::class, 'del_edi'])->name('employeedeledi');
+    Route::get('/branchshow', [BranchController::class, 'show'])->name('branchshow');
+    //Route::post('/addvehicle', [VehicleController::class, 'show'])->name('addvehicle');
+
+    Route::resources(['employee' => EmployeeController::class,
+    'branch' => BranchController::class,]);
+  });

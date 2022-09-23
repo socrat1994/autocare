@@ -8,7 +8,7 @@ return new class extends Migration
 {
   public function up()
   {
-    Schema::create('fuel_type', function (Blueprint $table) {
+    Schema::create('fuels', function (Blueprint $table) {
         $table->id();
         $table->string('type')->unique();
     });
@@ -16,6 +16,6 @@ return new class extends Migration
 
   public function down()
   {
-      Schema::dropIfExists('fuel_type');
+      Schema::dropIfExists('fuels');
   }
 };
