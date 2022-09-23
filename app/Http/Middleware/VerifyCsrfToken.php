@@ -14,7 +14,8 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         'http://localhost:8000/employeedeledi',
         'http://localhost:8000/branchdeledi',
-        'http://localhost:8000/employee'
+        'http://localhost:8000/employee',
+        'http://localhost:8000/addvehicle'
 
     ];
 }

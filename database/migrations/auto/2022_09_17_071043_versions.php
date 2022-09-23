@@ -13,7 +13,7 @@ return new class extends Migration
           $table->id();
           $table->unsignedBigInteger('model_id');
           $table->unsignedBigInteger('fuel_id');
-          $table->date('model_year');
+          $table->integer('model_year');
           $table->foreign('model_id')->references('id')->on('models')->onDelete('cascade')->onUpdate('cascade');
           $table->foreign('fuel_id')->references('id')->on('fuels')->onDelete('cascade')->onUpdate('cascade');
       });

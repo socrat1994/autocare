@@ -4,7 +4,8 @@ namespace App\Models\Auto;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Auto\Vehicle;
-use App\Models\Auto\Model;
+use App\Models\Auto\CarModel;
+use Illuminate\Database\Eloquent\Model;
 
 
 class Version extends Model
@@ -26,6 +27,6 @@ class Version extends Model
 
   public function model()
   {
-    return $this->belongsTo(Model::class, 'model_id', 'id');
+    return $this->belongsTo(CarModel::class, 'model_id', 'id');
   }
 }

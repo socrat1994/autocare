@@ -3,7 +3,8 @@
 namespace App\Models\Auto;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Auto\Model;
+use App\Models\Auto\CarModel;
+use Illuminate\Database\Eloquent\Model;
 
 
 class Manufactuerer extends Model
@@ -19,6 +20,6 @@ class Manufactuerer extends Model
 
   public function models()
   {
-    return $this->hasMany(Model::class, 'manufactuerer_id', 'id');
+    return $this->hasMany(CarModel::class, 'manufactuerer_id', 'id');
   }
 }

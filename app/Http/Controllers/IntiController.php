@@ -10,7 +10,7 @@ class IntiController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('setlang');
+
     }
 
     public function setlang($locale)

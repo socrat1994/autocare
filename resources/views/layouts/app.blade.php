@@ -79,8 +79,8 @@
                                     <a class="nav-link" href="{{url('/employee')}}">{{ __('Add Employee') }}</a>
                                     <a class="nav-link" href="{{ route('roles.create') }}">Create New Role</a>
                                     @endhasanyrole
-                                    <a class="nav-link" href="{{route('setlang',"ar")}}">{{ __('عربي') }}</a>
-                                    <a class="nav-link" href="{{route('setlang',"en")}}">{{ __('english') }}</a>
+                                    <a class="nav-link" href="{{route('setlang','ar')}}">{{ __('عربي') }}</a>
+                                    <a class="nav-link" href="{{route('setlang','en')}}">{{ __('english') }}</a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
