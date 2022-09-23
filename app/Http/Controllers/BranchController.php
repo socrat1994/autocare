@@ -45,7 +45,7 @@ class BranchController extends Controller
     $company = session('company');
     $branches = $arr->to_array(Branch::query()->select('name')->where('company_id', $company)->get(), "name");
     foreach($datas as $data){
-      isset($data['geolocation'])?$data['geolocation']) = explode(",", $data['geolocation']):[null];
+      isset($data['geolocation'])?$data['geolocation'] = explode(",", $data['geolocation']):[null];
       $data['latitude'] = $data['geolocation'][0];
       $data['longitude'] = $data['geolocation'][1];
       $validated = Validator::make($data,
