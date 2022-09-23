@@ -4,7 +4,7 @@ namespace App\Models\Auto;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Auto\Type;
-
+use Illuminate\Database\Eloquent\Model;
 
 class Fuel extends Model
 {

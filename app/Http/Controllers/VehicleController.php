@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Branch;
 use App\Models\Auto\Fuel;
-use App\Models\Model;
+use App\Models\Auto\CarModel;
+use App\Models\Auto\Version;
 use Illuminate\Validation\Rule;
 use App\HelperClasses\Message;
 use App\HelperClasses\ToArray;
@@ -22,7 +23,7 @@ use app\Policies\YourEmployeesPolicy;
 use Illuminate\Support\Facades\Gate;
 
 
-class EmployeeController extends Controller
+class VehicleController extends Controller
 {
   public function __construct()
   {
@@ -42,7 +43,7 @@ class EmployeeController extends Controller
     $data = json_decode($request->pTableData, true);
     $company = session('company');
     $userrole = session('role');
-    $models = $arr->to_array(Model::query()->select('id')->get(), "id");
+    $models = $arr->to_array(CarModel::query()->select('id')->get(), "id");
     $fuels = $arr->to_array(Fuel::query()->select('id')->get(), "id");
     $branches = $arr->to_array(Branch::query()->select('id')->where('company_id', $company)->get(), "id");
     $roles = $arr->to_array(Role::query()->select('name')->get(), "name");
@@ -51,7 +52,7 @@ class EmployeeController extends Controller
       foreach($data as $data){
         isset($data['role'])?$data['role'] = explode(",", $data['role']):[null];
         isset($data['permission'])?$data['permission'] = explode(",", $data['permission']):[null];
-        $validated[0] = Validator::make($data,
+        $validated = Validator::make($data,
         ['model_id' => ['required', 'integer', Rule::in($models)],
         'fuel_id' => ['required', 'integer', Rule::in($fuels)],
         'model_year' => ['required', 'integer','max:2100','min:1900'],
@@ -60,6 +61,7 @@ class EmployeeController extends Controller
         $status[$i] = $validated->errors();
         $i++;
         $error = true;
+        return $validated->errors();
         continue;
       }
       $version = Version::query()->where([
@@ -67,13 +69,13 @@ class EmployeeController extends Controller
         ['fuel_id', '=', $data['fuel_id']],
         ['model_year', '=', $data['model_year']],
         ])->get();
-        if(!$version){
+        if(!$version->isempty()){
           $version = Version::create([
             'model_id' => $data['model_id'],
             'fuel_id' => $data['fuel_id'],
             'model_year' => $data['model_year'],
           ]);
-        }
+       }
 return $version;
         $employee = Employee::create([
           'user_id' => $user->id,
@@ -87,12 +89,12 @@ return $version;
         }
         $status[$i] = $user->load('transfers');
         $i++;
-      }catch (\Exception $e) {
+      }}catch (\Exception $e) {
         return response()->json(new Message($e->getMessage(), '100', false, 'error', 'error', 'خطأ'));
       }
-    }
+
     return response()->json(new Message($status, '200', isset($error)?false:true, 'info', "here status of every insertion", 'Arabictext'));
-  }
+}
 
   public function show($id)
   {

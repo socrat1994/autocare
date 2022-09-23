@@ -5,6 +5,7 @@ namespace App\Models\Auto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Auto\Plate;
 use App\Models\Auto\Version;
+use Illuminate\Database\Eloquent\Model;
 
 class Vehicle extends Model
 {

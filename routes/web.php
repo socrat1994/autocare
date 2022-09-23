@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\IntiController;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
@@ -23,9 +24,8 @@ Route::get('/',function(){
 });
 
 Auth::routes();
+Route::get('setlang/{locale}', [IntiController::Class, 'setlang'])->name('setlang');
 Route::group(['middleware' => ['isactive' , 'auth']], function() {
-  Route::get('setlang/{locale}', [IntiController::Class, 'setlang'])->name('setlang');
-
 
   Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles' , RoleController::class);
@@ -39,7 +39,7 @@ Route::group(['middleware' => ['isactive' , 'auth']], function() {
     Route::post('/branchdeledi', [BranchController::class, 'del_edi'])->name('branchdeledi');
     Route::post('/employeedeledi', [EmployeeController::class, 'del_edi'])->name('employeedeledi');
     Route::get('/branchshow', [BranchController::class, 'show'])->name('branchshow');
-    //Route::post('/addvehicle', [VehicleController::class, 'show'])->name('addvehicle');
+    Route::post('/addvehicle', [VehicleController::class, 'store'])->name('addvehicle');
 
     Route::resources(['employee' => EmployeeController::class,
     'branch' => BranchController::class,]);
