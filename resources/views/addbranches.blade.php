@@ -70,10 +70,10 @@
                             <thead>
                                 <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Location</th>
-                                <th scope="col">Gio Location</th>
-                                <th scope="col" colspan="2">Action</th>
+                                <th scope="col">{{ __('Name') }}</th>
+                                <th scope="col">{{ __('Location') }}</th>
+                                <th scope="col">{{ __('Geo Location') }}</th>
+                                <th scope="col" colspan="2">{{ __('Action') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="tablbody">

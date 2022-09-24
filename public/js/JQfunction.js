@@ -40,12 +40,6 @@ function EditData(count) {
     $("#locationReq").removeClass("dis-none");
     $("#location").focus();
   }
-  else if($("#geolocation").val() == ""){
-    $("#nameReq").addClass("dis-none");
-    $("#locationReq").addClass("dis-none");
-    $("#geolocationReq").removeClass("dis-none");
-    $("#geolocation").focus();
-  }
   else{
     $("#nameReq").addClass("dis-none");
     $("#geolocationReq").addClass("dis-none");
@@ -89,6 +83,7 @@ function EditData(count) {
       updateDelet.push(obj);
       console.log(updateDelet);
       update = [];
+      
     }
     }
     $("#name_" + count).html($("#name").val());
@@ -118,16 +113,7 @@ function AddData() {
             $("#locationReq").removeClass("dis-none");
             $("#location").focus();
           }else{
-                  if(pranch_geolocation == ""){
-                    $("#locationReq").addClass("dis-none");
-                    $("#nameReq").addClass("dis-none");
-                    $("#geolocationReq").removeClass("dis-none");
-                    $("#geolocation").focus();
-                  }
-                  //...............................end validation................................
-                  else
-                  {
-                    $("#geolocationReq").addClass("dis-none");
+                    //$("#geolocationReq").addClass("dis-none");
                     $("#locationReq").addClass("dis-none");
                     $("#nameReq").addClass("dis-none");
                     $(".tablbody").append('<tr><td id="id_' + count + '">' + count + '</td><td id="name_' + count + '">' + pranch_name + '</td><td id="location_' +
@@ -142,7 +128,7 @@ function AddData() {
                     if (cnt > 0) {
                       $(".table").show();
                     }
-                  } 
+                  
                 }
         }
 }
@@ -150,11 +136,11 @@ function AddData() {
 function subTable(){
   if(isShowData){
     //send update json to server
-    updateDelet = $.toJSON(updateDelet);
+    _updateDelet = $.toJSON(updateDelet);
     $.ajax({
       type: "POST",
       url: $("#delEdiUrl").html(),
-      data: "pTableData="+ updateDelet +"&_token="+$("input[name=_token]").attr("value"),
+      data: "pTableData="+ _updateDelet +"&_token="+$("input[name=_token]").attr("value"),
       success: function(msg){
           // return value stored in msg variable
           //maby you want to add the (clear code) here after you sure that data is recived to server
@@ -209,6 +195,9 @@ $(".table").hide();
 }
 //--------------getBranchData(show branches)------------------
 function getBranchData(){
+  //$("#geolocationReq").addClass("dis-none");
+  $("#locationReq").addClass("dis-none");
+  $("#nameReq").addClass("dis-none");
 if(cnt==0){
   $.ajax({
     url: $("#brShowUrl").html(),
