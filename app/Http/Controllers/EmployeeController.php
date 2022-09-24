@@ -46,8 +46,8 @@ class EmployeeController extends Controller
     $roles = $arr->to_array(Role::query()->select('name')->get(), "name");
     $permissions = session('permission');
     foreach($data as $data){
-    isset($data['role'])?$data['role'] = explode(",", $data['role']):[null];
-    isset($data['permission'])?$data['permission'] = explode(",", $data['permission']):[null];
+    $data['role'])??null?$data['role'] = explode(",", $data['role']):[null];
+    $data['permission']??null?$data['permission'] = explode(",", $data['permission']):[null];
       $validated = Validator::make($data,
       ['name' => ['required', 'string', 'max:255'],
       'phone' => ['required', 'string', 'max:255', 'unique:users'],
@@ -109,8 +109,8 @@ class EmployeeController extends Controller
 
       if(count($data) > 1)
       {
-        isset($data['role'])?$data['role'] = explode(",", $data['role']):[null];
-        isset($data['permission'])?$data['permission'] = explode(",", $data['permission']):[null];
+        $data['role']??null?$data['role'] = explode(",", $data['role']):[null];
+        $data['permission']??null?$data['permission'] = explode(",", $data['permission']):[null];
         $validated = Validator::make($data,
         ['id' => ['required','integer'],
         'name' => ['string', 'max:255'],
@@ -139,11 +139,11 @@ class EmployeeController extends Controller
               $user = $user->update($data);
               $employee = $employee->update($data);
               $user = User::find($data['id']);
-              if(isset($data['role']))
+              if($data['role']??null)
               {
                   $user->syncRoles($data['role']);
               }
-              if(isset($data['permission']))
+              if($data['permission']??null)
               {
                   $user->syncPermissions($data['permission']);
               }
