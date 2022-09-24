@@ -100,6 +100,7 @@ function EditData(count) {
 }
 
 function AddData() {
+  $("#subTable").html("Submit Data");
   var pranch_name = $("#name").val();
   var pranch_location = $("#location").val();
   var pranch_geolocation = $("#geolocation").val();
@@ -134,28 +135,32 @@ function AddData() {
 }
 //..............................for submit table data:--------------------------------
 function subTable(){
-  if(isShowData){
-    //send update json to server
-    _updateDelet = $.toJSON(updateDelet);
-    $.ajax({
-      type: "POST",
-      url: $("#delEdiUrl").html(),
-      data: "pTableData="+ _updateDelet +"&_token="+$("input[name=_token]").attr("value"),
-      success: function(msg){
-          // return value stored in msg variable
-          //maby you want to add the (clear code) here after you sure that data is recived to server
+  if(isShowData ){
+      if(updateDelet.length !== 0){
+          //send update json to server
+          _updateDelet = $.toJSON(updateDelet);
+          $.ajax({
+            type: "POST",
+            url: $("#delEdiUrl").html(),
+            data: "pTableData="+ _updateDelet +"&_token="+$("input[name=_token]").attr("value"),
+            success: function(msg){
+              updateDelet = [];
+              $(".table tbody tr").each(function(row,tr){
+              $(tr).remove();
+              cnt=0;
+              });
+              $(".table").hide();
+              $("#add").prop('disabled',false);
+              alert("the data send and updated correctly");
+              isShowData = false;
+                // return value stored in msg variable
+                //maby you want to add the (clear code) here after you sure that data is recived to server
+            }
+          });
+          //for clear the table row after submit(clear code)
+          //clear flages
+        }
       }
-    });
-    //for clear the table row after submit(clear code)
-    $(".table tbody tr").each(function(row,tr){
-      $(tr).remove();
-      cnt=0;
-    });
-    $(".table").hide();
-    $("#add").prop('disabled',false);
-    isShowData = false;
-    //clear flages
-  }
   else{
   var TableData;
   TableData = $.toJSON(storeTblValues());
@@ -176,22 +181,24 @@ function subTable(){
       return TableData;
   }
   console.log(TableData);
- $.ajax({
-  type: "POST",
-  url: $("#addpranch").attr("action"),
-  data: "pTableData="+TableData+"&_token="+$("input[name=_token]").attr("value"),
-  success: function(msg){
-      // return value stored in msg variable
-      //maby you want to add the (clear code) here after you sure that data is recived to server
+  $.ajax({
+    type: "POST",
+    url: $("#addpranch").attr("action"),
+    data: "pTableData="+TableData+"&_token="+$("input[name=_token]").attr("value"),
+    success: function(msg){
+      $(".table tbody tr").each(function(row,tr){
+      $(tr).remove();
+      cnt=0;
+      });
+      $(".table").hide();
+      alert(msg.data);
+        // return value stored in msg variable
+        //maby you want to add the (clear code) here after you sure that data is recived to server
+    }
+    });
+    //for clear the table row after submit(clear code)
+
   }
-});
-//for clear the table row after submit(clear code)
-$(".table tbody tr").each(function(row,tr){
-  $(tr).remove();
-  cnt=0;
-});
-$(".table").hide();
-}
 }
 //--------------getBranchData(show branches)------------------
 function getBranchData(){
@@ -256,12 +263,14 @@ $(document).ready(function() {
   $(document).on('click', '.delete', function() {
     var par = $(this).parent().parent(); //tr
     if(isShowData){
-      //var temp = par.find('td:eq(0)').text();
-      updateDelet.push({id:par.find('td:eq(0)').text()});
-      console.log(updateDelet);
-      par.css("background-color","red");
-      $(this).prop('disabled',true);
-      par.find("#edit").prop('disabled',true);
+      if(confirm('Are you sure you want to delet this row?')){
+          //var temp = par.find('td:eq(0)').text();
+          updateDelet.push({id:par.find('td:eq(0)').text()});
+          console.log(updateDelet);
+          par.css("background-color","red");
+          $(this).prop('disabled',true);
+          par.find("#edit").prop('disabled',true);
+      }
     }else{
       par.remove();
       cnt--;
