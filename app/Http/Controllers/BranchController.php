@@ -49,8 +49,11 @@ class BranchController extends Controller
         if($data['geolocation']??null)
         {
           $data['geolocation'] = explode(",", $data['geolocation']);
+          if(!($data['geolocation'][0]??null) or !($data['geolocation'][1]??null)) {
+            throw new \Exception("the geolocation must be in this format 0.00,0.00");
+          }
           $data['latitude'] = $data['geolocation'][0];
-          $data['longitude'] = $data['geolocation'][1];/////make this value nullable in database
+          $data['longitude'] = $data['geolocation'][1];
         }
         $validated = Validator::make($data,
         [

@@ -74,7 +74,7 @@ class EmployeeController extends Controller
           'moved_at' => $data['moved_at']
         ]);
         $user->assignRole($data['role']);
-        if(isset($data['permission']))
+        if($data['permission']??null)
         {
             $user->givePermissionTo($data['permission']);
         }
