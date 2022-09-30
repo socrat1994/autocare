@@ -45,11 +45,12 @@ class BranchController extends Controller
       $datas = json_decode($request->pTableData, true);
       $company = session('company');
       $branches = $arr->to_array(Branch::query()->select('name')->where('company_id', $company)->get(), "name");
-      foreach($datas as $data){
+      a:foreach(array_slice($datas, $i, count($datas)-$i) as $data){
         if($data['geolocation']??null)
         {
           $data['geolocation'] = explode(",", $data['geolocation']);
           if(!($data['geolocation'][0]??null) or !($data['geolocation'][1]??null)) {
+            $error = true;
             throw new \Exception("the geolocation must be in this format 0.00,0.00");
           }
           $data['latitude'] = $data['geolocation'][0];
@@ -68,14 +69,14 @@ class BranchController extends Controller
           $error = true;
           continue;
         }
-
         $data_arr =array_merge($data,['company_id' => $company]);
         $branch = Branch::create($data_arr);
         $status[$i] = $branch;
         $i++;
-
       }  }catch (\Exception $e) {
-        return response()->json(new Message($e->getMessage(), '100', false, 'error', 'error', 'خطأ'));
+        $status[$i] = $e->getMessage();
+        $i++;
+        goto a;
       }
       return response()->json(new Message($status, '200', isset($error)?false:true, 'info', "here status of every insertion", 'هذه حالة كل عملية إدخال'));
     }
@@ -85,10 +86,10 @@ class BranchController extends Controller
       try {
         $i = 0;
         $arr = new ToArray();
-        $data = json_decode($request->pTableData, true);
+        $datas = json_decode($request->pTableData, true);
         $company = session('company');
         $branches = $arr->to_array(Branch::query()->select('name')->where('company_id', $company)->get(), "name");
-        foreach($data as $data){
+        a:  foreach(array_slice($datas, $i, count($datas)-$i) as $data){
 
           if(count($data) > 1)
           {
@@ -141,7 +142,9 @@ class BranchController extends Controller
           }
 
         }}catch (\Exception $e) {
-          return response()->json(new Message($e->getMessage(), '100', false, 'error', 'error', 'خطأ'));
+          $status[$i] = $e->getMessage();
+          $i++;
+          goto a;
         }
         return response()->json(new Message($status, '200', isset($error)?false:true, 'info', "here status of every insertion", 'هذه حالة كل عملية إدخال'));
       }

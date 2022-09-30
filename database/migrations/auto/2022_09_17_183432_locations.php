@@ -10,7 +10,7 @@ return new class extends Migration
   {
   Schema::create('locations', function (Blueprint $table) {
       $table->id();
-      $table->string('car_number')->unique();
+      $table->string('car_number');
       $table->date('moved_at');
       $table->unsignedBigInteger('branch_id');
       $table->unsignedBigInteger('plate_id');
