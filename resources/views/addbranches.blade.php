@@ -3,7 +3,9 @@
 @section('content')
 <div class="dis-none">
         <p id="up">{{ __('Update') }}</p>
-        <p id="ad">{{ __('add') }}</p>
+        <p id="ad">{{ __('Add') }}</p>
+        <p id="back">{{ __('Back') }}</p>
+        <p id="shbr">{{ __('Show Branchs')}}</p>
         <p></p>
     </div>
     <div class="container">
@@ -54,13 +56,13 @@
 
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="reset" class="btn btn-primary">
+                                    <button type="reset" id="reset" class="btn btn-primary">
                                         {{ __('Reset') }}
                                     </button>
                                     <button type="button" id="add" class="btn btn-primary" onclick="AddData()">
                                         {{ __('add')}}
                                     </button>
-                                     <button type="button" id="add" class="btn btn-primary color-white bg-green" onclick="getBranchData()">
+                                     <button type="button" id="show" class="btn btn-primary color-white bg-green" onclick="getBranchData()">
                                         {{ __('Show Branchs')}}
                                     </button>
                                 </div>
