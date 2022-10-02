@@ -244,14 +244,24 @@ function subTable(){
     url: $("#addpranch").attr("action"),
     data: "pTableData="+TableData+"&_token="+$("input[name=_token]").attr("value"),
     success: function(msg){
-      $(".table tbody tr").each(function(row,tr){
-      $(tr).remove();
-      cnt=0;
-      });
-      $(".table").hide();
-      alert(msg.data);
+      if(msg.done){
+          $(".table tbody tr").each(function(row,tr){
+          $(tr).remove();
+          cnt=0;
+          });
+          $(".table").hide();
+          alert(msg.done)
+        }
+        else{
+          alert(msg.done)
+        }
         // return value stored in msg variable
         //maby you want to add the (clear code) here after you sure that data is recived to server
+    },
+    error: function(error){
+      console.log("Error:");
+      console.log(error);
+      alert(error);
     }
     });
     //for clear the table row after submit(clear code)
