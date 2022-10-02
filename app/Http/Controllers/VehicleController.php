@@ -10,6 +10,9 @@ use App\Models\Branch;
 use App\Models\Auto\Fuel;
 use App\Models\Auto\CarModel;
 use App\Models\Auto\Version;
+use App\Models\Auto\Vehicle;
+use App\Models\Auto\Plate;
+use App\Models\Auto\Location;
 use Illuminate\Validation\Rule;
 use App\HelperClasses\Message;
 use App\HelperClasses\ToArray;
@@ -38,63 +41,81 @@ class VehicleController extends Controller
 
   public function store(Request $request)
   {
-    $i = 0;
-    $arr = new ToArray();
-    $data = json_decode($request->pTableData, true);
-    $company = session('company');
-    $userrole = session('role');
-    $models = $arr->to_array(CarModel::query()->select('id')->get(), "id");
-    $fuels = $arr->to_array(Fuel::query()->select('id')->get(), "id");
-    $branches = $arr->to_array(Branch::query()->select('id')->where('company_id', $company)->get(), "id");
-    $roles = $arr->to_array(Role::query()->select('name')->get(), "name");
-    $permissions = session('permission');
     try {
-      foreach($data as $data){
-        isset($data['role'])?$data['role'] = explode(",", $data['role']):[null];
-        isset($data['permission'])?$data['permission'] = explode(",", $data['permission']):[null];
+      $i = 0;
+      $arr = new ToArray();
+      $datas = json_decode($request->pTableData, true);
+      $company = session('company');
+      $models = $arr->to_array(CarModel::query()->select('id')->get(), "id");
+      $fuels = $arr->to_array(Fuel::query()->select('id')->get(), "id");
+      $branches = $arr->to_array(Branch::query()->select('id')->where('company_id', $company)->get(), "id");
+      a:foreach(array_slice($datas, $i, count($datas)-$i) as $data){
         $validated = Validator::make($data,
         ['model_id' => ['required', 'integer', Rule::in($models)],
         'fuel_id' => ['required', 'integer', Rule::in($fuels)],
         'model_year' => ['required', 'integer','max:2100','min:1900'],
+        'vin_number' => ['required', 'string'],
+        'changed_at' => ['required', 'date', 'after:1900-08-11', 'before:2100-08-11'],
+        'plate_number' => ['required', 'string'],
+        'car_number' => ['required', 'string'],
+        'moved_at' => ['required', 'date', 'after:1900-08-11', 'before:2100-08-11'],
+        'branch_id' => ['required', 'integer', Rule::in($branches)],
       ]);
       if ($validated->fails()) {
         $status[$i] = $validated->errors();
         $i++;
         $error = true;
-        return $validated->errors();
         continue;
       }
-      $version = Version::query()->where([
+      $plates = Plate::query()->select('*')->where([
+        ['plate_number', '=', $data['plate_number']],
+        ['vin_number', '=', $data['vin_number']],
+        ])->get();
+        if(!$plates->isempty()) {
+          $error = true;
+          throw new \Exception("vin number and plate number are exist in database for another vehicle");
+        }
+        $locations = Location::query()->select('*')->where([
+          ['car_number', '=', $data['car_number']],
+          ['branch_id', '=', $data['branch_id']],
+          ])->get();
+          if(!$locations->isempty()) {
+            $error = true;
+            throw new \Exception("car number can not Duplicated in the same branch");
+          }
+      $version = Version::query()->select('*')->where([
         ['model_id', '=', $data['model_id']],
         ['fuel_id', '=', $data['fuel_id']],
         ['model_year', '=', $data['model_year']],
         ])->get();
-        if(!$version->isempty()){
+        if($version->isempty()){
           $version = Version::create([
             'model_id' => $data['model_id'],
             'fuel_id' => $data['fuel_id'],
             'model_year' => $data['model_year'],
           ]);
-       }
-return $version;
-        $employee = Employee::create([
-          'user_id' => $user->id,
-          'branch_id' => $data['branch_id'],
-          'moved_at' => $data['moved_at']
-        ]);
-        $user->assignRole($data['role']);
-        if(isset($data['permission']))
-        {
-          $user->givePermissionTo($data['permission']);
         }
-        $status[$i] = $user->load('transfers');
+        $vehicle = $version[0]->vehicles()->create();
+        $plate = $vehicle->plates()->create([
+          'vin_number' => $data['vin_number'],
+          'plate_number' => $data['plate_number'],
+          'changed_at' => $data['changed_at'],
+        ]);
+        $location = $plate->locations()->create([
+          'car_number' => $data['car_number'],
+          'moved_at' => $data['moved_at'],
+          'branch_id' => $data['branch_id'],
+        ]);
+        $status[$i] = [$location, $plate, $version];
         $i++;
-      }}catch (\Exception $e) {
-        return response()->json(new Message($e->getMessage(), '100', false, 'error', 'error', 'خطأ'));
       }
-
+    }catch (\Exception $e) {
+      $status[$i] = $e->getMessage();
+      $i++;
+      goto a;
+    }
     return response()->json(new Message($status, '200', isset($error)?false:true, 'info', "here status of every insertion", 'Arabictext'));
-}
+  }
 
   public function show($id)
   {

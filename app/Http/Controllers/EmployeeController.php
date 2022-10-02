@@ -39,15 +39,15 @@ class EmployeeController extends Controller
   {
     $i = 0;
     $arr = new ToArray();
-    $data = json_decode($request->pTableData, true);
+    $datas = json_decode($request->pTableData, true);
     $company = session('company');
     $userrole = session('role');
     $branches = $arr->to_array(Branch::query()->select('id')->where('company_id', $company)->get(), "id");
     $roles = $arr->to_array(Role::query()->select('name')->get(), "name");
     $permissions = session('permission');
-    foreach($data as $data){
-    isset($data['role'])?$data['role'] = explode(",", $data['role']):[null];
-    isset($data['permission'])?$data['permission'] = explode(",", $data['permission']):[null];
+  a:  foreach(array_slice($datas, $i, count($datas)-$i) as $data){
+    $data['role'])??null?$data['role'] = explode(",", $data['role']):[null];
+    $data['permission']??null?$data['permission'] = explode(",", $data['permission']):[null];
       $validated = Validator::make($data,
       ['name' => ['required', 'string', 'max:255'],
       'phone' => ['required', 'string', 'max:255', 'unique:users'],
@@ -74,15 +74,16 @@ class EmployeeController extends Controller
           'moved_at' => $data['moved_at']
         ]);
         $user->assignRole($data['role']);
-        if(isset($data['permission']))
+        if($data['permission']??null)
         {
             $user->givePermissionTo($data['permission']);
         }
         $status[$i] = $user->load('transfers');
         $i++;
       }catch (\Exception $e) {
-        return response()->json(new Message($e->getMessage(), '100', false, 'error', 'error', 'خطأ'));
-      }
+        $status[$i] = $e->getMessage();
+        $i++;
+        goto a;      }
     }
     return response()->json(new Message($status, '200', isset($error)?false:true, 'info', "here status of every insertion", 'Arabictext'));
   }
@@ -105,12 +106,12 @@ class EmployeeController extends Controller
     $branches = $arr->to_array(Branch::query()->select('id')->where('company_id', $company)->get(), "id");
     $roles = $arr->to_array(Role::query()->select('name')->get(), "name");
     $permissions = session('permission');
-    foreach($data as $data){
+    a: foreach(array_slice($datas, $i, count($datas)-$i) as $data){
 
       if(count($data) > 1)
       {
-        isset($data['role'])?$data['role'] = explode(",", $data['role']):[null];
-        isset($data['permission'])?$data['permission'] = explode(",", $data['permission']):[null];
+        $data['role']??null?$data['role'] = explode(",", $data['role']):[null];
+        $data['permission']??null?$data['permission'] = explode(",", $data['permission']):[null];
         $validated = Validator::make($data,
         ['id' => ['required','integer'],
         'name' => ['string', 'max:255'],
@@ -139,11 +140,11 @@ class EmployeeController extends Controller
               $user = $user->update($data);
               $employee = $employee->update($data);
               $user = User::find($data['id']);
-              if(isset($data['role']))
+              if($data['role']??null)
               {
                   $user->syncRoles($data['role']);
               }
-              if(isset($data['permission']))
+              if($data['permission']??null)
               {
                   $user->syncPermissions($data['permission']);
               }
@@ -168,8 +169,9 @@ class EmployeeController extends Controller
           $i++;
         }
       }catch (\Exception $e) {
-        return response()->json(new Message($e->getMessage(), '100', false, 'error', 'error', 'خطأ'));
-      }
+        $status[$i] = $e->getMessage();
+        $i++;
+        goto a;      }
     }
     return response()->json(new Message($status, '200', isset($error)?false:true, 'info', "here status of every insertion", 'هذه حالة كل عملية إدخال'));
   }

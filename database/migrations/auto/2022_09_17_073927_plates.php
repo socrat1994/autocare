@@ -11,7 +11,7 @@ return new class extends Migration
     {
       Schema::create('plates', function (Blueprint $table) {
           $table->id();
-          $table->string('vin_number')->unique();
+          $table->string('vin_number');
           $table->string('plate_number');
           $table->date('changed_at');
           $table->unsignedBigInteger('vehicle_id');
