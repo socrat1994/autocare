@@ -15,7 +15,8 @@ var _geolocation = "";
 /*
 for comparing modified data by update button with row data in table
 */
-
+sendArr = [];
+receiveArr = [];
 //Edit button
 function BindData(count) {
   //code for editing data 
@@ -23,20 +24,18 @@ function BindData(count) {
   $("#name").val($("#name_" + count).html());
   $("#location").val($("#location_" + count).html());
   $("#geolocation").val($("#geolocation_" + count).html());
-  $("#add").prop('disabled',false);
+  $("#add").prop('disabled', false);
   $("#add").attr("value", "Update");
   $("#add").html($("#up").html());
   $("#add").attr("onclick", "EditData(" + count + ")");
 
-  if(isShowData){
+  if (isShowData) {
     //here the code when show data button was clicked then edit row button clicked next
-    
     _name = $("#name").val();
     _location = $("#location").val();
     _geolocation = $("#geolocation").val();
     //old row data was catched 
-
-    var selector = "#id_"+ count;
+    var selector = "#id_" + count;
     console.log(selector);
     _id = $(selector).html();// row id was catched too.
     console.log(_id);
@@ -48,66 +47,66 @@ function BindData(count) {
 function EditData(count) {
   // here is the code when update butten is clicked
 
-  if($("#name").val() == ""){
+  if ($("#name").val() == "") {
     //code for manibulate the case name's textbox is empty
     $("#nameReq").removeClass("dis-none");//show the message this field is required
     $("#name").focus();//git focus for the empty textbox.
   }
 
-  else if($("#location").val() == ""){
+  else if ($("#location").val() == "") {
     //code for manibulate the case location's textbox is empty
     $("#nameReq").addClass("dis-none");
     $("#locationReq").removeClass("dis-none");
     $("#location").focus();
   }
-  else{
+  else {
     $("#nameReq").addClass("dis-none");// hide the message this field is required
     $("#geolocationReq").addClass("dis-none");// hide the message this field is required
     $("#locationReq").addClass("dis-none");// hide the message this field is required
 
-    if(isShowData){
-          //handling the case if show data button was clicked
+    if (isShowData) {
+      //handling the case if show data button was clicked
 
-          $("#add").prop('disabled',true);//for disable add button becuase in this case is not useful.
+      $("#add").prop('disabled', true);//for disable add button becuase in this case is not useful.
 
-          //creat updat array for sending it to server (it contains the data was updated befor click updat data button)
+      //creat updat array for sending it to server (it contains the data was updated befor click updat data button)
 
-        if(_name !== $("#name").val() || _location !== $("#location").val() || _geolocation !== $("#geolocation").val()){
-          //handling the case if any of this data was updated the row id must be pushed to the apdate array
-          update.push("id");
-          update.push(_id);
+      if (_name !== $("#name").val() || _location !== $("#location").val() || _geolocation !== $("#geolocation").val()) {
+        //handling the case if any of this data was updated the row id must be pushed to the apdate array
+        update.push("id");
+        update.push(_id);
+      }
+      if (_name !== $("#name").val()) {
+        //handling the case if name was updated
+        update.push("name");
+        update.push($("#name").val());
+      }
+      if (_location !== $("#location").val()) {
+        //handling the case if location was updated
+        update.push("location");
+        update.push($("#location").val());
+      }
+      if (_geolocation !== $("#geolocation").val()) {
+        //handling the case if geolocation was updated
+        update.push("geolocation");
+        update.push($("#geolocation").val());
+      }
+      console.log(update);
+
+      if (update.length != 0) {
+        //handling the case if update array contain updated data
+
+        obj = {};//clear the object befor but the data into it.
+
+        for (i = 0; i < update.length; i = i + 2) {
+          //converting array to object
+          obj[update[i]] = update[i + 1];
         }
-        if(_name !== $("#name").val()){
-          //handling the case if name was updated
-          update.push("name");
-          update.push($("#name").val());
-        }
-        if(_location !== $("#location").val()){
-          //handling the case if location was updated
-          update.push("location");
-          update.push($("#location").val());
-        }
-        if(_geolocation !== $("#geolocation").val()){
-          //handling the case if geolocation was updated
-          update.push("geolocation");
-          update.push($("#geolocation").val());
-        }
-        console.log(update);
-
-        if(update.length != 0){
-          //handling the case if update array contain updated data
-
-          obj = {};//clear the object befor but the data into it.
-
-          for(i = 0; i < update.length; i =i + 2){
-            //converting array to object
-            obj[update[i]] = update[i + 1];
-          }
-          console.log(obj);
-          updateDelet.push(obj);// push the object to the new array for send it to server
-          console.log(updateDelet);
-          update = [];//clear the array from breveose data
-        }
+        console.log(obj);
+        updateDelet.push(obj);// push the object to the new array for send it to server
+        console.log(updateDelet);
+        update = [];//clear the array from breveose data
+      }
     }
     $("#name_" + count).html($("#name").val());//but the data in the selected row from txtbox
     $("#location_" + count).html($("#location").val());//but the data in the selected row from txtbox
@@ -122,7 +121,7 @@ function EditData(count) {
   }
 }
 //code for Reset button onclick
-function reset(){
+function reset() {
   // make the warning messages disappered
   $("#nameReq").addClass("dis-none");//disapper name requiste message.
   $("#locationReq").addClass("dis-none");//disappear location request message.
@@ -137,212 +136,254 @@ function AddData() {
   var pranch_geolocation = $("#geolocation").val();//take the value of geolocation txtbox in avariable
   //......................validarion..............................
   //check for valid input:
-  if(pranch_name == ""){
+  if (pranch_name == "") {
     //code if the name txtbox is  empty
     $("#nameReq").removeClass("dis-none");//show the alert message
     $("#name").focus();//git focuse on the empty txtbox
-  }else{
-          if(pranch_location == ""){
-            //code if the location txtbox is  empty
-            $("#nameReq").addClass("dis-none");//remove the alert message under the name txtbox
-            $("#locationReq").removeClass("dis-none");//show the alert message under location txtbox
-            $("#location").focus();//git focuse on the empty txtbox
-          }else{
-                    //$("#geolocationReq").addClass("dis-none");
-                    $("#locationReq").addClass("dis-none");//remove the alert message.
-                    $("#nameReq").addClass("dis-none");//remove the alert message.
+  } else {
+    if (pranch_location == "") {
+      //code if the location txtbox is  empty
+      $("#nameReq").addClass("dis-none");//remove the alert message under the name txtbox
+      $("#locationReq").removeClass("dis-none");//show the alert message under location txtbox
+      $("#location").focus();//git focuse on the empty txtbox
+    } else {
+      //$("#geolocationReq").addClass("dis-none");
+      $("#locationReq").addClass("dis-none");//remove the alert message.
+      $("#nameReq").addClass("dis-none");//remove the alert message.
 
-                    //append the data in table's row :
-                    $(".tablbody").append('<tr><td id="id_' + count + '">' + count + '</td><td id="name_' + count + '">' + pranch_name + '</td><td id="location_' +
-                    count + '">' + pranch_location +
-                    '</td><td id="geolocation_' + count + '">' + pranch_geolocation +'</td><td><button type="button" class="delete btn btn-primary">Delete</button></td><td><button type="button" id="edit" onclick="BindData('+ count +');" class="btn btn-primary">Edit</button></td>');
-                    cnt++;//increase the number of rows in the table by one
-                    count++;//increase the id number of the next row added
-                    $("#name").val("");//clear txtbox data
-                    //$("#product_names").val("");
-                    $("#location").val("");//clear txtbox data
-                    $("#geolocation").val("");//clear txtbox data
-                    //check if the number of rows in the table is more than 0
-                    if (cnt > 0) {
-                      $(".table").show();//show the table with its data
-                    }
-                  
-                }
-        }
+      //append the data in table's row :
+      $(".tablbody").append('<tr><td id="id_' + count + '">' + count + '</td><td id="name_' + count + '">' + pranch_name + '</td><td id="location_' +
+        count + '">' + pranch_location +
+        '</td><td id="geolocation_' + count + '">' + pranch_geolocation + '</td><td><button type="button" class="delete btn btn-primary">Delete</button></td><td><button type="button" id="edit" onclick="BindData(' + count + ');" class="btn btn-primary">Edit</button></td>');
+      cnt++;//increase the number of rows in the table by one
+      count++;//increase the id number of the next row added
+      $("#name").val("");//clear txtbox data
+      //$("#product_names").val("");
+      $("#location").val("");//clear txtbox data
+      $("#geolocation").val("");//clear txtbox data
+      //check if the number of rows in the table is more than 0
+      if (cnt > 0) {
+        $(".table").show();//show the table with its data
+      }
+    }
+  }
 }
 //..............................for submit table data:--------------------------------
 
 //code to submit data that has been intered to the table:
-function subTable(){
+function subTable() {
   //check if the data in the table is from server as (show branch data)
   // ?? the exist of data is not important ??
-  if(isShowData){
+  if (isShowData) {
     //code if show data button was clicked
-      if(updateDelet.length !== 0){
-        //code for checking if updateDelet objects array is not empty and the updating data is there
-          //send update json to server
-          _updateDelet = $.toJSON(updateDelet);//converting objects array to json format
-          $.ajax({//ajax function for send the json to the server
-            type: "POST",
-            url: $("#delEdiUrl").html(),//the url is in an html element content.
-            data: "pTableData="+ _updateDelet +"&_token="+$("input[name=_token]").attr("value"),
-            success: function(msg){
-              //in case the connection between client and server is successful
-              // ?? here we have to check out the response message "msg" to know if the 
-              //data was written successfuly in data base ?? 
-              if(msg.done){
-                updateDelet = [];//make the array that contain old data empty.
-                //clear the table rows
-                $(".table tbody tr").each(function(row,tr){
-                $(tr).remove();
-                cnt=0;
-                });
+    if (updateDelet.length !== 0) {
+      //code for checking if updateDelet objects array is not empty and the updating data is there
+      //send update json to server
+      _updateDelet = $.toJSON(updateDelet);//converting objects array to json format
+      $.ajax({//ajax function for send the json to the server
+        type: "POST",
+        url: $("#delEdiUrl").html(),//the url is in an html element content.
+        data: "pTableData=" + _updateDelet + "&_token=" + $("input[name=_token]").attr("value"),
+        success: function (msg) {
+          //in case the connection between client and server is successful
+          // ?? here we have to check out the response message "msg" to know if the 
+          //data was written successfuly in data base ?? 
+          if (msg.done) {
+            updateDelet = [];//make the array that contain old data empty.
+            //clear the table rows
+            $(".table tbody tr").each(function (row, tr) {
+              $(tr).remove();
+              cnt = 0;
+            });
+            $(".table").hide();//hide the table header.
+            $("#add").prop('disabled', false);//enable add button.
+            alert('data has been saved successfuly');//show alert message.
+            isShowData = false;//return to default case.
+            $("#show").html($("#shbr").html());//return to show branch button's text.
+            // return value stored in msg variable
 
-                $(".table").hide();//hide the table header.
-                $("#add").prop('disabled',false);//enable add button.
-                alert('data has been saved successfuly');//show alert message.
-                isShowData = false;//return to default case.
-                $("#show").html($("#shbr").html());//return to show branch button text.
-                // return value stored in msg variable
-                
-                //maby you want to add the (clear code) here after you sure that data is recived to server
-              }
-              else{
-                alert("data is not added");
-              }
-            },
-            error: function(error){
-              console.log("Error:");
-              console.log(error);
-              alert(error);
-            }
-          });
+            //maby you want to add the (clear code) here after you sure that data is recived to server
+          }
+          else {
+            alert("data is not added");
+          }
+        },
+        error: function (error) {
+          console.log("Error:");
+          console.log(error);
+          alert(error);
         }
-      }
-  else{
-  var TableData;
-  TableData = $.toJSON(storeTblValues());
+      });
+    }
+  }
 
-  function storeTblValues()
-  {
+  else {
+    var TableData;
+    TableData = $.toJSON(storeTblValues());
+
+    function storeTblValues() {
       var TableData = new Array();
 
-      $('.table tbody tr').each(function(row, tr){
-          TableData[row]={
-              "id" : $(tr).find('td:eq(0)').text()
-              , "name" :$(tr).find('td:eq(1)').text()
-              , "location" : $(tr).find('td:eq(2)').text()
-              , "geolocation" : $(tr).find('td:eq(3)').text()
-          }
+      $('.table tbody tr').each(function (row, tr) {
+        TableData[row] = {
+          "id": $(tr).find('td:eq(0)').text()
+          , "name": $(tr).find('td:eq(1)').text()
+          , "location": $(tr).find('td:eq(2)').text()
+          , "geolocation": $(tr).find('td:eq(3)').text()
+        }
       });
-      console.log(TableData);
+      console.log(TableData,"data as an array of objects");
+      sendArr = [];
+      sendArr = TableData;
       return TableData;
-  }
-  console.log(TableData);
-  $.ajax({
-    type: "POST",
-    url: $("#addpranch").attr("action"),
-    data: "pTableData="+TableData+"&_token="+$("input[name=_token]").attr("value"),
-    success: function(msg){
-      if(msg.done){
-          $(".table tbody tr").each(function(row,tr){
-          $(tr).remove();
-          cnt=0;
+    }
+    console.log(TableData,"data that you sent to server as json");
+    $.ajax({
+      type: "POST",
+      url: $("#addpranch").attr("action"),
+      data: "pTableData=" + TableData + "&_token=" + $("input[name=_token]").attr("value"),
+      success: function (msg) {
+        if (msg.done) {
+          $(".table tbody tr").each(function (row, tr) {
+            $(tr).remove();
+            cnt = 0;
           });
           $(".table").hide();
           alert(msg.done)
         }
-        else{
-          alert(msg.done)
+        else {
+          //alert(msg.done);
+          console.log(msg.data,"error msg as an array of objects");
+          //eteration
+          receiveArr = [];
+          receiveArr = msg.data;
+          console.log(receiveArr);
+          console.log(sendArr);
+          mySArr = jsonHandle(sendArr);
+          console.log(mySArr,"modyfied send array");
+          myRArr = jsonHandle(msg.data);
+          console.log(myRArr,"modyfied received array");
+          mainfunction(mySArr, myRArr);
+          //arr = compare(mySArr,myRArr);
+          //console.log(arr,"comparing arrays");
         }
         // return value stored in msg variable
         //maby you want to add the (clear code) here after you sure that data is recived to server
-    },
-    error: function(error){
-      console.log("Error:");
-      console.log(error);
-      alert(error);
-    }
+      },
+      error: function (error) {
+        console.log("Error:");
+        console.log(error);
+        alert(error);
+      }
     });
     //for clear the table row after submit(clear code)
-
   }
 }
 
+//...................................................
+//for insert message error in tables rows:
+function addErrorRow(index,_message) {
+  var table = document.getElementById("tablbody");
+  var row = table.insertRow(index + 1);
+  var cell1 = row.insertCell(0);
+  cell1.innerHTML = _message;
+}
+//---------------back function-----------------------
+function back() {
+  updateDelet = [];
+  update = [];
+  $(".table tbody tr").each(function (row, tr) {
+    $(tr).remove();
+    cnt = 0;
+  });
+  $(".table").hide();//hide the header row.
+  isShowData = false;//return to default case.
+  $("#subTable").html("Submit Data");//return the text of the button to defualt case.
+  $("#add").prop('disabled', false); //activate add button.
+  $("#show").html($("#shbr").html());//get the text of showbranch button from translated html contant.
+  $("#add").html($("#ad").html());//set the text of the add button to "add"
+  $("#add").attr("onclick", "AddData()");//make the add button do another function "add data" in next click on him
+}
 //--------------getBranchData(show branches)------------------
-function getBranchData(){
+function getBranchData() {
   //$("#geolocationReq").addClass("dis-none");
   $("#locationReq").addClass("dis-none");
   $("#nameReq").addClass("dis-none");
-  if($("#show").html() == $("#back").html())
-  { updateDelet = [];
-    $(".table tbody tr").each(function(row,tr){
-      $(tr).remove();
-      cnt=0;
-      });
-      $(".table").hide();//hide the header row.
-      isShowData = false;//return to default case.
-      $("#subTable").html("Submit Data");//return the text of the button to defualt case.
-      $("#add").prop('disabled',false); //activate add button.
-      $("#show").html($("#shbr").html());//get the text of showbranch button from translated html contant.
+  if ($("#show").html() == $("#back").html()) {
+    back();
   }
-  else{
+  else {
     //in case the 
-      if(cnt==0){
-        $.ajax({
-          url: $("#brShowUrl").html(),
-          type: "get",
-          //type: "post"
-          dataType: "json",
-          //data: {"action": "loadall", "id": id},
-          success: function(data){
-              console.log(data);
-              count = 0;
-              geolocation = 0;
-              console.log();
-              data.data.forEach(element => {
-                geolocation = element.latitude +","+ element.longitude;
-                console.log(geolocation);
-                $(".tablbody").append('<tr><td id="id_' + count + '">' + element.id + '</td><td id="name_' + count + '">' + element.name + '</td><td id="location_' +
-                count + '">' + element.location +
-                '</td><td id="geolocation_' + count + '">' + geolocation +'</td><td><button type="button" class="delete btn btn-primary">Delete</button></td><td><button type="button" id="edit" onclick="BindData('+ count +');" class="btn btn-primary">Edit</button></td>');
-                cnt++;
-                count++;
-              });
-              $(".table").show();
-              isShowData = true;
-              $("#subTable").html("Update Data");
-              $("#add").prop('disabled',true); 
-              $("#show").html($("#back").html());
-          },
-          error: function(error){
-              console.log("Error:");
-              console.log(error);
-          }
+    if (cnt == 0) {
+      $.ajax({
+        url: $("#brShowUrl").html(),
+        type: "get",
+        //type: "post"
+        dataType: "json",
+        //data: {"action": "loadall", "id": id},
+        success: function (data) {
+          console.log(data);
+          count = 0;
+          geolocation = 0;
+          data.data.forEach(element => {
+            geolocation = element.latitude + "," + element.longitude;
+            console.log(geolocation);
+            $(".tablbody").append('<tr><td id="id_' + count + '">' + element.id + '</td><td id="name_' + count + '">' + element.name + '</td><td id="location_' +
+              count + '">' + element.location +
+              '</td><td id="geolocation_' + count + '">' + geolocation + '</td><td><button type="button" class="delete btn btn-primary">Delete</button></td><td><button type="button" id="edit" onclick="BindData(' + count + ');" class="btn btn-primary">Edit</button></td>');
+            cnt++;
+            count++;
+          });
+          $(".table").show();
+          isShowData = true;
+          $("#subTable").html("Update Data");
+          $("#add").prop('disabled', true);
+          $("#show").html($("#back").html());
+        },
+        error: function (error) {
+          console.log("Error:");
+          console.log(error);
+        }
       });
-      }
     }
+  }
 }
 //------------------------------------------------------------
 //............................................................
+function arrayRemove(arr, value) {
+  return arr.filter(object => {
+    return object.id !== value;
+  });
+}
+//var result = arrayRemove(array, 6);
 //............................................................
 //------------------------------------------------------------
-$(document).ready(function() {
-  $("#add").prop('disabled',false);
+$(document).ready(function () {
+  $("#add").prop('disabled', false);
   $("#subTable").html("Submit Data");
   $(".table").hide();
-  $(document).on('click', '.delete', function() {
+  $(document).on('click', '.delete', function () {
     var par = $(this).parent().parent(); //tr
-    if(isShowData){
-      if(confirm('Are you sure you want to delet this row?')){
-          //var temp = par.find('td:eq(0)').text();
-          updateDelet.push({id:par.find('td:eq(0)').text()});
-          console.log(updateDelet);
-          par.css("background-color","red");
-          $(this).prop('disabled',true);
-          par.find("#edit").prop('disabled',true);
+    if (isShowData) {
+      if ($(this).html() == $('#back').html()) {
+        $(this).text($('#del').html());
+        par.css("background-color", "white");
+        //...
+        row_id = { id: par.find('td:eq(0)').text() }.id;
+        updateDelet = arrayRemove(updateDelet, row_id);
+        console.log(updateDelet);
+        par.find("#edit").prop('disabled', false);
       }
-    }else{
+      else {
+        //var temp = par.find('td:eq(0)').text();
+        updateDelet.push({ id: par.find('td:eq(0)').text() });
+        console.log(updateDelet);
+        par.css("background-color", "red");
+        //$(this).prop('disabled',true);
+        $(this).text($('#back').html());
+        par.find("#edit").prop('disabled', true);
+      }
+    } else {
       par.remove();
       cnt--;
       if (cnt == 0) {
@@ -350,6 +391,119 @@ $(document).ready(function() {
       }
     }
   });
-  $(document).on('click','#subTable',subTable);
-  $(document).on('click','#reset',reset);
+  $(document).on('click', '#subTable', subTable);
+  $(document).on('click', '#reset', reset);
 });
+
+
+
+
+
+
+//0000000000000000000000000000000000000000000
+//0000000000000000000000000000000000000000000
+
+
+
+
+
+
+
+
+function  jsonHandle(json){
+  myArr = [];
+  json.forEach((_element, _index) => {
+      if (typeof (_element) == typeof("test")) {
+        myArr[_index] = _element;
+      }
+      else {
+        myArr[_index] = Object.values(_element);
+      }
+    });
+  return myArr;
+  }
+
+function mainfunction(arrS, arrR){
+  let arr = [], arr1 = [], arr2 = [];
+  arr1 = sendArrMod(arrS);
+  console.log(arr1);
+  arr2 = recArrMod(arrR);
+  console.log(arr2);
+  console.log(compair2Arr(arr1,arr2));
+}
+//......................................
+function compair2Arr(arr1,arr2){
+  let one,two,three = [],four = [],five;
+  for(let i = 0; i < arr1.length; i++){
+    one = arr1[i];
+    two = arr2[i];
+    for(j = 0; j < two.length; j++){
+      if(two.length > 10){
+        three = two;
+      }
+      if(one[j] === two[j]){
+        three[j] = "done"
+      }else{
+        three[j] = two[j];
+      }
+    }
+    four.push(three);
+    three = [];
+  }
+  return four;
+}
+//000000000000000000000000000000000000000000
+function sendArrMod(arrS){
+   let arr = [],ar;
+  //removing items:
+  for(i = 0; i < arrS.length; i++){
+    
+    //console.log(arrS[i]);
+    arr[i] = removeItemByIndex(arrS[i],0);
+    ar = arr[i];
+    if(ar.length == 3 && ar[2] == ""){
+      ar.pop();
+      arr[i] = ar;
+    }
+  }
+ //console.log(arr);
+  return arr;
+}
+//000000000000000000000
+function recArrMod(arrR){
+  let Arr = [];
+  for(i = 0; i < arrR.length; i++){
+    if(typeof(arrR[i]) == typeof([])){
+      //console.log(arrR[i]);
+      arrR[i].splice(arrR[i].length - 2,2)
+      Arr.push(arrR[i]);
+      //console.log(arrR[i]);
+    }else{
+      Arr.push(arrR[i]);
+    }
+  }
+  let ar,one, two, three;
+  for(i = 0; i < Arr.length; i++){
+    ar = Arr[i];
+    if(ar.length == 4){
+    one = ar[2];
+    two = ar[3];
+    three = one + "," + two;
+    console.log(three);
+    ar.pop();
+    ar.pop();
+    ar.push(three);
+    Arr[i] = ar;
+  }
+  }
+  
+  //console.log(Arr);
+  return Arr;
+}
+//000000000000000000000000
+//code for removeing items
+//-----------------------------------------------------------
+function removeItemByIndex(arr,index){
+  arr.splice(index,1);
+  return arr;
+}

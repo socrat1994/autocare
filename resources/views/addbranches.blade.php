@@ -6,6 +6,7 @@
         <p id="ad">{{ __('Add') }}</p>
         <p id="back">{{ __('Back') }}</p>
         <p id="shbr">{{ __('Show Branchs')}}</p>
+        <p id="del">{{ __('Delete')}}</p>
         <p></p>
     </div>
     <div class="container">
@@ -68,7 +69,7 @@
                                 </div>
                             </div>
                         </form>
-                        <table class="table">
+                        <table id="table" class="table">
                             <thead>
                                 <tr>
                                 <th scope="col">#</th>
@@ -78,7 +79,7 @@
                                 <th scope="col" colspan="2">{{ __('Action') }}</th>
                                 </tr>
                             </thead>
-                            <tbody class="tablbody">
+                            <tbody id="tablbody" class="tablbody">
 
                             </tbody>
                             <tfoot>
