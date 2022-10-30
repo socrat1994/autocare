@@ -260,12 +260,10 @@ function subTable() {
           console.log(receiveArr);
           console.log(sendArr);
           mySArr = jsonHandle(sendArr);
-          console.log(mySArr,"modyfied send array");
+          //console.log(mySArr,"modyfied send array");
           myRArr = jsonHandle(msg.data);
-          console.log(myRArr,"modyfied received array");
+          //console.log(myRArr,"modyfied received array");
           mainfunction(mySArr, myRArr);
-          //arr = compare(mySArr,myRArr);
-          //console.log(arr,"comparing arrays");
         }
         // return value stored in msg variable
         //maby you want to add the (clear code) here after you sure that data is recived to server
@@ -430,6 +428,8 @@ function mainfunction(arrS, arrR){
   arr2 = recArrMod(arrR);
   console.log(arr2);
   console.log(compair2Arr(arr1,arr2));
+  arr = compair2Arr(arr1,arr2);
+  ShowErrors(arr);
 }
 //......................................
 function compair2Arr(arr1,arr2){
@@ -452,6 +452,42 @@ function compair2Arr(arr1,arr2){
   }
   return four;
 }
+//000000000000000000000000000000000000000000
+//function for show errors in the table:
+function ShowErrors(_array){
+  let m = [];
+  let message;
+  let stat = 'nodelete';
+  for(let i = 0; i < _array.length; i++){
+    m = _array[i];
+    if(m.length > 10){
+     $("#tablbody tr:eq("+ i +")").after('<p>'+ m +'</p>');
+    }
+  }
+  for(let i = 0; i < _array.length; i++){
+    m = _array[i];
+    let count_ = 0;
+    if(m.length < 10){
+     $("#tablbody tr:eq("+ i +")").after('<p>'+ m +'</p>');
+     for(j = 0; j < m.length; j++){
+      //console.log(m[j]);
+      if(m[j] == 'done'){
+        count_++;
+        //console.log(count_);
+      }
+     }
+    }
+  }
+
+  //new for to delet rows
+  //
+  //    if(_array[i].length > 10){
+  //
+  //
+  //_array.splice(i,1);//for deleting array specific item
+  console.log(_array);
+}
+
 //000000000000000000000000000000000000000000
 function sendArrMod(arrS){
    let arr = [],ar;
