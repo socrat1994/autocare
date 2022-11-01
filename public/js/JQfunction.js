@@ -411,16 +411,25 @@ $(document).ready(function () {
 function  jsonHandle(json){
   myArr = [];
   json.forEach((_element, _index) => {
-      if (typeof (_element) == typeof("test")) {
+      if (typeof _element === typeof "string") {
         myArr[_index] = _element;
-      }
-      else {
-        myArr[_index] = Object.values(_element);
+      }else{
+         myArr[_index] = Object.values(_element);
+         //console.log(myArr,"++");
+         tst = myArr[_index];
+         for(i = 0; i < tst.length; i++){
+          if(Array.isArray(tst[i])){
+          console.log("here");
+          myArr[_index] = Object.values(_element).toString();
+         }
+         
+         }
+         
       }
     });
   return myArr;
   }
-
+//************************************** */
 function mainfunction(arrS, arrR){
   let arr = [], arr1 = [], arr2 = [];
   arr1 = sendArrMod(arrS);
@@ -431,6 +440,7 @@ function mainfunction(arrS, arrR){
   arr = compair2Arr(arr1,arr2);
   ShowErrors(arr);
 }
+//*************************************** */
 //......................................
 function compair2Arr(arr1,arr2){
   let one,two,three = [],four = [],five;
@@ -479,12 +489,6 @@ function ShowErrors(_array){
     }
   }
 
-  //new for to delet rows
-  //
-  //    if(_array[i].length > 10){
-  //
-  //
-  //_array.splice(i,1);//for deleting array specific item
   console.log(_array);
 }
 
@@ -509,7 +513,7 @@ function sendArrMod(arrS){
 function recArrMod(arrR){
   let Arr = [];
   for(i = 0; i < arrR.length; i++){
-    if(typeof(arrR[i]) == typeof([])){
+    if(typeof arrR[i] === typeof []){
       //console.log(arrR[i]);
       arrR[i].splice(arrR[i].length - 2,2)
       Arr.push(arrR[i]);
