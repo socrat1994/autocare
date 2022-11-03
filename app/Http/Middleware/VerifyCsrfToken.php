@@ -12,10 +12,13 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        'http://localhost:8000/employeedeledi',
+        'http://localhost:8000/employee/update',
         'http://localhost:8000/branchdeledi',
         'http://localhost:8000/employee',
-        'http://localhost:8000/addvehicle',
+        'http://localhost:8000/vehicle/add',
+        'http://localhost:8000/vehicle/move',
+        'http://localhost:8000/vehicle/changenum',
+        'http://localhost:8000/vehicle/update',
         'http://localhost:8000/branch'
 
     ];
