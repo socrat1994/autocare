@@ -10,7 +10,7 @@ return new class extends Migration
     public function up()
     {
       Schema::table('locations', function (Blueprint $table) {
-          $table->unique(["car_number", "branch_id"], 'composerkeylocation');
+          $table->unique(["car_number", "branch_id", "moved_at", 'plate_id'], 'composerkeylocation');
       });
     }
 

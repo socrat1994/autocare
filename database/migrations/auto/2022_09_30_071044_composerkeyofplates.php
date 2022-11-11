@@ -10,7 +10,7 @@ return new class extends Migration
     public function up()
     {
       Schema::table('plates', function (Blueprint $table) {
-          $table->unique(["vehicle_id", "vin_number", 'plate_number'], 'composerkeyplate');
+          $table->unique(["vin_number", 'plate_number'], 'composerkeyplate');
       });
     }
 

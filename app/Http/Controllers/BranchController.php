@@ -40,8 +40,10 @@ class BranchController extends Controller
   public function store(Request $request)
   {
     try {
+      $s=memory_get_usage();
       $i = 0;
       $arr = new ToArray();
+      $new_branches =[];
       $datas = json_decode($request->pTableData, true);
       $company = session('company');
       $branches = $arr->to_array(Branch::query()->select('name')->where('company_id', $company)->get(), "name");
@@ -69,6 +71,11 @@ class BranchController extends Controller
           $error = true;
           continue;
         }
+        if(array_search($data['name'], $new_branches)!== false) {
+          $error = true;
+          throw new \Exception("the branchs name is duplicated");
+        }
+        array_push($new_branches, $data['name']);
         $data_arr =array_merge($data,['company_id' => $company]);
         $branch = Branch::create($data_arr);
         $status[$i] = $branch;
@@ -90,11 +97,15 @@ class BranchController extends Controller
         $company = session('company');
         $branches = $arr->to_array(Branch::query()->select('name')->where('company_id', $company)->get(), "name");
         a:  foreach(array_slice($datas, $i, count($datas)-$i) as $data){
-
           if(count($data) > 1)
           {
-            if($data['geolocation']??null){
+            if($data['geolocation']??null)
+            {
               $data['geolocation'] = explode(",", $data['geolocation']);
+              if(!($data['geolocation'][0]??null) or !($data['geolocation'][1]??null)) {
+                $error = true;
+                throw new \Exception("the geolocation must be in this format 0.00,0.00");
+              }
               $data['latitude'] = $data['geolocation'][0];
               $data['longitude'] = $data['geolocation'][1];
             }
@@ -111,7 +122,6 @@ class BranchController extends Controller
               continue;
             }
           }
-
           $branch = Branch::find($data['id']);
           if($branch){
             $response = Gate::inspect('branches', $branch);

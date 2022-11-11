@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <form method="POST" action="{{ url('/employee') }}">
                         @csrf
-
+<p id="data">name,phone</p>
                         <div class="row mb-3">
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
@@ -91,12 +91,39 @@
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="button" class="btn btn-primary" onclick='BindData2()'>
                                     {{ __('submit') }}
                                 </button>
                             </div>
                         </div>
                     </form>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">{{ __('Name') }}</th>
+                            <th scope="col">{{ __('PHONE') }}</th>
+                            <th scope="col">{{ __('BRANCH') }}</th>
+                            <th scope="col">{{ __('ROLES') }}</th>
+                            <th scope="col">{{ __('PERMISSIONS') }}</th>
+                            <th scope="col">{{ __('PASSWORD') }}</th>
+                            <th scope="col">{{ __('CONFIRMTION') }}</th>
+                            <th scope="col" colspan="2">{{ __('Action') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tablbody">
+
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" style="text-align: center;">
+                                    <button type="button" id="subTable"class="btn btn-primary">
+                                            {{ __('submit')}}
+                                    </button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
         </div>

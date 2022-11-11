@@ -5,6 +5,7 @@ namespace App\Models\Auto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Auto\Plate;
 use App\Models\Branch;
+use App\Models\Movement\Movement;
 use Illuminate\Database\Eloquent\Model;
 
 class Location extends Model
@@ -29,4 +30,9 @@ class Location extends Model
   {
     return $this->belongsTo(Branch::class, 'branch_id', 'id');
   }
+
+  public function movements()
+  {
+    return $this->hasMany(Movement::class, 'location_id', 'id');
+  }  
 }
