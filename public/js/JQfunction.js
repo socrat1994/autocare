@@ -172,6 +172,7 @@ function AddData() {
 
 //code to submit data that has been intered to the table:
 function subTable() {
+  removPrevTableErrors();//for delete the previous Errore messages. before write the new ones.
   //check if the data in the table is from server as (show branch data)
   // ?? the exist of data is not important ??
   if (isShowData) {
@@ -205,7 +206,10 @@ function subTable() {
             //maby you want to add the (clear code) here after you sure that data is recived to server
           }
           else {
-            alert("data is not added");
+            updateDelet = [];//make the array that contain old data empty.
+            //alert("data is not added");     
+            console.log(jsonHandle(msg.data)); 
+            
           }
         },
         error: function (error) {
@@ -264,6 +268,7 @@ function subTable() {
           myRArr = jsonHandle(msg.data);
           //console.log(myRArr,"modyfied received array");
           mainfunction(mySArr, myRArr);
+          removeCorrectRows();
         }
         // return value stored in msg variable
         //maby you want to add the (clear code) here after you sure that data is recived to server
@@ -290,6 +295,7 @@ function addErrorRow(index,_message) {
 function back() {
   updateDelet = [];
   update = [];
+  $(".Errore").remove();
   $(".table tbody tr").each(function (row, tr) {
     $(tr).remove();
     cnt = 0;
@@ -305,6 +311,7 @@ function back() {
 //--------------getBranchData(show branches)------------------
 function getBranchData() {
   //$("#geolocationReq").addClass("dis-none");
+  $(".Errore").remove();
   $("#locationReq").addClass("dis-none");
   $("#nameReq").addClass("dis-none");
   if ($("#show").html() == $("#back").html()) {
@@ -344,6 +351,10 @@ function getBranchData() {
         }
       });
     }
+    else if(confirm('Are you sure you want to remove this entries?')){
+      back();
+      getBranchData();
+    }
   }
 }
 //------------------------------------------------------------
@@ -382,6 +393,7 @@ $(document).ready(function () {
         par.find("#edit").prop('disabled', true);
       }
     } else {
+      rmoveErrorMessage(par);
       par.remove();
       cnt--;
       if (cnt == 0) {
@@ -401,26 +413,49 @@ $(document).ready(function () {
 //0000000000000000000000000000000000000000000
 //0000000000000000000000000000000000000000000
 
+function rmoveErrorMessage(par){
+  let element = par.next();
+  console.log(element.css('color'));
+  if(element.is('p')){
+    element.remove();
+    console.log(element);
+  }
+  // if(element.css('color') == "rgb(0, 0, 255)"){
+  //   element.remove();
+  //   console.log(element);
+  // }
+}
+
+function removPrevTableErrors(){
+  $(".Errore").remove();
+}
 
 
-
-
-
+function removeCorrectRows(){
+  $('.Correct').remove();
+}
 
 
 function  jsonHandle(json){
   myArr = [];
   json.forEach((_element, _index) => {
-      if (typeof (_element) == typeof("test")) {
+      if (typeof _element === typeof "string") {
         myArr[_index] = _element;
-      }
-      else {
-        myArr[_index] = Object.values(_element);
+      }else{
+         myArr[_index] = Object.values(_element);
+         //console.log(myArr,"++");
+        tst = myArr[_index];
+        for(i = 0; i < tst.length; i++){
+            if(Array.isArray(tst[i])){
+            console.log("here");
+            myArr[_index] = Object.values(_element).toString();
+          }
+        }
       }
     });
   return myArr;
   }
-
+//************************************** */
 function mainfunction(arrS, arrR){
   let arr = [], arr1 = [], arr2 = [];
   arr1 = sendArrMod(arrS);
@@ -431,6 +466,7 @@ function mainfunction(arrS, arrR){
   arr = compair2Arr(arr1,arr2);
   ShowErrors(arr);
 }
+//*************************************** */
 //......................................
 function compair2Arr(arr1,arr2){
   let one,two,three = [],four = [],five;
@@ -461,14 +497,18 @@ function ShowErrors(_array){
   for(let i = 0; i < _array.length; i++){
     m = _array[i];
     if(m.length > 10){
-     $("#tablbody tr:eq("+ i +")").after('<p>'+ m +'</p>');
+      //change the color of the row
+     $("#tablbody tr:eq("+ i +")").css('color','red');
+     $("#tablbody tr:eq("+ i +")").after('<p class="Errore color-blue">'+ m +'</p>');
     }
   }
   for(let i = 0; i < _array.length; i++){
     m = _array[i];
     let count_ = 0;
     if(m.length < 10){
-     $("#tablbody tr:eq("+ i +")").after('<p>'+ m +'</p>');
+      //change the color of the row 
+     $("#tablbody tr:eq("+ i +")").addClass("Correct");
+     $("#tablbody tr:eq("+ i +")").after('<p class="Correct">'+ m +'</p>');
      for(j = 0; j < m.length; j++){
       //console.log(m[j]);
       if(m[j] == 'done'){
@@ -479,12 +519,6 @@ function ShowErrors(_array){
     }
   }
 
-  //new for to delet rows
-  //
-  //    if(_array[i].length > 10){
-  //
-  //
-  //_array.splice(i,1);//for deleting array specific item
   console.log(_array);
 }
 
@@ -509,7 +543,7 @@ function sendArrMod(arrS){
 function recArrMod(arrR){
   let Arr = [];
   for(i = 0; i < arrR.length; i++){
-    if(typeof(arrR[i]) == typeof([])){
+    if(typeof arrR[i] === typeof []){
       //console.log(arrR[i]);
       arrR[i].splice(arrR[i].length - 2,2)
       Arr.push(arrR[i]);
