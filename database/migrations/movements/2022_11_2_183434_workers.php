@@ -9,9 +9,10 @@ return new class extends Migration
   public function up()
   {
   Schema::create('workers', function (Blueprint $table) {
-      $table->id();
+      $table->unsignedBigInteger('id');
       $table->unsignedBigInteger('driver_id');
       $table->unsignedBigInteger('assistant_id');
+      $table->foreign('id')->references('id')->on('movements')->onDelete('cascade')->onUpdate('cascade');
       $table->foreign('driver_id')->references('id')->on('employees')->onDelete('cascade')->onUpdate('cascade');
       $table->foreign('assistant_id')->references('id')->on('employees')->onDelete('cascade')->onUpdate('cascade');
   });

@@ -9,9 +9,9 @@ return new class extends Migration
   public function up()
   {
   Schema::create('malfunctions', function (Blueprint $table) {
-      $table->id();
+      $table->unsignedBigInteger('id');
       $table->string('reason');
-      $table->foreign('id')->references('id')->on('locations')->onDelete('cascade')->onUpdate('cascade');
+      $table->foreign('id')->references('id')->on('movements')->onDelete('cascade')->onUpdate('cascade');
   });
 }
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\MovementController;
 use App\Http\Controllers\IntiController;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
@@ -44,6 +45,13 @@ Route::group(['middleware' => ['isactive' , 'auth']], function() {
       Route::get('/show', 'show')->name('show');
     });
     Route::controller(VehicleController::class)->prefix('vehicle')->name('vehicle.')->group(function(){
+      Route::post('/add', 'store')->name('add');
+      Route::post('/update', 'del_edi')->name('update');
+      Route::post('/move', 'move')->name('move');
+      Route::post('/changenum', 'change_num')->name('changenum');
+      Route::get('/show/{options}', 'show')->name('show');
+    });
+    Route::controller(MovementController::class)->prefix('movement')->name('movement.')->group(function(){
       Route::post('/add', 'store')->name('add');
       Route::post('/update', 'del_edi')->name('update');
       Route::post('/move', 'move')->name('move');

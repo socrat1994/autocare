@@ -10,7 +10,6 @@ return new class extends Migration
   {
   Schema::create('movements', function (Blueprint $table) {
       $table->id();
-      $table->string('car_number');
       $table->date('date');
       $table->unsignedBigInteger('location_id');
       $table->integer('odometer');

@@ -99,8 +99,13 @@ class BranchController extends Controller
         a:  foreach(array_slice($datas, $i, count($datas)-$i) as $data){
           if(count($data) > 1)
           {
-            if($data['geolocation']??null){
+            if($data['geolocation']??null)
+            {
               $data['geolocation'] = explode(",", $data['geolocation']);
+              if(!($data['geolocation'][0]??null) or !($data['geolocation'][1]??null)) {
+                $error = true;
+                throw new \Exception("the geolocation must be in this format 0.00,0.00");
+              }
               $data['latitude'] = $data['geolocation'][0];
               $data['longitude'] = $data['geolocation'][1];
             }
