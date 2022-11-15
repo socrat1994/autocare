@@ -46,7 +46,8 @@ function BindData(count) {
 //update button
 function EditData(count) {
   // here is the code when update butten is clicked
-
+  rmoveErrorMessage($("#id_"+count).parent());
+  //$(".updErr").remove();
   if ($("#name").val() == "") {
     //code for manibulate the case name's textbox is empty
     $("#nameReq").removeClass("dis-none");//show the message this field is required
@@ -105,6 +106,7 @@ function EditData(count) {
         console.log(obj);
         updateDelet.push(obj);// push the object to the new array for send it to server
         console.log(updateDelet);
+        UD = updateDelet;//for reuse it in error message show
         update = [];//clear the array from breveose data
       }
     }
@@ -208,8 +210,9 @@ function subTable() {
           else {
             updateDelet = [];//make the array that contain old data empty.
             //alert("data is not added");     
-            console.log(jsonHandle(msg.data)); 
-            
+            let ErrMes = jsonHandle(msg.data);
+            console.log(ErrMes); 
+            isShowErrMasseges(ErrMes,UD);
           }
         },
         error: function (error) {
@@ -282,7 +285,21 @@ function subTable() {
     //for clear the table row after submit(clear code)
   }
 }
-
+//---------------------------------------------------
+function isShowErrMasseges(ErrMes,updateDelet){
+  let new_arr = [],idof;
+  new_arr = jsonHandle(updateDelet);
+  console.log(new_arr);
+  for(let i = 0; i< new_arr.length; i++){
+    let ele = new_arr[i];
+    idof = ele[0];
+    let tr = $( "td:contains("+ idof + ")").parent();
+    tr.after('<p class="updErr color-blue">'+ ErrMes[i] +'</p>');
+  }
+   
+   
+  
+}
 //...................................................
 //for insert message error in tables rows:
 function addErrorRow(index,_message) {
@@ -312,6 +329,7 @@ function back() {
 function getBranchData() {
   //$("#geolocationReq").addClass("dis-none");
   $(".Errore").remove();
+  $("updErr").remove();
   $("#locationReq").addClass("dis-none");
   $("#nameReq").addClass("dis-none");
   if ($("#show").html() == $("#back").html()) {
@@ -577,3 +595,5 @@ function removeItemByIndex(arr,index){
   arr.splice(index,1);
   return arr;
 }
+//...........................................................
+//...........................................................
