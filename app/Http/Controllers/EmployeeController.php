@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -75,34 +76,71 @@ class EmployeeController extends Controller
           'branch_id' => $data['branch_id'],
           'moved_at' => $data['moved_at']
         ]);
-        $user->assignRole($data['role']);
+        $uroles = $user->assignRole($data['role']);
+        $uroles = $arr->to_array($uroles->roles, 'name');
+        $uroles = implode(",", $uroles);
         if($data['permission']??null)
         {
-          $user->givePermissionTo($data['permission']);
+          $upermissions = $user->givePermissionTo($data['permission']);
+          $upermissions = $arr->to_array($upermissions->permissions, 'name');
+          $upermissions = implode(",", $upermissions);
         }
-        $status[$i] = $user->load('transfers');
-        $i++;
-      }
-    }catch (\Exception $e) {
-      $status[$i] = $e->getMessage();
+        $status[$i] = ["name"=>$user->name,
+        "phone"=>$user->phone,
+        "branch_id"=>$employee->branch_id,
+        "moved_at"=>$employee->moved_at,
+        "role"=>$uroles,
+        "permission"=>$upermissions,
+      ];
       $i++;
-      goto a;
     }
-    return response()->json(new Message($status, '200', isset($error)?false:true, 'info', "here status of every insertion", 'Arabictext'));
+  }catch (\Exception $e) {
+    $status[$i] = $e->getMessage();
+    $i++;
+    goto a;
   }
-  public function show($id)
-  {
-    $company = session('company');
-    $branches = Branch::query()->select(['id', 'name', 'location', 'geolocation'])->where('company_id', $company)->get();
-    return response()->json(new Message($branches, '200', isset($error)?false:true, 'info', 'all branches of company', 'كل فروع الشركة'));
+  return response()->json(new Message($status, '200', isset($error)?false:true, 'info', "here status of every insertion", 'Arabictext'));
+}
 
-  }
+public function show()
+{
+  $employees = DB::table(DB::raw('(select
+  `users`.`id` as `id`,
+  `users`.`name` as `name`,
+  `users`.`phone` as `phone`,
+  `employees`.`branch_id` as `branch_id`,
+  `employees`.`moved_at` as `moved_at`,
+  group_concat(roles.name) as role
+  from
+  `users`
+  inner join `employees` on `users`.`id` = `employees`.`user_id`
+  inner join `branches` on `branches`.`id` = `employees`.`branch_id`
+  inner join `companies` on `companies`.`id` = `branches`.`company_id`
+  inner join `model_has_roles` on `users`.`id` = `model_has_roles`.`model_id`
+  inner join `roles` on `roles`.`id` = `model_has_roles`.`role_id`
+  where `companies`.`id` ='.session('company').' and
+  `employees`.`id` in (select max(`id`) from `employees` group by `user_id`)
+  group by
+  `phone`,
+  `name`,
+  `branch_id`,
+  `moved_at`,
+  `id`
+  ) as employees'))
+  ->join('model_has_permissions', 'employees.id', '=', 'model_has_permissions.model_id')
+  ->join('permissions', 'permissions.id', '=', 'model_has_permissions.permission_id')
+  ->select(['employees.*',
+  DB::raw('group_concat(permissions.name) as permission'),])
+  ->groupBy('phone' ,'name', 'branch_id', 'moved_at', 'id', 'role')->get();
+  return response()->json(new Message($employees, '200', isset($error)?false:true, 'info', 'all branches of company', 'كل فروع الشركة'));
+}
 
-  public function del_edi(Request $request)
-  {
+public function del_edi(Request $request)
+{
+  try {
     $i = 0;
     $arr = new ToArray();
-    $data = json_decode($request->pTableData, true);
+    $datas = json_decode($request->pTableData, true);
     $company = session('company');
     $userrole = session('role');
     $branches = $arr->to_array(Branch::query()->select('id')->where('company_id', $company)->get(), "id");
@@ -122,7 +160,7 @@ class EmployeeController extends Controller
         'branch_id' => ['integer', Rule::in($branches)],
         'role.*' => ['bail','string', Rule::in($roles), new LowerRole()],
         'permission.*' => ['string', Rule::in($permissions)],
-        'moved_at' => ['date'],]);
+        'moved_at' => ['date', 'after:1900-08-11', 'before:2100-08-11'],]);
         if ($validated->fails()) {
           $status[$i] = $validated->errors();
           $i++;
@@ -130,51 +168,61 @@ class EmployeeController extends Controller
           continue;
         }
       }
-      try {
-        $user = User::find($data['id']);
-        $employee = $user->transfers->last();
-        if($employee){
-          $response = Gate::inspect('your_employees', $employee);
-          if($response->allowed())
+      $user = User::find($data['id']);
+      $employee = $user->transfers->last();
+      if($employee){
+        $response = Gate::inspect('your_employees', $employee);
+        if($response->allowed())
+        {
+          if(count($data) > 1)
           {
-            if(count($data) > 1)
+            $user = $user->update($data);
+            $employee = $employee->update($data);
+            $user = User::find($data['id']);
+            if($data['role']??null)
             {
-              $user = $user->update($data);
-              $employee = $employee->update($data);
-              $user = User::find($data['id']);
-              if($data['role']??null)
-              {
-                $user->syncRoles($data['role']);
-              }
-              if($data['permission']??null)
-              {
-                $user->syncPermissions($data['permission']);
-              }
-              $status[$i] = $user->load('transfers');
-              $i++;
+              $user->syncRoles($data['role']);
             }
-            else
+            if($data['permission']??null)
             {
-              $user->delete();
-              $status[$i] = $user->load('transfers');
-              $i++;
+              $user->syncPermissions($data['permission']);
             }
+            //$status[$i] = $user->load('transfers');
+            //array_push($status[$i], [name])
+            $employee = $user->load('transfers');
+            $status[$i] = [
+            "id"=>$user->id,
+            "name"=>$user->name,
+            "phone"=>$user->phone,
+            "branch_id"=>$employee->transfers[0]->branch_id,
+            "moved_at"=>$employee->transfers[0]->moved_at,
+            "role"=>implode(",", $arr->to_array($user->roles, 'name')),
+            "permission"=>implode(",", $arr->to_array($user->getAllPermissions(), 'name')),
+          ];
+            $i++;
           }
           else
           {
-            $status[$i] = $response->message();
+            $user->delete();
+            $status[$i] = $user->load('transfers');
             $i++;
           }
         }
-        else {
-          $status[$i] = 'wrong id of employee';
+        else
+        {
+          $status[$i] = $response->message();
           $i++;
         }
-      }catch (\Exception $e) {
-        $status[$i] = $e->getMessage();
-        $i++;
-        goto a;      }
       }
-      return response()->json(new Message($status, '200', isset($error)?false:true, 'info', "here status of every insertion", 'هذه حالة كل عملية إدخال'));
+      else {
+        $status[$i] = 'wrong id of employee';
+        $i++;
+      }
     }
+  }catch (\Exception $e) {
+    $status[$i] = $e->getMessage();
+    $i++;
+    goto a;}
+    return response()->json(new Message($status, '200', isset($error)?false:true, 'info', "here status of every insertion", 'هذه حالة كل عملية إدخال'));
   }
+}

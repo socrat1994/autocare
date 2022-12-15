@@ -106,12 +106,6 @@ function add(row)
   $('#tablecon')[0].scrollIntoView();
 }
 
-function moveto(count, row)
-{
-  edit(count, row);
-
-}
-
 function del(dcount)
 {
 
@@ -147,10 +141,11 @@ function reset(rowIndex)
   })
 }
 
-function edit(count, row)
+function edit(count, row)//fix back to after submet
 {
 
   ecount = 1;
+  console.log(datatable.row('.selected').data());
   tdcontent = datatable.row('.selected').data();
   exp = true;
   getdataarray.forEach(function(item){
@@ -159,6 +154,7 @@ function edit(count, row)
     ecount++;
     if(serror)
     {
+      console.log(order);
       console.log('count : '+ count);
       theError = errors[order.indexOf(count)][item];
       $("#" + item + "error").html(JSON.stringify(theError));
@@ -185,7 +181,7 @@ function edit(count, row)
 
 function update()
 {
-  var rowIndex = datatable.row('.selected').index();//test
+  var rowIndex = datatable.row('.selected').index();
   colIndex = 1 ;
   getdataarray.forEach(function(item){
     cell = datatable.cell(rowIndex, colIndex);
@@ -251,7 +247,7 @@ function buildjson()
 
 function sendtoadd()
 {
-  if(datatable.rows().count() > 0)
+  if(true)//datatable.rows().count() > 0)
   {
     errors = [];
     rows =[];
@@ -448,7 +444,6 @@ function backto()
     $("#back").hide();
     datatable.clear().draw();
     count = 0;
-    localStorage.setItem('count', count);
     editdata = [];
     $('#addbutton').prop('disabled', false);
   }

@@ -14,9 +14,13 @@
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js"></script>
-    <script src="{{ asset('js/jqfunction.js') }}" defer></script>
+    <!--<script src="{{ asset('js/jqfunction.js') }}" defer></script>-->
     <script src="{{ asset('js/jqfunctionsocrat.js') }}" defer></script>
-
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+   <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>
+   <link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/themes/blitzer/jquery-ui.css"
+       rel="stylesheet" type="text/css" />
+       <script type="text/javascript" src="http://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -24,6 +28,9 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/popup.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <div id="app">
@@ -93,8 +100,18 @@
             </div>
         </nav>
 
-        <main class="py-4">
             @yield('content')
+            <main class="py-4">
+              <div class="cd-popup" role="alert">
+                <div class="cd-popup-container">
+                  <p id='dia'>{{__('what do you want to do with row number:')}}</p>
+                  <ul class="cd-buttons">
+                    <li><a id='del' href="#0">delete</a></li>
+                    <li><a id='edit' href="#0">edit</a></li>
+                  </ul>
+                  <a href="#0" class="cd-popup-close img-replace">Close</a>
+                </div>
+              </div>
         </main>
     </div>
 </body>
