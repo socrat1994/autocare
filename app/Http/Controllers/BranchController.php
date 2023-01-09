@@ -11,7 +11,7 @@ use App\Models\Company;
 use App\Models\Branch;
 use Illuminate\Validation\Rule;
 use App\HelperClasses\Message;
-use App\HelperClasses\ToArray;
+use App\HelperClasses\Iteration;
 use app\Policies\AnyChangingPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
@@ -42,7 +42,7 @@ class BranchController extends Controller
     try {
       $s=memory_get_usage();
       $i = 0;
-      $arr = new ToArray();
+      $arr = new Iteration();
       $new_branches =[];
       $datas = json_decode($request->pTableData, true);
       $company = session('company');
@@ -92,7 +92,7 @@ class BranchController extends Controller
     {
       try {
         $i = 0;
-        $arr = new ToArray();
+        $arr = new Iteration();
         $datas = json_decode($request->pTableData, true);
         $company = session('company');
         $branches = $arr->to_array(Branch::query()->select('name')->where('company_id', $company)->get(), "name");

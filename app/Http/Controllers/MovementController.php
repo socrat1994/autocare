@@ -16,7 +16,7 @@ use App\Models\Auto\Plate;
 use App\Models\Auto\Location;
 use Illuminate\Validation\Rule;
 use App\HelperClasses\Message;
-use App\HelperClasses\ToArray;
+use App\HelperClasses\Iteration;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -45,7 +45,7 @@ class VehicleController extends Controller
     try {
       $s =microtime(true);
       $i = 0;
-      $arr = new ToArray();
+      $arr = new Iteration();
       $datas = json_decode($request->pTableData, true);
       $company = session('company');
       $models = $arr->to_array(CarModel::query()->select('id')->get(), "id");
@@ -124,7 +124,7 @@ class VehicleController extends Controller
   {
         try {
           $i = 0;
-          $arr = new ToArray();
+          $arr = new Iteration();
           $datas = json_decode($request->pTableData, true);
           $in_data = $arr->to_array(json_decode($request->pTableData), 'plate_id');
           $company = session('company');
@@ -178,7 +178,7 @@ class VehicleController extends Controller
   {
         try {
           $i = 0;
-          $arr = new ToArray();
+          $arr = new Iteration();
           $datas = json_decode($request->pTableData, true);
           $in_data = $arr->to_array(json_decode($request->pTableData), 'vehicle_id');
           $company = session('company');
@@ -307,7 +307,7 @@ class VehicleController extends Controller
   {
           try {
             $i = 0;
-            $arr = new ToArray();
+            $arr = new Iteration();
             $datas = json_decode($request->pTableData, true);
             $company = session('company');
             $models = $arr->to_array(CarModel::query()->select('id')->get(), "id");

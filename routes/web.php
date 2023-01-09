@@ -12,16 +12,21 @@ use App\Http\Controllers\IntiController;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use App\HelperClasses\ToArray;
+use App\HelperClasses\Iteration;
 use App\Http\Controllers\Auth\AdminLogController;
 use App\Models\Branch;
 use App\Models\Employee;
 use App\Models\User;
 use App\Models\Company;
 use Illuminate\Support\Facades\DB;
+//hide moving and show
+if(0)//env('APP_ENV') === 'production')
+{
+  URL::forceScheme('https');
+}
 
 Route::get('/',function(){
-  return view('home');
+  return env('APP_ENV');//view('home');
 });
 
 Auth::routes();

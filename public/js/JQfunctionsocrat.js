@@ -24,6 +24,7 @@ var diacontent = '';
 var datatable ={};
 var order = [];
 var tohide = [];
+var tomove = [];
 var datatable;
 
 window.onload = function()
@@ -43,26 +44,33 @@ window.onload = function()
   getstayarray = getstayfrompage.split(",").map(Number);
   $('#updatebutton').hide();
   tohide = ($('#tohide').html()).split(',').map(Number);
+  tomove = ($('#tomove').html()).split(',').map(Number);
   storing();
 }
 
 function storing()
 {
 
-  //datatable = $('#mytable').DataTable();
-  count = localStorage.getItem("count");
+ var storetable = localStorage.getItem('storetable');
+  //count = localStorage.getItem("count");
   if(count != 0)
   {
-    $(".tablbody").append(storetable);
+  //  $(".tablbody").append(storetable);
     $('#showb').prop('disabled', true);
 }
   var storetable = localStorage.getItem('storetable');
-//  storetable = localStorage.setItem('storetable','');
 
   $(document).ready( function () {
-    console.log(storetable);
     datatable = $('#mytable').DataTable();
   } );
+}
+
+function openform()
+{
+ $("#back").show();
+ $('.cd-popup').addClass('is-visible');
+ $('#deledit').hide();
+ $('#addbutton').show();
 }
 
 function validate(item)
@@ -106,10 +114,15 @@ function add(row)
   $('#tablecon')[0].scrollIntoView();
 }
 
-function moveto(count, row)
+function moving(showurl, sendtourl)
 {
-  edit(count, row);
-
+  tomove.forEach(function(i){
+    $('#d' + getdataarray[i]).hide();
+  })
+  $('#move').show();
+  $('#del').hide();
+  $('#edit').hide();
+  show(showurl, sendtourl);
 }
 
 function del(dcount)
@@ -118,22 +131,13 @@ function del(dcount)
   if(showdata != '')
   {
     editdata.push({'id':showdata[dcount].id});
-    console.log(editdata);
+    remove_exp.push(Number(dcount));
   }
-  datatable.row('.selected').remove().draw(false);
+  $('.selected').addClass('d-none d');
   localStorage.setItem('storetable', $(".tablbody")[0].innerHTML);
-  if(datatable.rows().count() == 0)
-  {
-    $('#addbutton').prop('disabled', false);
-    $('#showb').prop('disabled', false);
-    $("#subTable1").attr("onclick","sendtoedit('"+ addurl +"')");
-    serror = false;
-    count = 0;
-    localStorage.setItem('count', count);
-  }
 }
 
-function reset(rowIndex)
+function reset()
 {
   getdataarray.forEach(function(item, index){
     if(!getstayarray.includes(index))
@@ -147,49 +151,24 @@ function reset(rowIndex)
   })
 }
 
-function edit(count, row)
+function edit()
 {
 
-  ecount = 1;
-  tdcontent = datatable.row('.selected').data();
-  exp = true;
-  getdataarray.forEach(function(item){
-    content = tdcontent[ecount].toString();
-    $("#" + item).val(content.split(","));
-    ecount++;
-    if(serror)
-    {
-      console.log('count : '+ count);
-      theError = errors[order.indexOf(count)][item];
-      $("#" + item + "error").html(JSON.stringify(theError));
-      $("#" + item + "error").css('color', 'red');
-      if(theError)
-      {
-        $("#" + item ).css("border-color", 'red');
-        exp = false;
-      }
-    }
-  });
-  console.log(errors[row]);
-  if(exp && serror)
-  {
-    $("#dexperror").show();
-    $("#experror").html(errors[order.indexOf(count)]);
-  }
-  exp = true;
   $('#updatebutton').show();
   $('#addbutton').hide();
+  $("#close").hide();
+  $('#deledit').hide();
   editclicked = true;
   $('#subTable1').prop('disabled', true);
 }
 
 function update()
 {
-  var rowIndex = datatable.row('.selected').index();//test
+  $('.cd-popup').removeClass('is-visible');
+  var rowIndex = datatable.row('.selected').data()[0];
   colIndex = 1 ;
   getdataarray.forEach(function(item){
     cell = datatable.cell(rowIndex, colIndex);
-    console.log(cell.data());
     validate(item);
     if(!error)
     {
@@ -207,7 +186,7 @@ function update()
   })
   if(!error)
   {
-    if(showdata != '')
+    if(showdata != '' && Object.keys(editrow).length > 0)
     {
       editdata.push(editrow);
       remove_exp.push(rowIndex);
@@ -219,6 +198,9 @@ function update()
     $('#subTable1').prop('disabled', false);
     $('#updatebutton').hide();
     $('#addbutton').show();
+    $("#close").show();
+    //$('#del').show();
+    $('.sd-popup').removeClass('is-visible');
   }
   error = false;
 }
@@ -289,7 +271,7 @@ function sendtoadd()
           }
           pointer++;
         });
-        datatable.clear();
+        datatable.clear().draw();
         rows.forEach((item, i) => {
           add(item);
           $('#mytable tr').eq(i + 1).addClass('text-danger');
@@ -321,19 +303,20 @@ function sendtoedit(route)
     pointer =0;
     order = [];
     showdata2 = [];
+    $('.d').removeClass('d-none d');
     datatable.rows().every(function(){
-      if (remove_exp.includes(pointer))
+      if (remove_exp.includes(this.data()[0]))
       {
         rows.push(this.data());
       }
       pointer++;
     });
-    datatable.clear();
+    datatable.clear().draw();
     rows.forEach((item, i) => {
       add(item);
       order.push((item[0]).toString());
-      console.log(order);
     });
+    errors = [];
     $.ajax({
       type: "POST",
       url: route,
@@ -352,21 +335,17 @@ function sendtoedit(route)
               done++;
             }
           })
-          console.log(todone);
-          if(done == todone)
-          {
-            //$(tr).remove();
-          }else
+          if(done != todone)
           {
             subrows.push(row);
             errors.push(data.data[pointer]);
             serror = true;
-
           }
           done = 0;
+          pointer++;
         })
-        pointer++;
-        datatable.clear();
+
+        datatable.clear().draw();
         subrows.forEach((item, i) => {
           add(item);
           $('#mytable tr').eq(i + 1).addClass('text-danger');
@@ -375,15 +354,9 @@ function sendtoedit(route)
         {
           serror = false;
           count = 0;
-          $('#addbutton').prop('disabled', false);
-          remove_exp = [];
-          editdata = [];
-          $("#subTable1").attr("onclick","sendtoedit('"+ addurl +"')");
-          $('#showb').show();
-          $("#back").hide();
+          resetshow();
         }else
         {
-          console.log(errors);
           editdata = [];
           remove_exp = [];
           $('#addbutton').prop('disabled', true);
@@ -393,7 +366,7 @@ function sendtoedit(route)
   }
 }
 
-function show(showurl, updateurl)
+function show(showurl, sendtourl)
 {
   row = [];
   tohidearr = [];
@@ -401,9 +374,12 @@ function show(showurl, updateurl)
     datatable.column(i + 1).visible(false);
     $('#d' + getdataarray[i]).hide();
   })
+  $("#openmove").hide();
   $("#loadshow").show();
-  $("#subTable1").attr("onclick","sendtoedit('"+ updateurl +"')");
+  $('#addemp').hide();
+  $("#subTable1").attr("onclick","sendtoedit('"+ sendtourl +"')");
   $('#addbutton').prop('disabled', true);
+  $('#openadd').prop('disabled', true);
   $('#showb').hide();
   $("#back").show();
   $.ajax({
@@ -434,6 +410,16 @@ function show(showurl, updateurl)
   })
 }
 
+function resetmove()
+{
+  tomove.forEach(function(i){
+    $('#d' + getdataarray[i]).show();
+  })
+  $('#move').hide();
+  $('#del').show();
+  $('#edit').show();
+}
+
 function backto()
 {
   if(confirm(text) == true)
@@ -442,16 +428,27 @@ function backto()
       datatable.column(i + 1).visible(true);
       $('#d' + getdataarray[i]).show();
     })
-    $("#subTable1").attr("onclick","sendtoadd('"+ addurl +"')");
-    $('#showb').show();
+    resetmove();
     $('#showb').prop('disabled', false);
-    $("#back").hide();
     datatable.clear().draw();
     count = 0;
     localStorage.setItem('count', count);
     editdata = [];
-    $('#addbutton').prop('disabled', false);
+    $('#openadd').prop('disabled', false);
+    $('#addemp').show();
+    $("#dexperror").hide();
+    resetshow();
   }
+}
+
+function resetshow()
+{
+  $('#addbutton').prop('disabled', false);//
+  editdata = [];//
+  $("#subTable1").attr("onclick","sendtoedit('"+ addurl +"')");//
+  $('#showb').show();//
+  $("#back").hide();//
+  $("#openmove").show();
 }
 
 $('#del').on('click', function(){
@@ -460,8 +457,11 @@ $('#del').on('click', function(){
 })
 
 $('#edit').on('click', function(){
-  edit(countonclick, rowonclick);
-  $('.cd-popup').removeClass('is-visible');
+  edit();
+})
+
+$('#move').on('click', function(){
+  edit();
 })
 
 $('.cd-popup').on('click', function(event){
@@ -477,18 +477,45 @@ $('#mytable tbody').on('click', 'tr', function () {
   if ($(this).hasClass('selected')) {
     $(this).removeClass('selected');
   } else {
-    datatable.$('tr.selected').removeClass('selected');
-    $(this).addClass('selected');
-
-      rowonclick = $(this).closest('tr').index();
-      countonclick = $(this).find("td:first").html();
-      $('.cd-popup').addClass('is-visible');
-      $('#dia').html(diacontent + countonclick);
-
+    if(datatable.rows().count() > 0)
+    {
+      datatable.$('tr.selected').removeClass('selected');
+      $(this).addClass('selected');
+        rowonclick = $(this).closest('tr').index();
+        countonclick = $(this).find("td:first").html();
+        $('.cd-popup').addClass('is-visible');
+        $('#deledit').show();
+        $("#addemp").hide();
+        $('#addbutton').hide();
+        reset();
+        exp = true;
+        ecount = 1;
+        tdcontent = datatable.row('.selected').data();
+        getdataarray.forEach(function(item){
+          content = tdcontent[ecount].toString();
+          $("#" + item).val(content.split(","));
+          ecount++;
+          if(serror)
+          {
+            theError = errors[order.indexOf(countonclick)][item];
+            $("#" + item + "error").html(JSON.stringify(theError));
+            $("#" + item + "error").css('color', 'red');
+            if(theError)
+            {
+              $("#" + item ).css("border-color", 'red');
+              exp = false;
+            }
+          }
+        })
+        if(exp && serror)
+        {
+          $("#dexperror").show();
+          $("#experror").html(errors[order.indexOf(countonclick)]);
+        }
+        exp = true;
+    }
   }
   }
 });
-
 $('#mytable').on( 'click', 'tbody td', function () {
-
 } );

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
-use App\HelperClasses\ToArray;
+use App\HelperClasses\Iteration;
 
 /**
 * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -40,7 +40,7 @@ class UserFactory extends Factory
 
   public function configure()
   {
-    $arr = new ToArray();
+    $arr = new Iteration();
     return $this->afterCreating(function (User $user) {
       $user->assignRole('Owner');
       return $user->assignRole($this->faker->randomElement($arr->to_array(Role::all(), 'name')));

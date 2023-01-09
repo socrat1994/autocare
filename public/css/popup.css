@@ -1,6 +1,6 @@
 
 -------------------------------- */
-.cd-nugget-info {
+/*.cd-nugget-info {
   text-align: center;
   position: absolute;
   width: 100%;
@@ -56,7 +56,7 @@ Main components
 }
 @media only screen and (min-width: 1170px) {
   .cd-popup-trigger {
-    margin: 6em auto;
+    margin: 0em auto;
   }
 }
 
@@ -69,6 +69,7 @@ xpopup
   position: fixed;
   left: 0;
   top: 0;
+  overflow-y: scroll;
   height: 100%;
   width: 100%;
   background-color: rgba(94, 110, 141, 0.9);
@@ -80,6 +81,7 @@ xpopup
 }
 .cd-popup.is-visible {
   opacity: 1;
+  z-index:1;
   visibility: visible;
   -webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
   -moz-transition: opacity 0.3s 0s, visibility 0s 0s;
@@ -88,9 +90,9 @@ xpopup
 
 .cd-popup-container {
   position: relative;
-  width: 90%;
-  max-width: 400px;
-  margin: 4em auto;
+  width: 100%;
+  max-width: 4000px;
+  margin: 0em auto;
   background: #FFF;
   border-radius: .25em .25em .4em .4em;
   text-align: center;
@@ -121,6 +123,7 @@ xpopup
   float: left;
   width: 50%;
   list-style: none;
+  background: #000000;
 }
 .cd-popup-container .cd-buttons a {
   display: block;
@@ -186,7 +189,7 @@ xpopup
 }
 @media only screen and (min-width: 1170px) {
   .cd-popup-container {
-    margin: 8em auto;
+    margin: 0em auto;
   }
 }
 .img-replace {

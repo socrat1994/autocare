@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\Branch;
-use App\HelperClasses\ToArray;
+use App\HelperClasses\Iteration;
 
 class Intilization
 {
@@ -20,7 +20,7 @@ class Intilization
   {
     if(!Session::has('company'))
     {
-      $arr = new ToArray();
+      $arr = new Iteration();
       $user = Auth::user();
       if ($user) {
         $user = User::find($user->id);

@@ -16,6 +16,7 @@ return [
     'Login' => 'تسجيل الدخول',
     'phone number' => 'رقم الهاتف',
     'Password' => 'كلمة السر',
-    'gas' => 'غاز'
+    'gas' => 'غاز',
+    'the user have been deleted before' => 'لسبلصثغ'
 
 ];
