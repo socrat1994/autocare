@@ -42,7 +42,7 @@ class EmployeeController extends Controller
 
   public function common(Request $request)
   {
-    $arr = new ToArray;
+    $arr = new iteration;
     $datas = [];
     foreach(json_decode($request->pTableData, true) as $data)
     {
@@ -67,7 +67,7 @@ class EmployeeController extends Controller
 
   static  function forstore($data)
   {
-    $arr = new ToArray;
+    $arr = new iteration;
     $user = User::create([
       'name' => $data['name'],
       'phone' => $data['phone'],
@@ -100,7 +100,7 @@ class EmployeeController extends Controller
   public function store(Request $request)
   {
     $common = $this->common($request);
-    $arr = new ToArray;
+    $arr = new iteration;
     return $arr->Iteration($common, $this->rules , EmployeeController::class, 'forstore');
   }
 

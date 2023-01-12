@@ -30,10 +30,7 @@ var datatable;
 window.onload = function()
 {
   diacontent = $('#dia').html();
-  $("#loadshow").hide();
-  $("#dexperror").hide();
-  $("#back").hide();
-  $("#loading").hide();
+  hide(["#loadshow", "#dexperror", "#back", "#loading"]);
   todone = Number($('#todone').html());
   text = $('#text').html();
   addurl = $('#addurl').html();
@@ -52,11 +49,9 @@ function storing()
 {
 
  var storetable = localStorage.getItem('storetable');
-  //count = localStorage.getItem("count");
   if(count != 0)
   {
-  //  $(".tablbody").append(storetable);
-    $('#showb').prop('disabled', true);
+    disable(['#showb']);
 }
   var storetable = localStorage.getItem('storetable');
 
@@ -67,10 +62,9 @@ function storing()
 
 function openform()
 {
- $("#back").show();
+ show(["#back", '#addbutton']);
  $('.cd-popup').addClass('is-visible');
- $('#deledit').hide();
- $('#addbutton').show();
+ hide(['#deledit']);
 }
 
 function validate(item)
@@ -100,7 +94,7 @@ function formdata()
     localStorage.setItem('storetable', $(".tablbody")[0].innerHTML);
     console.log($('#mytable'));
     reset();
-    $('#showb').prop('disabled', true);
+    disable(['#showb', '#openmove']);
     localStorage.setItem('count', count);
   }
   error = false;
@@ -108,10 +102,10 @@ function formdata()
 
 function add(row)
 {
+  $('.cd-popup').removeClass('is-visible');
   $(".table").show();
   datatable.row.add(row).draw(false);
   count++;
-  $('#tablecon')[0].scrollIntoView();
 }
 
 function moving(showurl, sendtourl)
@@ -119,9 +113,8 @@ function moving(showurl, sendtourl)
   tomove.forEach(function(i){
     $('#d' + getdataarray[i]).hide();
   })
-  $('#move').show();
-  $('#del').hide();
-  $('#edit').hide();
+  show(['#move']);
+  hide(['#del', '#edit']);
   show(showurl, sendtourl);
 }
 
@@ -145,7 +138,7 @@ function reset()
       //  $("#" + item).val('');
     }
     $("#" + item + "error").html('');
-    $("#dexperror").hide();
+    hide(["#dexperror"]);
     $("#" + item ).css("border-color", color);
     $('.selected').removeClass('text-danger');
   })
@@ -154,12 +147,10 @@ function reset()
 function edit()
 {
 
-  $('#updatebutton').show();
-  $('#addbutton').hide();
-  $("#close").hide();
-  $('#deledit').hide();
+  show(['#updatebutton']);
+  hide(['#addbutton', "#close", '#deledit']);
   editclicked = true;
-  $('#subTable1').prop('disabled', true);
+  disable(['#subTable1']);
 }
 
 function update()
@@ -195,11 +186,9 @@ function update()
     }
     reset();
     editclicked = false;
-    $('#subTable1').prop('disabled', false);
-    $('#updatebutton').hide();
-    $('#addbutton').show();
-    $("#close").show();
-    //$('#del').show();
+    enable(['#subTable1']);
+    hide('#updatebutton');
+    show(["#close", '#addbutton']);
     $('.sd-popup').removeClass('is-visible');
   }
   error = false;
@@ -207,26 +196,21 @@ function update()
 
 function buildjson()
 {
-  var pointer = 1;
   pTableData = [];
   order = [];
   addrow ={};
   serror = false;
-  $('#mytable tr td').each(function(){
-    if(pointer % col_count == 1)
-    {
-      order.push($(this).text());
+  datatable.rows().every(function(rowIdx, tableLoop, rowLoop){
+    row = this.data();
+    order.push(row[0]);
+    row.forEach(function(item, index){
+      if(index != 0)
+      {
+      addrow[getdataarray[index-1]] = row[index].toString();
     }
-    if(pointer % col_count != 1)
-    {
-      addrow[getdataarray[(pointer-2)%col_count]] = $(this).text();
-    }
-    if(pointer % col_count == 0)
-    {
-      pTableData.push(addrow);
-      addrow ={};
-    }
-    pointer++;
+    })
+    pTableData.push(addrow);
+    addrow ={};
   })
   return JSON.stringify(pTableData);
 }
@@ -237,14 +221,14 @@ function sendtoadd()
   {
     errors = [];
     rows =[];
-    $("#loading").show();
+    show(["#loading"]);
     $.ajax({
       type: "POST",
       url: addurl,
       data: "pTableData="+buildjson()+"&_token="+$("input[name=_token]").attr("value"),
       success: function(msg){
         console.log(msg);
-        $("#loading").hide();
+        hide(["#loading"]);
         pointer =0;
         done = 0;
         datatable.rows().every(function(rowIdx, tableLoop, rowLoop){
@@ -254,7 +238,6 @@ function sendtoadd()
             if(msg.data[pointer][item] == pTableData[pointer][item])
             {
               done++;
-              console.log(pTableData[pointer][item]);
             }
             if(done == todone)
             {
@@ -264,7 +247,6 @@ function sendtoadd()
           })
           if(seterror)
           {
-            console.log(errors);
             rows.push(row);
             errors.push(msg.data[pointer]);
             serror = true;
@@ -279,14 +261,13 @@ function sendtoadd()
         if (datatable.rows().count() == 0)
         {
           count = 0;
-          $('#showb').prop('disabled', false);
           localStorage.setItem('count', count);
           localStorage.setItem('storetable', '');
           errors = [];
-          $('#addbutton').prop('disabled', false)
+          enable(['#showb', '#addbutton']);
         }else
         {
-          $('#addbutton').prop('disabled', true);
+          disable(['#addbutton']);
           localStorage.setItem('storetable', $(".tablbody")[0].innerHTML);
         }
       }
@@ -299,7 +280,7 @@ function sendtoedit(route)
   rows=[];
   if(editdata.length > 0)
   {
-    $("#loading").show();
+    show(["#loading"]);
     pointer =0;
     order = [];
     showdata2 = [];
@@ -322,7 +303,7 @@ function sendtoedit(route)
       url: route,
       data: "pTableData="+JSON.stringify(editdata)+"&_token="+$("input[name=_token]").attr("value"),
       success: function(data){
-        $("#loading").hide();
+        hide(["#loading"]);
         pointer =0;
         done = 0;
         subrows = [];
@@ -359,7 +340,7 @@ function sendtoedit(route)
         {
           editdata = [];
           remove_exp = [];
-          $('#addbutton').prop('disabled', true);
+          disable(['#addbutton']);
         }
       }
     });
@@ -374,14 +355,10 @@ function show(showurl, sendtourl)
     datatable.column(i + 1).visible(false);
     $('#d' + getdataarray[i]).hide();
   })
-  $("#openmove").hide();
-  $("#loadshow").show();
-  $('#addemp').hide();
   $("#subTable1").attr("onclick","sendtoedit('"+ sendtourl +"')");
-  $('#addbutton').prop('disabled', true);
-  $('#openadd').prop('disabled', true);
-  $('#showb').hide();
-  $("#back").show();
+  disable(['#addbutton', '#openadd']);
+  hide(["#openmove", '#addemp', '#showb']);
+  show(["#loadshow", "#back"]);
   $.ajax({
     url: showurl,
     type: "get",
@@ -415,9 +392,8 @@ function resetmove()
   tomove.forEach(function(i){
     $('#d' + getdataarray[i]).show();
   })
-  $('#move').hide();
-  $('#del').show();
-  $('#edit').show();
+  hide(['#move']);
+  show(['#del', '#edit']);
 }
 
 function backto()
@@ -429,26 +405,25 @@ function backto()
       $('#d' + getdataarray[i]).show();
     })
     resetmove();
-    $('#showb').prop('disabled', false);
+    enable(['#showb', '#openmove', '#openadd']);
     datatable.clear().draw();
     count = 0;
     localStorage.setItem('count', count);
     editdata = [];
-    $('#openadd').prop('disabled', false);
-    $('#addemp').show();
-    $("#dexperror").hide();
+    errors = [];
+    show(['#addemp']);
+    hide(["#dexperror"]);
     resetshow();
   }
 }
 
 function resetshow()
 {
-  $('#addbutton').prop('disabled', false);//
-  editdata = [];//
-  $("#subTable1").attr("onclick","sendtoedit('"+ addurl +"')");//
-  $('#showb').show();//
-  $("#back").hide();//
-  $("#openmove").show();
+  enable(['#addbutton'])
+  editdata = [];
+  $("#subTable1").attr("onclick","sendtoadd('"+ addurl +"')");
+  show(['#showb', "#openmove"]);
+  hide(["#back"]);
 }
 
 $('#del').on('click', function(){
@@ -482,11 +457,10 @@ $('#mytable tbody').on('click', 'tr', function () {
       datatable.$('tr.selected').removeClass('selected');
       $(this).addClass('selected');
         rowonclick = $(this).closest('tr').index();
-        countonclick = $(this).find("td:first").html();
+        countonclick = Number($(this).find("td:first").html());
         $('.cd-popup').addClass('is-visible');
-        $('#deledit').show();
-        $("#addemp").hide();
-        $('#addbutton').hide();
+        show(['#deledit']);
+        hide(["#addemp", '#addbutton']);
         reset();
         exp = true;
         ecount = 1;
@@ -495,12 +469,13 @@ $('#mytable tbody').on('click', 'tr', function () {
           content = tdcontent[ecount].toString();
           $("#" + item).val(content.split(","));
           ecount++;
-          if(serror)
+          theError = errors[order.indexOf(countonclick)]
+          if(serror && Object.keys(theError).indexOf(item)+1)
           {
-            theError = errors[order.indexOf(countonclick)][item];
-            $("#" + item + "error").html(JSON.stringify(theError));
+            ;
+            $("#" + item + "error").html(JSON.stringify(theError[item]));
             $("#" + item + "error").css('color', 'red');
-            if(theError)
+            if(theError[item])
             {
               $("#" + item ).css("border-color", 'red');
               exp = false;
