@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\DB;
 //hide moving and show
 if(env('APP_ENV') === 'production')
 {
-  //URL::forceScheme('https');
+  URL::forceScheme('https');
 }
 
 Route::get('/',function(){
