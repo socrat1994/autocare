@@ -20,7 +20,7 @@ use App\Models\User;
 use App\Models\Company;
 use Illuminate\Support\Facades\DB;
 //hide moving and show
-if(env('APP_ENV') === 'production')
+if(1)//env('APP_ENV') === 'production')
 {
   URL::forceScheme('https');
 }
