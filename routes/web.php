@@ -20,7 +20,7 @@ use App\Models\User;
 use App\Models\Company;
 use Illuminate\Support\Facades\DB;
 //hide moving and show
-if(1)//env('APP_ENV') === 'production')
+if(env('APP_ENV') === 'production')
 {
   URL::forceScheme('https');
 }
@@ -41,11 +41,18 @@ Route::group(['middleware' => ['isactive' , 'auth']], function() {
     Route::get('/admin/login', [AdminLogController::class, 'showAdminLoginForm']);
     Route::post('/admin/login', [AdminLogController::class, 'login'])->name('adminlogin');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::post('/branchdeledi', [BranchController::class, 'del_edi'])->name('branchdeledi');
-    Route::get('/branchshow', [BranchController::class, 'show'])->name('branchshow');
+
+    Route::controller(BranchController::class)->prefix('branch')->name('branch.')->group(function(){
+      Route::post('/add', 'store')->name('add');
+      Route::post('/update', 'del_edi')->name('update');
+      Route::post('/move', 'move')->name('move');
+      Route::get('/', 'index')->name('index');
+      Route::get('/show', 'show')->name('show');
+    });
     Route::controller(EmployeeController::class)->prefix('employee')->name('employee.')->group(function(){
       Route::post('/add', 'store')->name('add');
       Route::post('/update', 'del_edi')->name('update');
+      Route::post('/move', 'move')->name('move');
       Route::get('/', 'index')->name('index');
       Route::get('/show', 'show')->name('show');
     });
@@ -63,7 +70,4 @@ Route::group(['middleware' => ['isactive' , 'auth']], function() {
       Route::post('/changenum', 'change_num')->name('changenum');
       Route::get('/show/{options}', 'show')->name('show');
     });
-
-    Route::resources([
-    'branch' => BranchController::class,]);
   });

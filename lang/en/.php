@@ -16,6 +16,7 @@ return [
     'Login' => 'Login',
     'phone number' => 'phone number',
     'Password' => 'Password',
-    'the user have been deleted before' => 'the user have been deleted before.'
+    'the user have been deleted before' => 'the user have been deleted before.',
+    'the user has been deleted by somebody else or it is not found' => 'the user has been deleted by somebody else or it is not found'
 
 ];

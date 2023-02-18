@@ -1,70 +1,67 @@
-var getdatafrompage ='';
-var getstayfrompage ='';
+//editclicked revision,, edit getarraydata for edit
 var pTableData = '';
 var count = 0;
 var col_count = 0;
-var getdataarray =[];
-var getstayarray =[];
+var formElements =[];
+var dontChang =[];
 var error = false;
 var serror = false;
 var color = '#CED4DA';
-var todone = 0;
+var toSuccess = 0;
 var errors =[];
 var showdata = [];
 var editdata = [];
+var updateOnError = [];
 var editrow = {};
 var remove_exp = [];
-var text = '';
-var addurl = '';
+var addUrl = '';
 var storetable = "";
 var rowonclick = 0;
 var countonclick = 0;
 var editclicked = false;
-var diacontent = '';
 var datatable ={};
 var order = [];
-var tohide = [];
-var tomove = [];
+var hideOnShow = [];
+var hideOnMove = [];
 var datatable;
+var config = {};
 
-window.onload = function()
+window.onload = function(){
+  hide(["#loadshow", "#loading", '#tabletools']);
+}
+function configer()
 {
-  diacontent = $('#dia').html();
-  hide(["#loadshow", "#dexperror", "#back", "#loading"]);
-  todone = Number($('#todone').html());
-  text = $('#text').html();
-  addurl = $('#addurl').html();
-  getdatafrompage = $('#data').html();
-  getstayfrompage = $('#stay').html();
-  getdataarray = getdatafrompage.split(",");
-  col_count = getdataarray.length + 1;
-  getstayarray = getstayfrompage.split(",").map(Number);
-  $('#updatebutton').hide();
-  tohide = ($('#tohide').html()).split(',').map(Number);
-  tomove = ($('#tomove').html()).split(',').map(Number);
+  toSuccess = config.toSuccess;
+  addUrl = config.addUrl;
+  formElements = config.formElements;
+  col_count = formElements.length + 1;
+  dontChang = config.dontChang;
+  hideOnShow = config.hideOnShow;
+  hideOnMove = config.hideOnMove;
+  $('#addAny').html(config.addAny);
+  hide(["#loadshow", "#dexperror", "#back", "#loading", '#updatebutton', '#move']);
+  show(['#tabletools']);
   storing();
 }
 
 function storing()
 {
-
- var storetable = localStorage.getItem('storetable');
-  if(count != 0)
-  {
-    disable(['#showb']);
-}
-  var storetable = localStorage.getItem('storetable');
-
+  datatable = $('#mytable').DataTable();
   $(document).ready( function () {
     datatable = $('#mytable').DataTable();
-  } );
+    //getdbAll();
+    if(datatable.rows().count() != 0)
+    {
+      disable(['#showb']);
+    }
+  });
 }
 
 function openform()
 {
- show(["#back", '#addbutton']);
- $('.cd-popup').addClass('is-visible');
- hide(['#deledit']);
+  show(["#back", '#addbutton']);
+  $('.cd-popup').addClass('is-visible');
+  hide(['#deledit']);
 }
 
 function validate(item)
@@ -84,18 +81,15 @@ function formdata()
   var attrcounter = 0;
   var row = [];
   row.push(count);
-  getdataarray.forEach(function(item){
+  formElements.forEach(function(item){
     validate(item);
     row.push($('#'+item).val());
   })
   if(!error)
   {
     add(row);
-    localStorage.setItem('storetable', $(".tablbody")[0].innerHTML);
-    console.log($('#mytable'));
     reset();
     disable(['#showb', '#openmove']);
-    localStorage.setItem('count', count);
   }
   error = false;
 }
@@ -110,30 +104,29 @@ function add(row)
 
 function moving(showurl, sendtourl)
 {
-  tomove.forEach(function(i){
-    $('#d' + getdataarray[i]).hide();
+  hideOnMove.forEach(function(i){
+    $('#d' + formElements[i]).hide();
   })
-  show(['#move']);
   hide(['#del', '#edit']);
-  show(showurl, sendtourl);
+  showData(showurl, sendtourl);
+  show(['#move']);
 }
 
 function del(dcount)
 {
-
   if(showdata != '')
   {
     editdata.push({'id':showdata[dcount].id});
     remove_exp.push(Number(dcount));
   }
   $('.selected').addClass('d-none d');
-  localStorage.setItem('storetable', $(".tablbody")[0].innerHTML);
+  deletedb(dcount);
 }
 
 function reset()
 {
-  getdataarray.forEach(function(item, index){
-    if(!getstayarray.includes(index))
+  formElements.forEach(function(item, index){
+    if(!dontChang.includes(index))
     {
       //  $("#" + item).val('');
     }
@@ -155,17 +148,22 @@ function edit()
 
 function update()
 {
-  $('.cd-popup').removeClass('is-visible');
+
   var rowIndex = datatable.row('.selected').data()[0];
   colIndex = 1 ;
-  getdataarray.forEach(function(item){
-    cell = datatable.cell(rowIndex, colIndex);
+  formElements.forEach(function(item){
+    cell = datatable.cell(datatable.row('.selected').index(), colIndex);
     validate(item);
     if(!error)
     {
       if(showdata != '')
       {
-        if((cell.data()).toString() != ($("#" + item).val()).toString())
+        exist = updateOnError[order.indexOf(rowIndex)];
+        if(exist)
+        {
+          exist = exist[item];
+        }
+        if(((cell.data()).toString() != ($("#" + item).val()).toString()) || exist)
         {
           editrow.id = showdata[rowIndex].id;
           editrow[item] = ($("#" + item).val()).toString();
@@ -177,20 +175,28 @@ function update()
   })
   if(!error)
   {
-    if(showdata != '' && Object.keys(editrow).length > 0)
+    keys = Object.keys(editrow);
+    if(showdata != '' && keys.length > 0)
     {
-      editdata.push(editrow);
-      remove_exp.push(rowIndex);
-      console.log(editdata);
+      isExistInEdit = remove_exp.indexOf(rowIndex)+1;
+      if(isExistInEdit)
+      {
+        keys.forEach(function(item){
+          editdata[isExistInEdit-1][item] = editrow[item];
+        })
+      }else{
+        editdata.push(editrow);
+        remove_exp.push(rowIndex);
+      }
       editrow ={};
     }
     reset();
     editclicked = false;
     enable(['#subTable1']);
-    hide('#updatebutton');
-    show(["#close", '#addbutton']);
-    $('.sd-popup').removeClass('is-visible');
   }
+  hide(['#updatebutton']);
+  show(["#close", '#addbutton']);
+  $('.cd-popup').removeClass('is-visible');
   error = false;
 }
 
@@ -202,12 +208,11 @@ function buildjson()
   serror = false;
   datatable.rows().every(function(rowIdx, tableLoop, rowLoop){
     row = this.data();
-    order.push(row[0]);
     row.forEach(function(item, index){
       if(index != 0)
       {
-      addrow[getdataarray[index-1]] = row[index].toString();
-    }
+        addrow[formElements[index-1]] = row[index].toString();
+      }
     })
     pTableData.push(addrow);
     addrow ={};
@@ -224,7 +229,7 @@ function sendtoadd()
     show(["#loading"]);
     $.ajax({
       type: "POST",
-      url: addurl,
+      url: addUrl,
       data: "pTableData="+buildjson()+"&_token="+$("input[name=_token]").attr("value"),
       success: function(msg){
         console.log(msg);
@@ -234,12 +239,12 @@ function sendtoadd()
         datatable.rows().every(function(rowIdx, tableLoop, rowLoop){
           row = this.data() ;
           seterror = true;
-          getdataarray.forEach(function(item, index, arr){
+          formElements.forEach(function(item, index, arr){
             if(msg.data[pointer][item] == pTableData[pointer][item])
             {
               done++;
             }
-            if(done == todone)
+            if(done == toSuccess)
             {
               done = 0;
               seterror = false;
@@ -248,6 +253,7 @@ function sendtoadd()
           if(seterror)
           {
             rows.push(row);
+            order.push(row[0]);
             errors.push(msg.data[pointer]);
             serror = true;
           }
@@ -261,7 +267,6 @@ function sendtoadd()
         if (datatable.rows().count() == 0)
         {
           count = 0;
-          localStorage.setItem('count', count);
           localStorage.setItem('storetable', '');
           errors = [];
           enable(['#showb', '#addbutton']);
@@ -295,7 +300,7 @@ function sendtoedit(route)
     datatable.clear().draw();
     rows.forEach((item, i) => {
       add(item);
-      order.push((item[0]).toString());
+      order.push((item[0]));
     });
     errors = [];
     $.ajax({
@@ -307,16 +312,15 @@ function sendtoedit(route)
         pointer =0;
         done = 0;
         subrows = [];
-          rows.forEach((row, i) => {
+        rows.forEach((row, i) => {
           Object.keys(editdata[pointer]).forEach(function(item, index){
-            console.log(item);
-            todone = index+1;
+            toSuccess = index+1;
             if(data.data[pointer][item] == editdata[pointer][item])
             {
               done++;
             }
           })
-          if(done != todone)
+          if(done != toSuccess)
           {
             subrows.push(row);
             errors.push(data.data[pointer]);
@@ -338,6 +342,7 @@ function sendtoedit(route)
           resetshow();
         }else
         {
+          updateOnError = editdata;
           editdata = [];
           remove_exp = [];
           disable(['#addbutton']);
@@ -347,150 +352,171 @@ function sendtoedit(route)
   }
 }
 
-function show(showurl, sendtourl)
+function showPage(indexUrl)
 {
-  row = [];
-  tohidearr = [];
-  tohide.forEach(function(i){
-    datatable.column(i + 1).visible(false);
-    $('#d' + getdataarray[i]).hide();
-  })
-  $("#subTable1").attr("onclick","sendtoedit('"+ sendtourl +"')");
-  disable(['#addbutton', '#openadd']);
-  hide(["#openmove", '#addemp', '#showb']);
-  show(["#loadshow", "#back"]);
-  $.ajax({
-    url: showurl,
-    type: "get",
-    dataType: "json",
-    success: function(msg){
-      $("#loadshow").hide();
-      showdata = msg.data;
-      msg.data.forEach(function(r){
-        row.push(count);
-        getdataarray.forEach(function(item, index){
-          console.log(index);
-          if(tohide.indexOf(index) >= 0)
-          {
-            console.log(tohide.indexOf(index));
-            row.push('#');
-          }else{
-            row.push(r[item]);
-          }
-        })
-        add(row);
-        row = [];
-      })
-      localStorage.setItem('storetable', '');
-      localStorage.setItem('count', 0);
-    }
-  })
-}
-
-function resetmove()
-{
-  tomove.forEach(function(i){
-    $('#d' + getdataarray[i]).show();
-  })
-  hide(['#move']);
-  show(['#del', '#edit']);
-}
-
-function backto()
-{
-  if(confirm(text) == true)
+  if(Object.keys(datatable).length == 0 || datatable.rows().count() == 0)
   {
-    tohide.forEach(function(i){
-      datatable.column(i + 1).visible(true);
-      $('#d' + getdataarray[i]).show();
-    })
-    resetmove();
-    enable(['#showb', '#openmove', '#openadd']);
-    datatable.clear().draw();
-    count = 0;
-    localStorage.setItem('count', count);
-    editdata = [];
-    errors = [];
-    show(['#addemp']);
-    hide(["#dexperror"]);
-    resetshow();
-  }
-}
-
-function resetshow()
-{
-  enable(['#addbutton'])
-  editdata = [];
-  $("#subTable1").attr("onclick","sendtoadd('"+ addurl +"')");
-  show(['#showb', "#openmove"]);
-  hide(["#back"]);
-}
-
-$('#del').on('click', function(){
-  del(countonclick);
-  $('.cd-popup').removeClass('is-visible');
-})
-
-$('#edit').on('click', function(){
-  edit();
-})
-
-$('#move').on('click', function(){
-  edit();
-})
-
-$('.cd-popup').on('click', function(event){
-  if( $(event.target).is('.cd-popup-close') || $(event.target).is('.cd-popup') ) {
-    event.preventDefault();
-    $(this).removeClass('is-visible');
-  }
-});
-
-$('#mytable tbody').on('click', 'tr', function () {
-  if(!editclicked)
-  {
-  if ($(this).hasClass('selected')) {
-    $(this).removeClass('selected');
-  } else {
-    if(datatable.rows().count() > 0)
+    $.ajax({
+      url: indexUrl,
+      type: "get",
+      success: function(msg){
+        $( "#container" ).replaceWith( msg);
+        $( "#mytable_wrapper" ).replaceWith( config.tableHeaders);
+        configer();
+      }})
+    }else
     {
-      datatable.$('tr.selected').removeClass('selected');
-      $(this).addClass('selected');
-        rowonclick = $(this).closest('tr').index();
-        countonclick = Number($(this).find("td:first").html());
-        $('.cd-popup').addClass('is-visible');
-        show(['#deledit']);
-        hide(["#addemp", '#addbutton']);
-        reset();
-        exp = true;
-        ecount = 1;
-        tdcontent = datatable.row('.selected').data();
-        getdataarray.forEach(function(item){
-          content = tdcontent[ecount].toString();
-          $("#" + item).val(content.split(","));
-          ecount++;
-          theError = errors[order.indexOf(countonclick)]
-          if(serror && Object.keys(theError).indexOf(item)+1)
-          {
-            ;
-            $("#" + item + "error").html(JSON.stringify(theError[item]));
-            $("#" + item + "error").css('color', 'red');
-            if(theError[item])
-            {
-              $("#" + item ).css("border-color", 'red');
-              exp = false;
-            }
-          }
-        })
-        if(exp && serror)
-        {
-          $("#dexperror").show();
-          $("#experror").html(errors[order.indexOf(countonclick)]);
-        }
-        exp = true;
+      alert(globalConfig.cantloadpage);
     }
   }
+
+  function showData(showurl, sendtourl)
+  {
+    row = [];
+    hideOnShowarr = [];
+    hideOnShow.forEach(function(i){
+      datatable.column(i + 1).visible(false);
+      $('#d' + formElements[i]).hide();
+    })
+    $("#subTable1").attr("onclick","sendtoedit('"+ sendtourl +"')");
+    disable(['#addbutton', '#openadd']);
+    hide(["#openmove", '#addAny', '#showb', '#move']);
+    show(["#loadshow", "#back"]);
+    $.ajax({
+      url: showurl,
+      type: "get",
+      dataType: "json",
+      success: function(msg){
+        $("#loadshow").hide();
+        showdata = msg.data;
+        msg.data.forEach(function(r){
+          row.push(count);
+          formElements.forEach(function(item, index){
+            console.log(index);
+            if(hideOnShow.indexOf(index) >= 0)
+            {
+              console.log(hideOnShow.indexOf(index));
+              row.push('#');
+            }else{
+              row.push(r[item]);
+            }
+          })
+          add(row);
+          row = [];
+        })
+        localStorage.setItem('storetable', '');
+        localStorage.setItem('count', 0);
+      }
+    })
   }
-});
-$('#mytable').on( 'click', 'tbody td', function () {
-} );
+
+  function resetmove()
+  {
+    hideOnMove.forEach(function(i){
+      $('#d' + formElements[i]).show();
+    })
+    hide(['#move']);
+    show(['#del', '#edit', '#close']);
+  }
+
+  function backto()
+  {
+    if(confirm(globalConfig.backmessage) == true)
+    {
+      hideOnShow.forEach(function(i){
+        datatable.column(i + 1).visible(true);
+        $('#d' + formElements[i]).show();
+      })
+      resetmove();
+      enable(['#showb', '#openmove', '#openadd']);
+      datatable.clear().draw();
+      count = 0;
+      localStorage.setItem('count', count);
+      errors = [];
+      show(['#addAny']);
+      hide(["#dexperror"]);
+      resetshow();
+    }
+  }
+
+  function resetshow()
+  {
+    enable(['#addbutton', '#openadd'])
+    editdata = [];
+    updateOnError = [];
+    remove_exp = [];
+    serror = false;
+    $("#subTable1").attr("onclick","sendtoadd('"+ addUrl +"')");
+    show(['#showb', "#openmove",'#close']);
+    hide(["#back", '#updatebutton']);
+  }
+
+  $('#del').live('click', function(){
+    del(countonclick);
+    $('.cd-popup').removeClass('is-visible');
+  })
+
+  $('#edit').live('click', function(){
+    edit();
+  })
+
+  $('#move').live('click', function(){
+    edit();
+  })
+
+  $('#close').live('click', function(event){
+    $('.cd-popup').removeClass('is-visible');
+    if( $(event.target).is('.cd-popup-close') /*|| $(event.target).is('.cd-popup')*/ ) {
+      event.preventDefault();
+      $(this).removeClass('is-visible');
+    }
+  });
+
+  $('#mytable tbody tr').live('click', function () {
+    if(!editclicked)
+    {
+      if ($(this).hasClass('selected')) {
+        $(this).removeClass('selected');
+      } else {
+        if(datatable.rows().count() > 0)
+        {
+          datatable.$('tr.selected').removeClass('selected');
+          $(this).addClass('selected');
+          rowonclick = $(this).closest('tr').index();
+          countonclick = Number($(this).find("td:first").html());
+          $('.cd-popup').addClass('is-visible');
+          show(['#deledit']);
+          hide(["#addAny", '#addbutton']);
+          reset();
+          exp = true;
+          ecount = 1;
+          tdcontent = datatable.row('.selected').data();
+          formElements.forEach(function(item){
+            content = tdcontent[ecount].toString();
+            $("#" + item).val(content.split(","));
+            ecount++;
+            theError = errors[order.indexOf(countonclick)]
+            if(serror && Object.keys(theError).indexOf(item)+1)
+            {
+              ;
+              $("#" + item + "error").html(JSON.stringify(theError[item]));
+              $("#" + item + "error").css('color', 'red');
+              if(theError[item])
+              {
+                $("#" + item ).css("border-color", 'red');
+                exp = false;
+              }
+            }
+          })
+          if(exp && serror)
+          {
+            $("#dexperror").show();
+            $("#experror").html(errors[order.indexOf(countonclick)]);
+          }
+          exp = true;
+        }
+      }
+    }
+  });
+  $('#mytable').live( 'click', 'tbody td', function () {
+  } );

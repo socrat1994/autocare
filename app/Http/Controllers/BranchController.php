@@ -27,12 +27,12 @@ class BranchController extends Controller
 
   public function index()
   {
-    return view('addbranches');
+    return view('branch');
   }
 
   public function show(){
     $company = session('company');
-    $branches = Branch::query()->select('*')->where('company_id', $company)->get();
+    $branches = Branch::query()->select(DB::raw("name, location, CONCAT(latitude, ',', longitude) AS geolocation"))->where('company_id', $company)->get();
     return response()->json(new Message($branches, '200', isset($error)?false:true, 'info', 'all branches of company', 'كل فروع الشركة'));
 
   }
@@ -73,7 +73,7 @@ class BranchController extends Controller
         }
         if(array_search($data['name'], $new_branches)!== false) {
           $error = true;
-          throw new \Exception("the branchs name is duplicated");
+          throw new \Exception("the branch name is duplicated");
         }
         array_push($new_branches, $data['name']);
         $data_arr =array_merge($data,['company_id' => $company]);
